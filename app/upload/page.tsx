@@ -25,14 +25,18 @@ export default function Upload(props) {
   
   const handleFileUpload = async (e) => {
     e.preventDefault()
+
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('file', file)
 
+    const fileContent = formData.get("file")
+    // console.log(await fileContent.text())
+
     const res = await fetch('/api/upload', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'API-Key': process.env.DATA_API_KEY!,
       },
       body: JSON.stringify(formData),
