@@ -31,16 +31,17 @@ export default function Upload(props) {
     formData.append('file', file)
 
     const fileContent = formData.get("file")
-    // console.log(await fileContent.text())
-
+    for (let value of formData.values()) {
+      console.log(value);
+    }
     const res = await fetch('/api/upload', {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data',
         'API-Key': process.env.DATA_API_KEY!,
       },
-      body: JSON.stringify(formData),
+      body: formData,
     })
+    console.log(await res.json())
   }
   
   return (
