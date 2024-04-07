@@ -33,7 +33,10 @@ export const authOptions = {
             //   if (res.ok && user) {
             //     return user
             //   }
-                if(credentials && credentials.username && credentials.password) {
+                console.log('credential')
+                console.log(credentials)
+                if(credentials && credentials.username=="a" && credentials.password) {
+                    console.log('success')
                     return credentials
                 }
               // Return null if user data could not be retrieved
@@ -45,12 +48,12 @@ export const authOptions = {
         async session({session, user, token}) {
             session.accessToken = token.accessToken
             session.user.id = token.id
-          return session;
+            return session;
         }
       },
-    pages: {
-        signIn: "/",
-    },
+    // pages: {
+    //     signIn: "/",
+    // },
   }
   
 const handler = NextAuth(authOptions)

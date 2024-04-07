@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react';
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,13 +31,26 @@ function Copyright(props) {
 
 export default function SignIn() {
   const router = useRouter()
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const result = await signIn('credentials', {
+      username: data.get('email'),
+      password: data.get('password'),
+      callbackUrl: '/upload'
+    })
+    console.log(result)
+
+    if(result && result.error) {
+      console.log('sign in error')
+      return
+    }
     router.push('/upload')
   };
 

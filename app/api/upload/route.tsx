@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const name = formData.get('name')
   console.log('name', name)
   const file = formData.get('file');
-  console.log('file', file);
+  console.log(typeof(file));
   
   const res = await fetch(process.env.DB_HOST + '/upload', {
     method: 'POST',
@@ -13,8 +13,8 @@ export async function POST(req: Request) {
     body: JSON.stringify(formData),
   })
  
-  const data = await res.json()
+  const data = await res.formData()
   
   // return new Response(file)
-  return new Response(file)
+  return new Response(data)
 }

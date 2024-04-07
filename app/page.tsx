@@ -4,8 +4,10 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Fade from '@mui/material/Fade';
 import SignIn from './sign_in'
+import { SessionProvider } from 'next-auth/react';
 export default function Home(props) {
   return (
+    <SessionProvider>
     <Container maxWidth="lg">
       <Fade in={true} timeout={{enter:700}}>
         <Box
@@ -22,5 +24,6 @@ export default function Home(props) {
         </Box>
       </Fade>
     </Container>
+    </SessionProvider>
   )
 }

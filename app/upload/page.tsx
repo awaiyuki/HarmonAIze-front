@@ -9,6 +9,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Fade from '@mui/material/Fade'
 import { styled } from '@mui/material/styles';
 import { useState } from 'react'
+import { useSession } from "next-auth/react"
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -24,6 +25,11 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function Upload(props) {
   
+  // const { data: session, status } = useSession()
+  // if (status === "authenticated") {
+  //   console.log(session)
+  // }
+
   const [audioURL, SetAudioURL] = useState('')
   const handleFileUpload = async (e) => {
     e.preventDefault()
