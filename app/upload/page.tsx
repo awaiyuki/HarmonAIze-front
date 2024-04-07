@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Fade from '@mui/material/Fade'
 import { styled } from '@mui/material/styles';
+import { useState } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -23,25 +24,30 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function Upload(props) {
   
+  const [audioURL, SetAudioURL] = useState('')
   const handleFileUpload = async (e) => {
     e.preventDefault()
 
     const file = e.target.files[0]
     const formData = new FormData()
+    formData.append('name', 'dummyUser')
     formData.append('file', file)
 
     const fileContent = formData.get("file")
     for (let value of formData.values()) {
       console.log(value);
     }
+
     const res = await fetch('/api/upload', {
       method: 'POST',
       headers: {
-        'API-Key': process.env.DATA_API_KEY!,
       },
       body: formData,
-    })
-    console.log(await res.json())
+    })  
+    const responseBlob = await res.blob()
+    const url = URL.createObjectURL(responseBlob)
+    console.log(url)
+    SetAudioURL(url)
   }
   
   return (
@@ -71,7 +77,8 @@ export default function Upload(props) {
           음악 업로드
           <VisuallyHiddenInput type="file" onChange={handleFileUpload} />
         </Button>
-
+        {audioURL && <audio src={audioURL} type="audio/x-m4a" controls>
+          </audio>}
         <Button
           component="label"
           role={undefined}
