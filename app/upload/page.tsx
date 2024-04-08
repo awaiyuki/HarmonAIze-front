@@ -10,6 +10,7 @@ import Fade from '@mui/material/Fade'
 import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -24,12 +25,17 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function Upload(props) {
-  const [audioInfo, SetAudioInfo] = useState({name:'',url:''})
+  // Todo : redirect to home page if not logged in
+
+  const { data: session } = useSession()
+  console.log(session)
+  const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
+
   const handleFileUpload = async (e) => {
     e.preventDefault()
 
-    if(!e.target.files[0]) {
-      return;
+    if (!e.target.files[0]) {
+      return
     }
     const file = e.target.files[0]
     const formData = new FormData()
@@ -50,11 +56,11 @@ export default function Upload(props) {
     const responseFile = responseFormData.get('file')
     const url = URL.createObjectURL(responseFile)
     console.log(responseFile)
-    SetAudioInfo({name:responseFile.name, url})
+    SetAudioInfo({ name: responseFile.name, url })
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
@@ -64,6 +70,19 @@ export default function Upload(props) {
             alignItems: 'center',
           }}
         >
+          {session && (
+            <Box
+              width="100%"
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="h4">{session.user.username} 님</Typography>
+              <Button onClick={() => signOut()}>로그아웃</Button>
+            </Box>
+          )}
           <Button
             component="label"
             role={undefined}

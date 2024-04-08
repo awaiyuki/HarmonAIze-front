@@ -34,11 +34,16 @@ export const authOptions = {
         //     return user
         //   }
         console.log('credential')
-        console.log(credentials)
+
+        const dummyUser = {
+          id: 'dummy',
+          password: 'dummy',
+        }
+
         if (
           credentials &&
-          credentials.username == 'a' &&
-          credentials.password
+          credentials.username == dummyUser.id &&
+          credentials.password == dummyUser.password
         ) {
           console.log('success')
           return credentials
@@ -49,15 +54,20 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user, token }) {
-      session.accessToken = token.accessToken
-      session.user.id = token.id
+    async jwt({ token, user }) {
+      console.log('jwt', token, user)
+      user && (token.user = user)
+      return token
+    },
+    async session({ session, token }) {
+      delete token.user.password
+      session.user = token.user
       return session
     },
   },
-  // pages: {
-  //     signIn: "/",
-  // },
+  pages: {
+    signIn: '/',
+  },
 }
 
 const handler = NextAuth(authOptions)
