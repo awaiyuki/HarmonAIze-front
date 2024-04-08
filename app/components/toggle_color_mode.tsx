@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
-
+import { useEffect } from 'react'
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
 export function ColorModeButton() {
@@ -45,10 +45,14 @@ export default function ToggleColorMode({ children }) {
   console.log(initialMode)
   if(!initialMode) initialMode = 'dark'
   const [mode, setMode] = React.useState<'light' | 'dark'>(initialMode)
+
+  useEffect(() => {
+    window.localStorage.setItem("theme", mode);
+  }, [mode])
+
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        mode ==='light' ? window.localStorage.setItem("theme", "dark") : window.localStorage.setItem("theme", "light");
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
       },
     }),
