@@ -41,10 +41,14 @@ export function ColorModeButton() {
 }
 
 export default function ToggleColorMode({ children }) {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('light')
+  let initialMode = window.localStorage.getItem('theme')
+  console.log(initialMode)
+  if(!initialMode) initialMode = 'dark'
+  const [mode, setMode] = React.useState<'light' | 'dark'>(initialMode)
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
+        mode ==='light' ? window.localStorage.setItem("theme", "dark") : window.localStorage.setItem("theme", "light");
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
       },
     }),
