@@ -1,12 +1,19 @@
+'use client'
+
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Fade from '@mui/material/Fade'
 import SignIn from './sign_in'
-import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function Home(props) {
+  const { data: session, status } = useSession()
+  if(status == 'authenticated') {
+    redirect('/upload')
+  }
   return (
     <Container maxWidth="lg">
       <Fade in={true} timeout={{ enter: 700 }}>

@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -25,10 +26,13 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function Upload(props) {
-  // Todo : redirect to home page if not logged in
 
-  const { data: session } = useSession()
-  console.log(session)
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/')
+    }
+  })
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
 
   const handleFileUpload = async (e) => {
@@ -70,19 +74,7 @@ export default function Upload(props) {
             alignItems: 'center',
           }}
         >
-          {session && (
-            <Box
-              width="100%"
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Typography variant="h4">{session.user.username} 님</Typography>
-              <Button onClick={() => signOut()}>로그아웃</Button>
-            </Box>
-          )}
+          
           <Button
             component="label"
             role={undefined}

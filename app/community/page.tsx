@@ -11,11 +11,16 @@ import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
-
+import { redirect } from 'next/navigation'
 export default function Community(props) {
-  // Todo : redirect to home page if not logged in
 
-  const { data: session } = useSession()
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/')
+    }
+  })
+
   console.log(session)
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
 
