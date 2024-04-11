@@ -48,7 +48,7 @@ export default function SignIn() {
     const result = await signIn('credentials', {
       username: data.get('email'),
       password: data.get('password'),
-      callbackUrl: '/upload',
+      callbackUrl: '/generate',
     })
     console.log(result)
 
@@ -56,7 +56,7 @@ export default function SignIn() {
       console.log('sign in error')
       return
     }
-    router.push('/upload')
+    router.push('/generate')
   }
 
   return (

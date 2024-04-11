@@ -26,16 +26,19 @@ export default function NavBar () {
     }}>
         <Box
             display="flex"
-            justifyContent="center"
         >
-        <Link href='/upload'><Button>홈</Button></Link>
-        <Link href='/community'><Button>커뮤니티</Button></Link>
-
-        {session && 
-              <Typography variant="body1">{session.user.username} 님</Typography>
-        }
-        <Button onClick={() => signOut()}>로그아웃</Button>
-        <ColorModeButton />
+            <Box
+                flexGrow={1}
+                pl={2}
+            >            
+            <Link href='/generate'><Button>홈</Button></Link>
+            <Link href='/community'><Button>커뮤니티</Button></Link>
+</Box>
+            {session && 
+                <Typography variant="body1">{session.user.username} 님</Typography>
+            }
+            <Button onClick={() => signOut()}>로그아웃</Button>
+            <ColorModeButton />
         </Box>
     </Box>
 }

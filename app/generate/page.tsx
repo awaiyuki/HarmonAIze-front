@@ -33,7 +33,9 @@ export default function Upload(props) {
       redirect('/')
     }
   })
+
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
+  const [generatedAudioInfo, SetGeneratedAudioInfo] = useState({ name: '', url: '' })
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -43,7 +45,7 @@ export default function Upload(props) {
     }
     const file = e.target.files[0]
     const formData = new FormData()
-    formData.append('name', 'dummyUser')
+    formData.append('name', session.user.name)
     formData.append('file', file)
 
     const fileContent = formData.get('file')
@@ -61,6 +63,20 @@ export default function Upload(props) {
     const url = URL.createObjectURL(responseFile)
     console.log(responseFile)
     SetAudioInfo({ name: responseFile.name, url })
+  }
+
+  const handleGenerateAccompaniment = async (e) => {
+    e.preventDefault()
+
+    const res = await fetch('/api/generate', {
+      method: 'GET',
+      headers: {},
+    })
+    const responseFormData = await res.formData()
+    const responseFile = responseFormData.get('file')
+    const url = URL.createObjectURL(responseFile)
+    console.log(responseFile)
+    SetGeneratedAudioInfo({ name: responseFile.name, url })
   }
 
   return (
@@ -112,9 +128,22 @@ export default function Upload(props) {
               marginTop: 4,
               width: 400,
             }}
+            onClick={handleGenerateAccompaniment}
           >
             반주 생성
           </Button>
+
+          {generatedAudioInfo && generatedAudioInfo.name && (
+            <Box
+              sx={{
+                marginTop: 4,
+              }}
+            >
+              <Typography variant="h5">{generatedAudioInfo.name}</Typography>
+              <audio src={generatedAudioInfo.url} type="audio/x-m4a" controls />
+            </Box>
+          )}
+
         </Box>
       </Fade>
     </Container>
