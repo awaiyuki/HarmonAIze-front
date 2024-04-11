@@ -6,5 +6,7 @@ export async function GET(req: Request) {
 
   const data = await res.json()
 
+  // test with dummy data !
+
   return new Response(data)
 }
