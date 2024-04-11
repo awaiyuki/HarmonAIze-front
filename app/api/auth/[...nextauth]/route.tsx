@@ -36,8 +36,8 @@ export const authOptions = {
         console.log('credential')
 
         const dummyUser = {
-          id: 'dummy',
-          password: 'dummy',
+          id: 'd',
+          password: 'd',
         }
 
         if (

@@ -6,7 +6,6 @@ import { ColorModeButton } from './components/toggle_color_mode'
 import NavBar from './components/nav_bar'
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en">
       <body>

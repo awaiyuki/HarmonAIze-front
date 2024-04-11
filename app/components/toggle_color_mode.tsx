@@ -13,28 +13,28 @@ export function ColorModeButton() {
   const theme = useTheme()
   const colorMode = React.useContext(ColorModeContext)
   return (
-      <IconButton
-        sx={{ ml: 1 }}
-        onClick={colorMode.toggleColorMode}
-        color="inherit"
-      >
-        {theme.palette.mode === 'dark' ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
+    <IconButton
+      sx={{ ml: 1 }}
+      onClick={colorMode.toggleColorMode}
+      color="inherit"
+    >
+      {theme.palette.mode === 'dark' ? (
+        <Brightness7Icon />
+      ) : (
+        <Brightness4Icon />
+      )}
+    </IconButton>
   )
 }
 
 export default function ToggleColorMode({ children }) {
   let initialMode = window.localStorage.getItem('theme')
   console.log(initialMode)
-  if(!initialMode) initialMode = 'dark'
+  if (!initialMode) initialMode = 'dark'
   const [mode, setMode] = React.useState<'light' | 'dark'>(initialMode)
 
   useEffect(() => {
-    window.localStorage.setItem("theme", mode);
+    window.localStorage.setItem('theme', mode)
   }, [mode])
 
   const colorMode = React.useMemo(

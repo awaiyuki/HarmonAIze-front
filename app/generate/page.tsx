@@ -5,6 +5,14 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import Avatar from '@mui/material/Avatar'
+import ImageIcon from '@mui/icons-material/Image'
+import WorkIcon from '@mui/icons-material/Work'
+import BeachAccessIcon from '@mui/icons-material/BeachAccess'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Fade from '@mui/material/Fade'
 import { styled } from '@mui/material/styles'
@@ -26,16 +34,18 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function Upload(props) {
-
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect('/')
-    }
+    },
   })
 
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
-  const [generatedAudioInfo, SetGeneratedAudioInfo] = useState({ name: '', url: '' })
+  const [generatedAudioInfo, SetGeneratedAudioInfo] = useState({
+    name: '',
+    url: '',
+  })
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -90,7 +100,6 @@ export default function Upload(props) {
             alignItems: 'center',
           }}
         >
-          
           <Button
             component="label"
             role={undefined}
@@ -144,6 +153,39 @@ export default function Upload(props) {
             </Box>
           )}
 
+          <Box
+            sx={{
+              marginTop: 8,
+            }}
+          >
+            <Typography variant="h4">음악 목록</Typography>
+            <Box>
+              <List
+                sx={{
+                  width: '100%',
+                  maxWidth: 360,
+                  bgcolor: 'background.paper',
+                }}
+              >
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <ImageIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="music1" secondary="2024월 4월 12일" />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <WorkIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="music2" secondary="2024월 4월 12일" />
+                </ListItem>
+              </List>
+            </Box>
+          </Box>
         </Box>
       </Fade>
     </Container>

@@ -11,8 +11,8 @@ import { useSession } from 'next-auth/react'
 
 export default function Home(props) {
   const { data: session, status } = useSession()
-  if(status == 'authenticated') {
-    redirect('/upload')
+  if (status == 'authenticated') {
+    redirect('/generate')
   }
   return (
     <Container maxWidth="lg">
