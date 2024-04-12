@@ -20,7 +20,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-
+import { useEffect } from 'react'
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -46,6 +46,7 @@ export default function Upload(props) {
     name: '',
     url: '',
   })
+  const [musicListData, setMusicListData] = useState({ list: [] })
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -63,7 +64,7 @@ export default function Upload(props) {
       console.log(value)
     }
 
-    const res = await fetch('/api/upload', {
+    const res = await fetch('/api/music/upload', {
       method: 'POST',
       headers: {},
       body: formData,
@@ -78,7 +79,7 @@ export default function Upload(props) {
   const handleGenerateAccompaniment = async (e) => {
     e.preventDefault()
 
-    const res = await fetch('/api/generate', {
+    const res = await fetch('/api/music/generate', {
       method: 'GET',
       headers: {},
     })
@@ -89,6 +90,19 @@ export default function Upload(props) {
     SetGeneratedAudioInfo({ name: responseFile.name, url })
   }
 
+  const fetchMusicList = async () => {
+    const res = await fetch('/api/music/list', {
+      method: 'GET',
+      headers: {},
+    })
+    const responseData = await res.json()
+    console.log(responseData)
+    setMusicListData(responseData)
+  }
+
+  useEffect(() => {
+    fetchMusicList()
+  }, [])
   return (
     <Container maxWidth="md">
       <Fade in={true} timeout={{ enter: 700 }}>
@@ -167,22 +181,19 @@ export default function Upload(props) {
                   bgcolor: 'background.paper',
                 }}
               >
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <ImageIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="music1" secondary="2024월 4월 12일" />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <WorkIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="music2" secondary="2024월 4월 12일" />
-                </ListItem>
+                {musicListData.list.map((music) => (
+                  <ListItem key={'music' + music.id}>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <ImageIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={music.title}
+                      secondary={music.date}
+                    />
+                  </ListItem>
+                ))}
               </List>
             </Box>
           </Box>

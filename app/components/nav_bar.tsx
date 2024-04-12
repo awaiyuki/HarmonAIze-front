@@ -22,7 +22,8 @@ export default function NavBar() {
         p: 1,
         zIndex: 1,
         width: '100vw',
-        bgColor: '#ffffff80',
+        bgColor: '#ffffffa0',
+        backdropFilter: 'blur(10px)',
         boxShadow: 2,
       }}
     >
