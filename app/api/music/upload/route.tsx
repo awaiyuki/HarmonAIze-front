@@ -5,13 +5,14 @@ export async function POST(req: Request) {
   const file = formData.get('file')
   console.log(typeof file)
 
-  // const res = await fetch(process.env.DB_HOST + '/upload', {
-  //   method: 'POST',
-  //   headers: {
-  //   },
-  //   body: JSON.stringify(formData),
-  // })
+  const res = await fetch(process.env.BACK_HOST + '/user/generate', {
+    method: 'POST',
+    headers: {},
+    body: JSON.stringify(formData),
+  })
 
+  const data = await res.blob()
+  console.log('response data :', data)
   // const data = await res.formData()
 
   // return new Response(file)
