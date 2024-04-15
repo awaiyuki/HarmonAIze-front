@@ -1,8 +1,14 @@
 export async function GET(req: Request) {
-  // const res = await fetch(process.env.DB_HOST + '/music', {
-  //   method: 'GET',
-  //   headers: {},
-  // })
+  const { searchParams } = new URL(req.url)
+  const username = searchParams.get('username')
+
+  // const res = await fetch(
+  //   process.env.BACK_HOST + '/user/musics?username=' + username,
+  //   {
+  //     method: 'GET',
+  //     headers: {},
+  //   }
+  // )
 
   // const data = await res.json()
 
@@ -22,6 +28,5 @@ export async function GET(req: Request) {
       { id: 10, title: 'ambient1', date: '2020/04/21' },
     ],
   }
-  console.log('list', data)
   return new Response(JSON.stringify(data))
 }

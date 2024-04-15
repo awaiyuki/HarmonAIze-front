@@ -21,6 +21,8 @@ import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
+import { CurrencyYenTwoTone } from '@mui/icons-material'
+
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -41,22 +43,28 @@ export default function Upload(props) {
     },
   })
 
-  const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
-  const [generatedAudioInfo, SetGeneratedAudioInfo] = useState({
+  const [uploadedFileData, setUploadedFileData] = useState({})
+
+  const [audioInfo, setAudioInfo] = useState({ name: '', url: '' })
+  const [generatedAudioInfo, setGeneratedAudioInfo] = useState({
     name: '',
     url: '',
   })
   const [musicListData, setMusicListData] = useState({ list: [] })
+  const [currentMusicData, setCurrentMusicData] = useState({
+    title: '',
+    url: '',
+  })
+  const handleFileUpload = async (file) => {
+    const url = URL.createObjectURL(file)
+    setAudioInfo({ name: file.name, url })
+    setUploadedFileData(file)
+  }
 
-  const handleFileUpload = async (e) => {
-    e.preventDefault()
-
-    if (!e.target.files[0]) {
-      return
-    }
-    const file = e.target.files[0]
+  const handleGenerateAccompaniment = async (username) => {
+    const file = uploadedFileData
     const formData = new FormData()
-    formData.append('name', session.user.name)
+    formData.append('name', username)
     formData.append('file', file)
 
     const fileContent = formData.get('file')
@@ -64,34 +72,20 @@ export default function Upload(props) {
       console.log(value)
     }
 
-    const res = await fetch('/api/music/upload', {
+    const res = await fetch('/api/music/generate', {
       method: 'POST',
       headers: {},
       body: formData,
     })
-    const responseFormData = await res.formData()
-    const responseFile = responseFormData.get('file')
-    const url = URL.createObjectURL(responseFile)
-    console.log(responseFile)
-    SetAudioInfo({ name: responseFile.name, url })
+    // const responseFormData = await res.formData()
+    // const responseFile = responseFormData.get('file')
+    // const url = URL.createObjectURL(responseFile)
+    // console.log(responseFile)
+    // SetGeneratedAudioInfo({ name: responseFile.name, url })
   }
 
-  const handleGenerateAccompaniment = async (e) => {
-    e.preventDefault()
-
-    const res = await fetch('/api/music/generate', {
-      method: 'GET',
-      headers: {},
-    })
-    const responseFormData = await res.formData()
-    const responseFile = responseFormData.get('file')
-    const url = URL.createObjectURL(responseFile)
-    console.log(responseFile)
-    SetGeneratedAudioInfo({ name: responseFile.name, url })
-  }
-
-  const fetchMusicList = async () => {
-    const res = await fetch('/api/music/list', {
+  const fetchMusicList = async (username) => {
+    const res = await fetch('/api/music/list?username=' + username, {
       method: 'GET',
       headers: {},
     })
@@ -100,9 +94,26 @@ export default function Upload(props) {
     setMusicListData(responseData)
   }
 
+  const fetchMusicFile = async (username, title) => {
+    const res = await fetch(
+      '/api/music/play?username=' + username + '&music=' + title,
+      {
+        method: 'GET',
+        headers: {},
+      }
+    )
+    const responseData = await res.json()
+    setCurrentMusicData({ title: responseData.title, url: responseData.url })
+  }
+
   useEffect(() => {
-    fetchMusicList()
-  }, [])
+    if (!session) return
+
+    console.log(session)
+
+    fetchMusicList(session?.user.username)
+  }, [session])
+
   return (
     <Container maxWidth="md">
       <Fade in={true} timeout={{ enter: 700 }}>
@@ -127,7 +138,19 @@ export default function Upload(props) {
             }}
           >
             음악 업로드
-            <VisuallyHiddenInput type="file" onChange={handleFileUpload} />
+            <VisuallyHiddenInput
+              type="file"
+              onChange={(e) => {
+                e.preventDefault()
+                if (!e.target.files) return
+
+                const file = e.target.files[0]
+
+                if (!file) return
+
+                handleFileUpload(file)
+              }}
+            />
           </Button>
 
           {audioInfo && audioInfo.name && (
@@ -137,7 +160,7 @@ export default function Upload(props) {
               }}
             >
               <Typography variant="h5">{audioInfo.name}</Typography>
-              <audio src={audioInfo.url} type="audio/x-m4a" controls />
+              <audio src={audioInfo.url} type="audio/mp3" controls />
             </Box>
           )}
 
@@ -151,12 +174,14 @@ export default function Upload(props) {
               marginTop: 4,
               width: 400,
             }}
-            onClick={handleGenerateAccompaniment}
+            onClick={() => {
+              handleGenerateAccompaniment(session?.user.username)
+            }}
           >
             반주 생성
           </Button>
 
-          {generatedAudioInfo && generatedAudioInfo.name && (
+          {/* {generatedAudioInfo && generatedAudioInfo.name && (
             <Box
               sx={{
                 marginTop: 4,
@@ -164,6 +189,17 @@ export default function Upload(props) {
             >
               <Typography variant="h5">{generatedAudioInfo.name}</Typography>
               <audio src={generatedAudioInfo.url} type="audio/x-m4a" controls />
+            </Box>
+          )} */}
+
+          {currentMusicData && currentMusicData.url && (
+            <Box
+              sx={{
+                marginTop: 4,
+              }}
+            >
+              <Typography variant="h5">{audioInfo.name}</Typography>
+              <audio src={audioInfo.url} type="audio/mp3" controls />
             </Box>
           )}
 
@@ -182,7 +218,12 @@ export default function Upload(props) {
                 }}
               >
                 {musicListData.list.map((music) => (
-                  <ListItem key={'music' + music.id}>
+                  <ListItem
+                    key={'music' + music.id}
+                    onClick={() =>
+                      fetchMusicFile(session?.user.username, music.title)
+                    }
+                  >
                     <ListItemAvatar>
                       <Avatar>
                         <ImageIcon />
