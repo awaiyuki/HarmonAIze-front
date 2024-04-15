@@ -43,13 +43,7 @@ export default function Upload(props) {
     },
   })
 
-  const [uploadedFileData, setUploadedFileData] = useState({})
-
-  const [audioInfo, setAudioInfo] = useState({ name: '', url: '' })
-  const [generatedAudioInfo, setGeneratedAudioInfo] = useState({
-    name: '',
-    url: '',
-  })
+  const [uploadedAudioData, setUploadedAudioData] = useState({})
   const [musicListData, setMusicListData] = useState({ list: [] })
   const [currentMusicData, setCurrentMusicData] = useState({
     title: '',
@@ -57,12 +51,11 @@ export default function Upload(props) {
   })
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
-    setAudioInfo({ name: file.name, url })
-    setUploadedFileData(file)
+    setUploadedAudioData({ title: file.name, url, file })
   }
 
   const handleGenerateAccompaniment = async (username) => {
-    const file = uploadedFileData
+    const file = uploadedAudioData.file
     const formData = new FormData()
     formData.append('name', username)
     formData.append('file', file)
@@ -153,14 +146,17 @@ export default function Upload(props) {
             />
           </Button>
 
-          {audioInfo && audioInfo.name && (
+          {uploadedAudioData && uploadedAudioData.title && (
             <Box
               sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 marginTop: 4,
               }}
             >
-              <Typography variant="h5">{audioInfo.name}</Typography>
-              <audio src={audioInfo.url} type="audio/mp3" controls />
+              <Typography variant="h5">{uploadedAudioData.title}</Typography>
+              <audio src={uploadedAudioData.url} type="audio/mp3" controls />
             </Box>
           )}
 
@@ -174,6 +170,7 @@ export default function Upload(props) {
               marginTop: 4,
               width: 400,
             }}
+            disabled={uploadedAudioData.title ? false : true}
             onClick={() => {
               handleGenerateAccompaniment(session?.user.username)
             }}
@@ -198,13 +195,16 @@ export default function Upload(props) {
                 marginTop: 4,
               }}
             >
-              <Typography variant="h5">{audioInfo.name}</Typography>
-              <audio src={audioInfo.url} type="audio/mp3" controls />
+              <Typography variant="h5">{currentMusicData.title}</Typography>
+              <audio src={currentMusicData.url} type="audio/mp3" controls />
             </Box>
           )}
 
           <Box
             sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               marginTop: 8,
             }}
           >

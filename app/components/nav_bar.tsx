@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography, Stack } from '@mui/material'
 import { ColorModeButton } from './toggle_color_mode'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -27,7 +27,7 @@ export default function NavBar() {
         boxShadow: 2,
       }}
     >
-      <Box display="flex">
+      <Box display="flex" alignItems="center">
         <Box flexGrow={1} pl={2}>
           <Link href="/generate">
             <Button>홈</Button>
@@ -36,11 +36,13 @@ export default function NavBar() {
             <Button>커뮤니티</Button>
           </Link>
         </Box>
-        <ColorModeButton />
-        {session && (
-          <Typography variant="body1">{session.user.username} 님</Typography>
-        )}
-        <Button onClick={() => signOut()}>로그아웃</Button>
+        <Stack direction="row" spacing={4} alignItems="center">
+          <ColorModeButton />
+          {session && (
+            <Typography variant="body1">{session?.user.username} 님</Typography>
+          )}
+          <Button onClick={() => signOut()}>로그아웃</Button>
+        </Stack>
       </Box>
     </Box>
   )
