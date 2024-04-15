@@ -209,6 +209,9 @@ export default function Upload(props) {
             }}
           >
             <Typography variant="h4">음악 목록</Typography>
+            <Button onClick={() => fetchMusicList(session?.user.username)}>
+              새로고침
+            </Button>
             <Box>
               <List
                 sx={{
@@ -233,6 +236,7 @@ export default function Upload(props) {
                       primary={music.title}
                       secondary={music.date}
                     />
+                    {music.progress}
                   </ListItem>
                 ))}
               </List>
