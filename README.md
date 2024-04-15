@@ -1,9 +1,23 @@
 # HarmonAIze-front
 
-## 개발 서버 실행
+## Setup Environment Variables
+
+### For Local
+
+Create the file `.env.local` in root directory of the project, and fill in as below.
+
+```
+NEXTAUTH_URL=http://localhost:3000
+BACK_HOST={BACKEND_URL}
+```
+
+Replace `{BACKEND_URL}` with your backend address.
+
+## Running Development Server
 
 ```console
 $ npm i
 $ npm run dev
 ```
-`http://localhost:3000` 접속
+
+Connect `http://localhost:3000`
