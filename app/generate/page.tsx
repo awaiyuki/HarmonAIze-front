@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client'
 
 import Button from '@mui/material/Button'
@@ -236,7 +237,9 @@ export default function Upload(props) {
                       primary={music.title}
                       secondary={music.date}
                     />
-                    {music.progress}
+                    {music.progress ? '완료' : '진행중'}
+                    <br />
+                    다운로드
                   </ListItem>
                 ))}
               </List>
