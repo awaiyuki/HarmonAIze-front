@@ -84,7 +84,7 @@ export default function Upload(props) {
     })
     const responseData = await res.json()
     console.log(responseData)
-    setMusicListData(responseData)
+    setMusicListData({ list: responseData })
   }
 
   const fetchMusicFile = async (username, title) => {

@@ -3,6 +3,7 @@ export async function GET(req: Request) {
   const username = searchParams.get('username')
   const music = searchParams.get('music')
 
+  console.log(username, music)
   const res = await fetch(
     process.env.BACK_HOST +
       '/user/music?username=' +
@@ -16,6 +17,7 @@ export async function GET(req: Request) {
   )
 
   const data = await res.json()
-
+  console.log('user/music response')
+  console.log(data)
   return new Response(JSON.stringify(data))
 }
