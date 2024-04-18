@@ -13,6 +13,8 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import FeedItem from '../components/community/feed_item'
+import { grey } from '@mui/material/colors'
 
 export default function Community() {
   const { data: session, status } = useSession({
@@ -54,17 +56,80 @@ export default function Community() {
   }
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          aa
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            width="100%"
+            marginBottom={2}
+          >
+            <TextField
+              variant="standard"
+              placeholder="입력하세요"
+              sx={{
+                width: '100%',
+                marginBottom: 1,
+              }}
+              minRows={2}
+              multiline
+            />
+            <Box display="flex" width="100%" justifyContent="space-between">
+              <Box display="flex">
+                <Button variant="text">음악</Button>
+                <Button variant="text">사진</Button>
+              </Box>
+              <Button
+                variant="contained"
+                sx={{
+                  flexGrow: 0.5,
+                }}
+              >
+                게시
+              </Button>
+            </Box>
+          </Box>
+          <Box width="100%" borderTop={1} borderColor={grey[400]}>
+            <FeedItem
+              sx={{
+                width: '100%',
+                height: '100px',
+                border: '1px',
+                borderColor: 'white',
+              }}
+              username="username1"
+              content="이 반주 진짜 좋은 것 같아요."
+            />
+            <FeedItem
+              sx={{
+                width: '100%',
+                height: '100px',
+                border: '1px',
+                borderColor: 'white',
+              }}
+              username="username2"
+              content="이 반주 진짜 좋은 것 같아요."
+            />
+            <FeedItem
+              sx={{
+                width: '100%',
+                height: '100px',
+                border: '1px',
+                borderColor: 'white',
+              }}
+              username="username3"
+              content="이 반주 진짜 좋은 것 같아요."
+            />
+          </Box>
         </Box>
       </Fade>
     </Container>

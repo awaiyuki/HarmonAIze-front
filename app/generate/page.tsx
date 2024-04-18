@@ -109,11 +109,11 @@ export default function Generate() {
   }, [session])
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -129,6 +129,7 @@ export default function Generate() {
             sx={{
               marginTop: 4,
               width: 400,
+              maxWidth: '100%',
             }}
           >
             음악 업로드
@@ -170,6 +171,7 @@ export default function Generate() {
             sx={{
               marginTop: 4,
               width: 400,
+              maxWidth: '100%',
             }}
             disabled={uploadedAudioData.title ? false : true}
             onClick={() => {
