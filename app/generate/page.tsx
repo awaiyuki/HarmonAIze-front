@@ -36,7 +36,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 })
 
-export default function Upload(props) {
+export default function Generate() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {

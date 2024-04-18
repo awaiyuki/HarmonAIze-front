@@ -13,7 +13,8 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-export default function Community(props) {
+
+export default function Community() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
