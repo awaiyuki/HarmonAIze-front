@@ -29,7 +29,8 @@ export default function NavBar() {
       }}
     >
       <Box display="flex" alignItems="center">
-        <Box flexGrow={1} pl={2}>
+        <Box display="flex" alignItems="center" flexGrow={1} pl={2}>
+          <Typography variant="h5">HarmonAIze</Typography>
           <Link href="/generate">
             <Button>홈</Button>
           </Link>
