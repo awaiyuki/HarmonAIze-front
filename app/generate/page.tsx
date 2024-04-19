@@ -259,6 +259,7 @@ export default function Generate() {
                       sx={{
                         ':hover': {
                           backgroundColor: pink[300],
+                          transition: '0.5s',
                         },
                         transition: '0.5s',
                       }}
