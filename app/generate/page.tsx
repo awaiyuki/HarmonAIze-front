@@ -138,7 +138,7 @@ export default function Generate() {
             startIcon={<CloudUploadIcon />}
             sx={{
               marginTop: 4,
-              width: 400,
+              width: '400px',
               maxWidth: '100%',
             }}
           >
@@ -215,6 +215,7 @@ export default function Generate() {
 
           <Box
             sx={{
+              width: '100%',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -226,11 +227,13 @@ export default function Generate() {
             <Button onClick={() => fetchMusicList(session?.user.username)}>
               새로고침
             </Button>
-            <Box>
+            <Box
+              sx={{
+                width: '100%',
+              }}
+            >
               <List
                 sx={{
-                  width: '100%',
-                  maxWidth: 360,
                   bgcolor: 'background.paper',
                 }}
               >

@@ -39,17 +39,17 @@ export default function NavBar() {
             <Button>커뮤니티</Button>
           </Link>
         </Box>
-        <Stack direction="row" spacing={4} alignItems="center">
+        <Stack direction="row" spacing={4}>
           <ColorModeButton />
           {session && (
-            <Box display="flex">
+            <Box display="flex" alignItems="center">
               <AccountCircleIcon />
-              <Typography variant="body1" marginLeft={1}>
+              <Typography variant="body1" marginLeft={1} marginRight={1}>
                 {session?.user.username} 님
               </Typography>
+              <Button onClick={() => signOut()}>로그아웃</Button>
             </Box>
           )}
-          <Button onClick={() => signOut()}>로그아웃</Button>
         </Stack>
       </Box>
     </Box>
