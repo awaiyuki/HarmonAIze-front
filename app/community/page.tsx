@@ -98,7 +98,12 @@ export default function Community() {
               </Button>
             </Box>
           </Box>
-          <Box width="100%" borderTop={1} borderColor={grey[400]}>
+          <Box
+            width="100%"
+            borderTop={1}
+            borderColor={grey[400]}
+            marginBottom={20}
+          >
             <FeedItem
               sx={{
                 width: '100%',

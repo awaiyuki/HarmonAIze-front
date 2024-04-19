@@ -2,6 +2,7 @@
 'use client'
 
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -29,6 +30,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { pink, purple } from '@mui/material/colors'
 import { ListItemIcon } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -80,6 +82,8 @@ export default function Generate() {
       headers: {},
       body: formData,
     })
+
+    fetchMusicList(session?.user.username)
     // const responseFormData = await res.formData()
     // const responseFile = responseFormData.get('file')
     // const url = URL.createObjectURL(responseFile)
@@ -220,13 +224,16 @@ export default function Generate() {
               flexDirection: 'column',
               alignItems: 'center',
               marginTop: 8,
-              marginBottom: 16,
+              marginBottom: 24,
             }}
           >
             <Typography variant="h4">음악 목록</Typography>
-            <Button onClick={() => fetchMusicList(session?.user.username)}>
-              새로고침
-            </Button>
+            <IconButton
+              color="primary"
+              onClick={() => fetchMusicList(session?.user.username)}
+            >
+              <RefreshIcon />
+            </IconButton>
             <Box
               sx={{
                 width: '100%',
@@ -237,33 +244,40 @@ export default function Generate() {
                   bgcolor: 'background.paper',
                 }}
               >
-                {musicListData.list.map((music) => (
-                  <ListItem
+                {musicListData.list.map((music, i) => (
+                  <Fade
                     key={'music' + music.id}
-                    onClick={() =>
-                      fetchMusicFile(session?.user.username, music.title)
-                    }
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: pink[300],
-                      },
-                      transition: '0.3s',
-                    }}
+                    in={true}
+                    style={{ transitionDelay: `${i * 150}ms` }}
+                    timeout={{ enter: 1000 }}
+                    delay
                   >
-                    <ListItemIcon>
-                      <AudiotrackIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={music.title}
-                      secondary={music.date}
-                    />
-                    <Box marginLeft={4} display="flex" flexDirection="column">
-                      <Box>{music.progress ? <></> : <RotateLeftIcon />}</Box>
-                      <Box>
-                        <DownloadIcon />
+                    <ListItem
+                      onClick={() =>
+                        fetchMusicFile(session?.user.username, music.title)
+                      }
+                      sx={{
+                        ':hover': {
+                          backgroundColor: pink[300],
+                        },
+                        transition: '0.5s',
+                      }}
+                    >
+                      <ListItemIcon>
+                        <AudiotrackIcon color="primary" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={music.title}
+                        secondary={music.date}
+                      />
+                      <Box marginLeft={4} display="flex" flexDirection="column">
+                        <Box>{music.progress ? <></> : <RotateLeftIcon />}</Box>
+                        <Box>
+                          <DownloadIcon />
+                        </Box>
                       </Box>
-                    </Box>
-                  </ListItem>
+                    </ListItem>
+                  </Fade>
                 ))}
               </List>
             </Box>

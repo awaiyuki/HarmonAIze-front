@@ -2,10 +2,16 @@
 
 'use client'
 import { Box, Typography, Button, IconButton } from '@mui/material'
-import { grey } from '@mui/material/colors'
+import { grey, pink, purple } from '@mui/material/colors'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
+import { useContext } from 'react'
+import { AudioContext } from '@/app/context/audio_context'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
+import { AccountCircle } from '@mui/icons-material'
+
 export default function FeedItem({ title, content, username }) {
+  const { setAudioSrc } = useContext(AudioContext)
   return (
     <Box
       width="100%"
@@ -16,8 +22,33 @@ export default function FeedItem({ title, content, username }) {
       borderColor={grey[400]}
       padding={1}
     >
-      <Typography variant="h6">{username}</Typography>
-      <Typography variant="body">{content}</Typography>
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        <Box marginRight={2}>
+          <AccountCircle fontSize="large" />
+        </Box>
+        <Box>
+          <Typography variant="h6">{username}</Typography>
+          <Typography variant="body">{content}</Typography>
+        </Box>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        width="100%"
+        alignItems="center"
+      >
+        <Box display="flex" alignItems="center">
+          <IconButton color="primary">
+            <AudiotrackIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h6">좋은 반주</Typography>
+        </Box>
+      </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">
         <IconButton color="primary" aria-label="repost">
           <RepeatOutlinedIcon />
