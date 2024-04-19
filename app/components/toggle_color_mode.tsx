@@ -7,6 +7,7 @@ import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useEffect } from 'react'
+import { green, lime, pink, purple, teal } from '@mui/material/colors'
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
@@ -60,6 +61,8 @@ export default function ToggleColorMode({ children }) {
       createTheme({
         palette: {
           mode,
+          primary: purple,
+          secondary: pink,
         },
       }),
     [mode]

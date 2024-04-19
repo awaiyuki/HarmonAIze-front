@@ -1,0 +1,29 @@
+//@ts-nocheck
+'use client'
+import { Box } from '@mui/material'
+import AudioPlayer from 'react-h5-audio-player'
+import 'react-h5-audio-player/lib/styles.css'
+import { useContext } from 'react'
+import { AudioContext } from '../context/audio_context'
+
+export default function AudioPlayerBottom() {
+  const { audioSrc, setAudioSrc } = useContext(AudioContext)
+  return (
+    <Box
+      sx={{
+        position: 'fixed',
+        bottom: '0',
+        left: '0',
+        width: '100vw',
+        height: '100',
+      }}
+    >
+      <AudioPlayer
+        autoPlay
+        src={audioSrc}
+        onPlay={(e) => console.log('onPlay')}
+        // other props here
+      />
+    </Box>
+  )
+}

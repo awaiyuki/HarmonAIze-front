@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 export default function NavBar() {
   const { data: session, status } = useSession()
 
@@ -41,7 +42,12 @@ export default function NavBar() {
         <Stack direction="row" spacing={4} alignItems="center">
           <ColorModeButton />
           {session && (
-            <Typography variant="body1">{session?.user.username} 님</Typography>
+            <Box display="flex">
+              <AccountCircleIcon />
+              <Typography variant="body1" marginLeft={1}>
+                {session?.user.username} 님
+              </Typography>
+            </Box>
           )}
           <Button onClick={() => signOut()}>로그아웃</Button>
         </Stack>

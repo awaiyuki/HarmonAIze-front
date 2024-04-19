@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Provider from './provider'
 import { ColorModeButton } from './components/toggle_color_mode'
 import NavBar from './components/nav_bar'
-
+import AudioPlayerBottom from './components/audio_player_bottom'
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
           <CssBaseline />
           <NavBar />
           {children}
+          <AudioPlayerBottom />
         </Provider>
       </body>
     </html>

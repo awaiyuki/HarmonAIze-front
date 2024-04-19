@@ -11,18 +11,24 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
-import ImageIcon from '@mui/icons-material/Image'
+import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import WorkIcon from '@mui/icons-material/Work'
 import BeachAccessIcon from '@mui/icons-material/BeachAccess'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import Fade from '@mui/material/Fade'
 import { styled } from '@mui/material/styles'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
 import { CurrencyYenTwoTone } from '@mui/icons-material'
+import { useTheme } from '@emotion/react'
+import RotateLeftIcon from '@mui/icons-material/RotateLeft'
+import DownloadIcon from '@mui/icons-material/Download'
+import { AudioContext } from '../context/audio_context'
+import { pink, purple } from '@mui/material/colors'
+import { ListItemIcon } from '@mui/material'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -43,6 +49,7 @@ export default function Generate() {
       redirect('/')
     },
   })
+  const theme = useTheme()
 
   const [uploadedAudioData, setUploadedAudioData] = useState({})
   const [musicListData, setMusicListData] = useState({ list: [] })
@@ -50,6 +57,8 @@ export default function Generate() {
     title: '',
     url: '',
   })
+  const { audioSrc, setAudioSrc } = useContext(AudioContext)
+
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
     setUploadedAudioData({ title: file.name, url, file })
@@ -98,6 +107,7 @@ export default function Generate() {
     )
     const responseData = await res.json()
     setCurrentMusicData({ title: responseData.title, url: responseData.url })
+    setAudioSrc(responseData.url)
   }
 
   useEffect(() => {
@@ -192,7 +202,7 @@ export default function Generate() {
             </Box>
           )} */}
 
-          {currentMusicData && currentMusicData.url && (
+          {/* {currentMusicData && currentMusicData.url && (
             <Box
               sx={{
                 marginTop: 4,
@@ -201,7 +211,7 @@ export default function Generate() {
               <Typography variant="h5">{currentMusicData.title}</Typography>
               <audio src={currentMusicData.url} type="audio/mp3" controls />
             </Box>
-          )}
+          )} */}
 
           <Box
             sx={{
@@ -209,6 +219,7 @@ export default function Generate() {
               flexDirection: 'column',
               alignItems: 'center',
               marginTop: 8,
+              marginBottom: 16,
             }}
           >
             <Typography variant="h4">음악 목록</Typography>
@@ -229,19 +240,26 @@ export default function Generate() {
                     onClick={() =>
                       fetchMusicFile(session?.user.username, music.title)
                     }
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: pink[300],
+                      },
+                      transition: '0.3s',
+                    }}
                   >
-                    <ListItemAvatar>
-                      <Avatar>
-                        <ImageIcon />
-                      </Avatar>
-                    </ListItemAvatar>
+                    <ListItemIcon>
+                      <AudiotrackIcon />
+                    </ListItemIcon>
                     <ListItemText
                       primary={music.title}
                       secondary={music.date}
                     />
-                    {music.progress ? '완료' : '진행중'}
-                    <br />
-                    다운로드
+                    <Box marginLeft={4} display="flex" flexDirection="column">
+                      <Box>{music.progress ? <></> : <RotateLeftIcon />}</Box>
+                      <Box>
+                        <DownloadIcon />
+                      </Box>
+                    </Box>
                   </ListItem>
                 ))}
               </List>

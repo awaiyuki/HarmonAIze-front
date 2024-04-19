@@ -1,7 +1,7 @@
 'use client'
 import { Roboto } from 'next/font/google'
 import { createTheme } from '@mui/material/styles'
-
+import { lime, pink } from '@mui/material/colors'
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -10,6 +10,8 @@ const roboto = Roboto({
 
 const theme = createTheme({
   palette: {
+    primary: lime,
+    secondary: pink,
     mode: 'dark',
   },
   typography: {
