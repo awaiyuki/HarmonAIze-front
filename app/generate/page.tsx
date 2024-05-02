@@ -29,8 +29,9 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { pink, purple } from '@mui/material/colors'
-import { ListItemIcon } from '@mui/material'
+import { ListItemButton, ListItemIcon } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import useSWR from 'swr'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -54,7 +55,7 @@ export default function Generate() {
   const theme = useTheme()
 
   const [uploadedAudioData, setUploadedAudioData] = useState({})
-  const [musicListData, setMusicListData] = useState({ list: [] })
+  // const [musicListData, setMusicListData] = useState([])
   const [currentMusicData, setCurrentMusicData] = useState({
     title: '',
     url: '',
@@ -83,23 +84,39 @@ export default function Generate() {
       body: formData,
     })
 
-    fetchMusicList(session?.user.username)
-    // const responseFormData = await res.formData()
-    // const responseFile = responseFormData.get('file')
-    // const url = URL.createObjectURL(responseFile)
-    // console.log(responseFile)
-    // SetGeneratedAudioInfo({ name: responseFile.name, url })
+    mutate('/api/music/list?username=' + session?.user.username)
   }
 
-  const fetchMusicList = async (username) => {
-    const res = await fetch('/api/music/list?username=' + username, {
+  const fetchMusicList = async (url) => {
+    const res = await fetch(url, {
       method: 'GET',
       headers: {},
     })
     const responseData = await res.json()
     console.log(responseData)
-    setMusicListData({ list: responseData })
+    return responseData
   }
+
+  let {
+    data: musicListData,
+    error,
+    isLoading,
+  } = useSWR(
+    '/api/music/list?username=' + session?.user.username,
+    fetchMusicList
+  )
+  console.log(musicListData, error, isLoading)
+
+  // Music List Dummy Data
+  musicListData = [
+    { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  ]
 
   const fetchMusicFile = async (username, title) => {
     const res = await fetch(
@@ -195,28 +212,6 @@ export default function Generate() {
             반주 생성
           </Button>
 
-          {/* {generatedAudioInfo && generatedAudioInfo.name && (
-            <Box
-              sx={{
-                marginTop: 4,
-              }}
-            >
-              <Typography variant="h5">{generatedAudioInfo.name}</Typography>
-              <audio src={generatedAudioInfo.url} type="audio/x-m4a" controls />
-            </Box>
-          )} */}
-
-          {/* {currentMusicData && currentMusicData.url && (
-            <Box
-              sx={{
-                marginTop: 4,
-              }}
-            >
-              <Typography variant="h5">{currentMusicData.title}</Typography>
-              <audio src={currentMusicData.url} type="audio/mp3" controls />
-            </Box>
-          )} */}
-
           <Box
             sx={{
               width: '100%',
@@ -237,6 +232,8 @@ export default function Generate() {
             <Box
               sx={{
                 width: '100%',
+                maxHeight: '500px',
+                overflow: 'auto',
               }}
             >
               <List
@@ -244,42 +241,61 @@ export default function Generate() {
                   bgcolor: 'background.paper',
                 }}
               >
-                {musicListData.list.map((music, i) => (
-                  <Fade
-                    key={'music' + music.id}
-                    in={true}
-                    style={{ transitionDelay: `${i * 150}ms` }}
-                    timeout={{ enter: 1000 }}
-                    delay
-                  >
-                    <ListItem
-                      onClick={() =>
-                        fetchMusicFile(session?.user.username, music.title)
-                      }
-                      sx={{
-                        ':hover': {
-                          backgroundColor: pink[300],
-                          transition: '0.5s',
-                        },
-                        transition: '0.5s',
-                      }}
+                {musicListData &&
+                  musicListData.map((music, i) => (
+                    <Fade
+                      key={'music' + music.id}
+                      in={true}
+                      // style={{ transitionDelay: `${i * 150}ms` }}
+                      timeout={{ enter: 1000 }}
+                      delay
                     >
-                      <ListItemIcon>
-                        <AudiotrackIcon color="primary" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={music.title}
-                        secondary={music.date}
-                      />
-                      <Box marginLeft={4} display="flex" flexDirection="column">
-                        <Box>{music.progress ? <></> : <RotateLeftIcon />}</Box>
-                        <Box>
-                          <DownloadIcon />
-                        </Box>
-                      </Box>
-                    </ListItem>
-                  </Fade>
-                ))}
+                      <ListItem
+                        onClick={() =>
+                          fetchMusicFile(session?.user.username, music.title)
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton>
+                          <ListItemIcon>
+                            <AudiotrackIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={music.title}
+                            secondary={music.date}
+                          />
+                          <Box
+                            marginLeft={4}
+                            display="flex"
+                            flexDirection="column"
+                          >
+                            <Box>
+                              {music.progress ? (
+                                <></>
+                              ) : (
+                                <RotateLeftIcon
+                                  sx={{
+                                    animation: 'spin 2s linear infinite',
+                                    '@keyframes spin': {
+                                      '0%': {
+                                        transform: 'rotate(360deg)',
+                                      },
+                                      '100%': {
+                                        transform: 'rotate(0deg)',
+                                      },
+                                    },
+                                  }}
+                                />
+                              )}
+                            </Box>
+                            <Box>
+                              <DownloadIcon />
+                            </Box>
+                          </Box>
+                        </ListItemButton>
+                      </ListItem>
+                    </Fade>
+                  ))}
               </List>
             </Box>
           </Box>
