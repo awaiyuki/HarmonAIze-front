@@ -21,3 +21,8 @@ $ npm run dev
 ```
 
 Connect `http://localhost:3000`
+
+## Features
+
+- SWR used
+- Context API used
