@@ -6,6 +6,7 @@ import Provider from './provider'
 import { ColorModeButton } from './components/toggle_color_mode'
 import NavBar from './components/nav_bar'
 import AudioPlayerBottom from './components/audio_player_bottom'
+import SideBar from './components/side_bar'
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <NavBar />
+          <SideBar />
           {children}
           <AudioPlayerBottom />
         </Provider>

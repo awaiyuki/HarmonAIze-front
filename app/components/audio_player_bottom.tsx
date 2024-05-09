@@ -22,6 +22,7 @@ export default function AudioPlayerBottom() {
         left: '0',
         width: '100vw',
         height: '100',
+        zIndex: 2,
       }}
     >
       <AudioPlayer

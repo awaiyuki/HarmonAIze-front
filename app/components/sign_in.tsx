@@ -16,6 +16,7 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import Logo from './logo'
 
 function Copyright(props) {
   return (
@@ -71,12 +72,10 @@ export default function SignIn() {
           alignItems: 'center',
         }}
       >
+        <Logo />
         <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
           <LockOutlinedIcon />
         </Avatar>
-        {/* <Typography component="h1" variant="h5">
-            Sign in
-          </Typography> */}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -117,7 +116,7 @@ export default function SignIn() {
                 </Link>
               </Grid> */}
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 {'회원가입'}
               </Link>
             </Grid>
