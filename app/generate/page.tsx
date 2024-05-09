@@ -61,6 +61,26 @@ export default function Generate() {
     url: '',
   })
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
+  const fetchMusicList = async (url) => {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {},
+    })
+    const responseData = await res.json()
+    console.log(responseData)
+    return responseData
+  }
+
+  let {
+    data: musicListData,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(
+    '/api/music/list?username=' + session?.user.username,
+    fetchMusicList
+  )
+  console.log(musicListData, error, isLoading)
 
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
@@ -84,39 +104,19 @@ export default function Generate() {
       body: formData,
     })
 
-    mutate('/api/music/list?username=' + session?.user.username)
+    mutate()
   }
-
-  const fetchMusicList = async (url) => {
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: {},
-    })
-    const responseData = await res.json()
-    console.log(responseData)
-    return responseData
-  }
-
-  let {
-    data: musicListData,
-    error,
-    isLoading,
-  } = useSWR(
-    '/api/music/list?username=' + session?.user.username,
-    fetchMusicList
-  )
-  console.log(musicListData, error, isLoading)
 
   // Music List Dummy Data
-  musicListData = [
-    { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-    { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  ]
+  // musicListData = [
+  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  // ]
 
   const fetchMusicFile = async (username, title) => {
     const res = await fetch(
@@ -242,7 +242,7 @@ export default function Generate() {
                 }}
               >
                 {musicListData &&
-                  musicListData.map((music, i) => (
+                  musicListData.toReversed().map((music, i) => (
                     <Fade
                       key={'music' + music.id}
                       in={true}
