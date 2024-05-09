@@ -10,9 +10,9 @@ export async function GET(req: Request) {
     }
   )
 
-  let data = await res.json()
-  if (!data) {
-    data = ['awef']
+  let resData = await res.json()
+  if (!resData) {
+    resData = ['no data']
   }
   // test with dummy data !
 
@@ -26,5 +26,5 @@ export async function GET(req: Request) {
   //     { id: 6, title: 'ambient1', progress: 'completed' },
   //   ],
   // }
-  return new Response(JSON.stringify(data))
+  return Response.json({ resData })
 }

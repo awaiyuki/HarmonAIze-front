@@ -17,7 +17,7 @@ export default function Home() {
   }
   return (
     <Container maxWidth="lg">
-      <Fade in={true} timeout={{ enter: 700 }}>
+      <Fade in={true} timeout={{ enter: 600 }}>
         <Box
           sx={{
             marginTop: 8,

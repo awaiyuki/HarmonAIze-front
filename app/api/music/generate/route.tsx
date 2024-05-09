@@ -6,9 +6,7 @@ export async function POST(req: Request) {
     body: reqData,
   })
 
-  // const data = await res.formData()
-  // console.log('generated data: ' + data)
-  // const file = data.get('file')
+  const resData = await res.json()
 
-  return new Response()
+  return Response.json({ resData })
 }
