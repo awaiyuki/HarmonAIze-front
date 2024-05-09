@@ -42,13 +42,13 @@ export default function NavBar() {
             </Link>
           </Box>
           <Stack direction="row" spacing={4}>
-            <ColorModeButton />
+            {/* <ColorModeButton /> */}
             {session && (
               <Box display="flex" alignItems="center">
                 <AccountCircleIcon />
-                <Typography variant="body1" marginLeft={1} marginRight={1}>
+                {/* <Typography variant="body1" marginLeft={1} marginRight={1}>
                   {session?.user.username} 님
-                </Typography>
+                </Typography> */}
                 <Button onClick={() => signOut()}>로그아웃</Button>
               </Box>
             )}

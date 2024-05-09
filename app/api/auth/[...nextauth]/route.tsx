@@ -25,20 +25,26 @@ const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
 
+        // return credentials
         const loginData = {
-          id: credentials.id,
+          id: credentials.username,
           pw: credentials.password,
         }
-        const res = await fetch(process.env.BACK_HOST + '/user/login', {
-          method: 'POST',
-          body: JSON.stringify(loginData),
-        })
+        console.log(loginData)
+        const res = await fetch(
+          process.env.BACK_HOST +
+            '/user/login?id=' +
+            loginData.id +
+            '&pw=' +
+            loginData.pw,
+          {
+            method: 'GET',
+          }
+        )
         const user = await res.json()
-        if (res.ok && user.id == loginData.id) {
+        if (res.ok && user.success == 'true') {
           return user
         }
-        // console.log('credential')
-
         // const dummyUser = {
         //   id: 'd',
         //   password: 'd',

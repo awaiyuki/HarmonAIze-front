@@ -23,8 +23,10 @@ export default function AudioPlayerBottom() {
         width: '100vw',
         height: '100',
         zIndex: 2,
+        bgColor: 'white',
       }}
     >
+      audio 제목
       <AudioPlayer
         autoPlay
         src={audioSrc}

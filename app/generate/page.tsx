@@ -140,89 +140,89 @@ export default function Generate() {
   }, [session])
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
-            marginTop: 10,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'flex-start',
+            height: '90vh',
           }}
         >
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            size="large"
-            startIcon={<CloudUploadIcon />}
-            sx={{
-              marginTop: 4,
-              width: '400px',
-              maxWidth: '100%',
-            }}
-          >
-            음악 업로드
-            <VisuallyHiddenInput
-              type="file"
-              onChange={(e) => {
-                e.preventDefault()
-                if (!e.target.files) return
-
-                const file = e.target.files[0]
-
-                if (!file) return
-
-                handleFileUpload(file)
-              }}
-            />
-          </Button>
-
-          {uploadedAudioData && uploadedAudioData.title && (
-            <Box
+          <Box flexGrow="1" height="100%" sx={{ borderRight: 1 }}>
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              size="large"
+              startIcon={<CloudUploadIcon />}
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
                 marginTop: 4,
+                width: '200px',
+                maxWidth: '100%',
               }}
             >
-              <Typography variant="h5">{uploadedAudioData.title}</Typography>
-              <audio src={uploadedAudioData.url} type="audio/mp3" controls />
-            </Box>
-          )}
+              음악 업로드
+              <VisuallyHiddenInput
+                type="file"
+                onChange={(e) => {
+                  e.preventDefault()
+                  if (!e.target.files) return
 
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            size="large"
-            sx={{
-              marginTop: 4,
-              width: 400,
-              maxWidth: '100%',
-            }}
-            disabled={uploadedAudioData.title ? false : true}
-            onClick={() => {
-              handleGenerateAccompaniment(session?.user.username)
-            }}
-          >
-            반주 생성
-          </Button>
+                  const file = e.target.files[0]
+
+                  if (!file) return
+
+                  handleFileUpload(file)
+                }}
+              />
+            </Button>
+
+            {uploadedAudioData && uploadedAudioData.title && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  marginTop: 4,
+                }}
+              >
+                <Typography variant="h5">{uploadedAudioData.title}</Typography>
+                <audio src={uploadedAudioData.url} type="audio/mp3" controls />
+              </Box>
+            )}
+
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              size="large"
+              sx={{
+                marginTop: 4,
+                width: 200,
+                maxWidth: '100%',
+              }}
+              disabled={uploadedAudioData.title ? false : true}
+              onClick={() => {
+                handleGenerateAccompaniment(session?.user.username)
+              }}
+            >
+              반주 생성
+            </Button>
+          </Box>
 
           <Box
             sx={{
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 8,
-              marginBottom: 24,
+              alignItems: 'flex-end',
+              flexGrow: 1,
             }}
           >
-            <Typography variant="h4">음악 목록</Typography>
+            {/* <Typography variant="h4">음악 목록</Typography> */}
             <IconButton
               color="primary"
               onClick={() => fetchMusicList(session?.user.username)}
@@ -250,49 +250,46 @@ export default function Generate() {
                       timeout={{ enter: 1000 }}
                       delay
                     >
-                      <ListItem
-                        onClick={() =>
-                          fetchMusicFile(session?.user.username, music.title)
-                        }
-                        disablePadding
-                      >
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <AudiotrackIcon color="primary" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={music.title}
-                            secondary={music.date}
-                          />
-                          <Box
-                            marginLeft={4}
-                            display="flex"
-                            flexDirection="column"
-                          >
-                            <Box>
-                              {music.progress ? (
-                                <></>
-                              ) : (
-                                <RotateLeftIcon
-                                  sx={{
-                                    animation: 'spin 2s linear infinite',
-                                    '@keyframes spin': {
-                                      '0%': {
-                                        transform: 'rotate(360deg)',
-                                      },
-                                      '100%': {
-                                        transform: 'rotate(0deg)',
-                                      },
+                      <ListItem disablePadding>
+                        <ListItemIcon
+                          onClick={() =>
+                            fetchMusicFile(session?.user.username, music.title)
+                          }
+                        >
+                          <AudiotrackIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={music.title}
+                          secondary={music.date}
+                        />
+                        <Box
+                          marginLeft={4}
+                          display="flex"
+                          flexDirection="column"
+                        >
+                          <Box>
+                            {music.progress ? (
+                              <></>
+                            ) : (
+                              <RotateLeftIcon
+                                sx={{
+                                  animation: 'spin 2s linear infinite',
+                                  '@keyframes spin': {
+                                    '0%': {
+                                      transform: 'rotate(360deg)',
                                     },
-                                  }}
-                                />
-                              )}
-                            </Box>
-                            <Box>
-                              <DownloadIcon />
-                            </Box>
+                                    '100%': {
+                                      transform: 'rotate(0deg)',
+                                    },
+                                  },
+                                }}
+                              />
+                            )}
                           </Box>
-                        </ListItemButton>
+                          <Box>
+                            <DownloadIcon />
+                          </Box>
+                        </Box>
                       </ListItem>
                     </Fade>
                   ))}

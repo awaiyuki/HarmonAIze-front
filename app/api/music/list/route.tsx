@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
   let resData = await res.json()
   if (!resData) {
-    resData = ['no data']
+    resData = null
   }
   // test with dummy data !
 
@@ -26,5 +26,5 @@ export async function GET(req: Request) {
   //     { id: 6, title: 'ambient1', progress: 'completed' },
   //   ],
   // }
-  return Response.json({ resData })
+  return Response.json(resData)
 }

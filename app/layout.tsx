@@ -7,6 +7,8 @@ import { ColorModeButton } from './components/toggle_color_mode'
 import NavBar from './components/nav_bar'
 import AudioPlayerBottom from './components/audio_player_bottom'
 import SideBar from './components/side_bar'
+import { Box, Grid } from '@mui/material'
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -14,9 +16,9 @@ export default function RootLayout({ children }) {
         <Provider>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <NavBar />
           <SideBar />
-          {children}
+          <NavBar />
+          <Box marginLeft={{ default: '0px', sm: '160px' }}>{children}</Box>
           <AudioPlayerBottom />
         </Provider>
       </body>
