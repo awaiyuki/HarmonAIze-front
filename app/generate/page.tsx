@@ -28,13 +28,13 @@ import { useTheme } from '@emotion/react'
 import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
-import { pink, purple } from '@mui/material/colors'
+import { grey, pink, purple } from '@mui/material/colors'
 import { ListItemButton, ListItemIcon, Modal } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useSWR from 'swr'
 import ShareIcon from '@mui/icons-material/Share'
 import MusicShareModal from '../components/music_share_modal'
-
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -136,15 +136,26 @@ export default function Generate() {
 
   return (
     <Container>
-      <Fade in={true} timeout={{ enter: 700 }}>
+      <Fade in={true} timeout={{ enter: 600 }}>
         <Box
           sx={{
             display: 'flex',
             // alignItems: 'flex-start',
+            width: '100%',
             height: '90vh',
           }}
         >
-          <Box height="100%" sx={{ borderRight: 1 }}>
+          <Box
+            width="100%"
+            height="100%"
+            sx={{
+              maxWidth: '30vw',
+              borderLeft: 1,
+              borderRight: 1,
+              borderColor: grey[400],
+              padding: 4,
+            }}
+          >
             <Button
               component="label"
               role={undefined}
@@ -172,7 +183,6 @@ export default function Generate() {
                 }}
               />
             </Button>
-
             {uploadedAudioData && uploadedAudioData.title && (
               <Box
                 sx={{
@@ -186,7 +196,6 @@ export default function Generate() {
                 <audio src={uploadedAudioData.url} type="audio/mp3" controls />
               </Box>
             )}
-
             <Button
               component="label"
               role={undefined}
@@ -197,6 +206,7 @@ export default function Generate() {
                 marginTop: 4,
                 width: '100%',
               }}
+              startIcon={<AutoFixHighIcon />}
               disabled={uploadedAudioData.title ? false : true}
               onClick={() => {
                 handleGenerateAccompaniment(username)
@@ -212,7 +222,6 @@ export default function Generate() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-end',
-              flexGrow: 1,
             }}
           >
             {/* <Typography variant="h4">음악 목록</Typography> */}
@@ -243,19 +252,22 @@ export default function Generate() {
                     >
                       <Box
                         sx={{
-                          padding: 1,
-                          borderRadius: '8px',
+                          padding: 2,
                           '&:hover': { bgcolor: 'primary.light' },
                         }}
                         onClick={() => fetchMusicFile(username, music.title)}
                       >
                         <ListItem disablePadding>
                           <ListItemIcon>
-                            <AudiotrackIcon color="primary" />
+                            <AudiotrackIcon color="primary" fontSize="large" />
                           </ListItemIcon>
                           <ListItemText
-                            primary={music.title}
-                            // secondary={music.date}
+                            disableTypography
+                            primary={
+                              <Typography variant="body1" fontWeight="bold">
+                                {music.title}
+                              </Typography>
+                            }
                           />
                           <IconButton
                             color="primary"

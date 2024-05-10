@@ -19,6 +19,7 @@ import { useSession } from 'next-auth/react'
 import { redirect, usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { grey } from '@mui/material/colors'
 function MenuItem({ link, text }) {
   const pathname = usePathname()
   return (
@@ -51,8 +52,8 @@ export default function SideBar() {
           width: '160px',
           height: '100vh',
           bgColor: '#ffffffa0',
-          //   backdropFilter: 'blur(10px)',
           borderRight: 1,
+          borderColor: grey[400],
           display: 'flex',
           flexDirection: 'column',
         }}

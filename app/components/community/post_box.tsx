@@ -5,6 +5,7 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AudioContext } from '@/app/context/audio_context'
 import { useContext } from 'react'
 import { AccountCircle } from '@mui/icons-material'
+import { grey } from '@mui/material/colors'
 
 export default function PostBox({ postViewId }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
@@ -24,8 +25,8 @@ export default function PostBox({ postViewId }) {
 
   return (
     <Fade in={true} timeout={{ enter: 600 }}>
-      <Box borderLeft={1}>
-        <Box padding={4} minWidth="32vw">
+      <Box borderLeft={1} borderColor={grey[400]} minWidth="32vw">
+        <Box padding={4} sx={{ '&:hover': { backgroundColor: 'purple' } }}>
           {postViewData && (
             <Grid container direction="column" gap={2}>
               <Typography variant="h4">{postViewData.postTitle}</Typography>

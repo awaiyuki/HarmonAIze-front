@@ -31,8 +31,14 @@ export default function NavBar() {
           boxShadow: 2,
         }}
       >
-        <Box display="flex" alignItems="center">
-          <Box display="flex" alignItems="center" flexGrow={1} pl={2}>
+        <Box width="100%" display="flex" alignItems="center">
+          <Box
+            width="100%"
+            display="flex"
+            alignItems="center"
+            flexGrow={1}
+            pl={2}
+          >
             <Typography variant="h5">HarmonAIze</Typography>
             <Link href="/generate">
               <Button>홈</Button>
