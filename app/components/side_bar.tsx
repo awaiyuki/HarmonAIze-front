@@ -11,6 +11,7 @@ import {
   ListItemText,
   ListItemButton,
   List,
+  Grid,
 } from '@mui/material'
 import { ColorModeButton } from './toggle_color_mode'
 import Link from 'next/link'
@@ -57,20 +58,37 @@ export default function SideBar() {
         }}
       >
         <Typography variant="h5">HarmonAIze</Typography>
-        <List>
-          <MenuItem link="/generate" text="홈" />
-          <MenuItem link="/community" text="커뮤니티" />
-          <ColorModeButton />
-          {session && (
-            <Box sx={{ bottom: 0 }}>
-              <AccountCircleIcon />
-              <Typography variant="body1" marginLeft={1} marginRight={1}>
-                {session?.user.username} 님
-              </Typography>
-              <Button onClick={() => signOut()}>로그아웃</Button>
-            </Box>
-          )}
-        </List>
+        <Grid
+          container
+          direction="column"
+          height="80%"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box>
+            <List>
+              <MenuItem link="/generate" text="홈" />
+              <MenuItem link="/community" text="커뮤니티" />
+            </List>
+          </Box>
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+          >
+            <ColorModeButton />
+            {session && (
+              <Box>
+                <AccountCircleIcon />
+                <Typography variant="body1" marginLeft={1} marginRight={1}>
+                  {/* {session?.user.username} 님 */}
+                </Typography>
+                <Button onClick={() => signOut()}>로그아웃</Button>
+              </Box>
+            )}
+          </Box>
+        </Grid>
       </Box>
     </Hidden>
   )

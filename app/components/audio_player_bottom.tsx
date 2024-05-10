@@ -26,7 +26,7 @@ export default function AudioPlayerBottom() {
         bgColor: 'white',
       }}
     >
-      audio 제목
+      {/* audio 제목 */}
       <AudioPlayer
         autoPlay
         src={audioSrc}

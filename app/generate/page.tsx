@@ -159,8 +159,7 @@ export default function Generate() {
               startIcon={<CloudUploadIcon />}
               sx={{
                 marginTop: 4,
-                width: '200px',
-                maxWidth: '100%',
+                width: '100%',
               }}
             >
               음악 업로드
@@ -201,8 +200,7 @@ export default function Generate() {
               size="large"
               sx={{
                 marginTop: 4,
-                width: 200,
-                maxWidth: '100%',
+                width: '100%',
               }}
               disabled={uploadedAudioData.title ? false : true}
               onClick={() => {
