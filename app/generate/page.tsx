@@ -134,25 +134,17 @@ export default function Generate() {
     setAudioSrc(responseData.url)
   }
 
-  useEffect(() => {
-    if (!session) return
-
-    console.log(session)
-
-    fetchMusicList(username)
-  }, [session])
-
   return (
-    <Container maxWidth="md">
+    <Container>
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'flex-start',
+            // alignItems: 'flex-start',
             height: '90vh',
           }}
         >
-          <Box flexGrow="1" height="100%" sx={{ borderRight: 1 }}>
+          <Box height="100%" sx={{ borderRight: 1 }}>
             <Button
               component="label"
               role={undefined}
@@ -234,7 +226,6 @@ export default function Generate() {
               sx={{
                 width: '100%',
                 overflow: 'auto',
-                padding: 4,
               }}
             >
               <List
@@ -249,21 +240,17 @@ export default function Generate() {
                       in={true}
                       // style={{ transitionDelay: `${i * 150}ms` }}
                       timeout={{ enter: 1000 }}
-                      delay
                     >
                       <Box
                         sx={{
                           padding: 1,
                           borderRadius: '8px',
-                          bgcolor: purple[200],
+                          '&:hover': { bgcolor: 'primary.light' },
                         }}
+                        onClick={() => fetchMusicFile(username, music.title)}
                       >
                         <ListItem disablePadding>
-                          <ListItemIcon
-                            onClick={() =>
-                              fetchMusicFile(username, music.title)
-                            }
-                          >
+                          <ListItemIcon>
                             <AudiotrackIcon color="primary" />
                           </ListItemIcon>
                           <ListItemText
@@ -272,7 +259,8 @@ export default function Generate() {
                           />
                           <IconButton
                             color="primary"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation()
                               setMusicShareData({
                                 username,
                                 title: music.title,

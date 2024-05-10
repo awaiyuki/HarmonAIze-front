@@ -61,7 +61,11 @@ export default function ToggleColorMode({ children }) {
       createTheme({
         palette: {
           mode,
-          primary: purple,
+          primary: {
+            main: purple[500],
+            light: purple[400],
+            dark: purple[600],
+          },
           secondary: pink,
         },
       }),

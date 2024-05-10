@@ -1,7 +1,9 @@
 //@ts-nocheck
-import { Modal, Box, Typography, TextField, Button } from '@mui/material'
+import { Modal, Box, Typography, TextField, Button, Grid } from '@mui/material'
 import { useState } from 'react'
 import DoneIcon from '@mui/icons-material/Done'
+import { Audiotrack } from '@mui/icons-material'
+import { blue } from '@mui/material/colors'
 export default function MusicShareModal({ open, setOpen, musicShareData }) {
   const [success, setSuccess] = useState(false)
   const style = {
@@ -31,9 +33,13 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
       }),
     })
     const resData = await res.json()
-    if (res.ok && resData.success && resData.success == 'true') {
+    if (res.ok && resData) {
       setSuccess(true)
     }
+    setTimeout(() => {
+      setSuccess(false)
+      setOpen(false)
+    }, 1000)
   }
 
   return (
@@ -44,19 +50,32 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
       aria-describedby="modal-modal-description"
     >
       <Box component="form" sx={style} onSubmit={handleSubmit}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          음악 공유
-        </Typography>
-        <Typography>{musicShareData.title}</Typography>
-        {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          음악 공유하기
-        </Typography> */}
-        <TextField name="post-title" />
-        <TextField name="post-content" minRows={3} />
-        <Button type="submit" variant="contained">
-          공유
-        </Button>
-        {success && <DoneIcon />}
+        <Grid container direction="column" gap={1}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            음악 공유
+          </Typography>
+          <Grid container justifyContent="center" padding={2}>
+            <Audiotrack color="primary" />
+            <Typography variant="h6" fontWeight="bold">
+              {musicShareData.title}
+            </Typography>
+          </Grid>
+          <TextField name="post-title" placeholder="제목" />
+          <TextField
+            name="post-content"
+            multiline
+            minRows={3}
+            placeholder="내용"
+          />
+          <Button type="submit" variant="contained">
+            공유
+          </Button>
+          {success && (
+            <Box alignSelf="center">
+              <DoneIcon sx={{ color: blue[400] }} fontSize="large" />
+            </Box>
+          )}
+        </Grid>
       </Box>
     </Modal>
   )
