@@ -29,9 +29,11 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { pink, purple } from '@mui/material/colors'
-import { ListItemButton, ListItemIcon } from '@mui/material'
+import { ListItemButton, ListItemIcon, Modal } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useSWR from 'swr'
+import ShareIcon from '@mui/icons-material/Share'
+import MusicShareModal from '../components/music_share_modal'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -52,7 +54,11 @@ export default function Generate() {
       redirect('/')
     },
   })
+  const username = session?.user.username
   const theme = useTheme()
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [musicShareData, setMusicShareData] = useState({})
 
   const [uploadedAudioData, setUploadedAudioData] = useState({})
   // const [musicListData, setMusicListData] = useState([])
@@ -76,10 +82,7 @@ export default function Generate() {
     error,
     isLoading,
     mutate,
-  } = useSWR(
-    '/api/music/list?username=' + session?.user.username,
-    fetchMusicList
-  )
+  } = useSWR('/api/music/list?username=' + username, fetchMusicList)
   console.log(musicListData, error, isLoading)
 
   const handleFileUpload = async (file) => {
@@ -136,7 +139,7 @@ export default function Generate() {
 
     console.log(session)
 
-    fetchMusicList(session?.user.username)
+    fetchMusicList(username)
   }, [session])
 
   return (
@@ -204,7 +207,7 @@ export default function Generate() {
               }}
               disabled={uploadedAudioData.title ? false : true}
               onClick={() => {
-                handleGenerateAccompaniment(session?.user.username)
+                handleGenerateAccompaniment(username)
               }}
             >
               반주 생성
@@ -222,8 +225,8 @@ export default function Generate() {
           >
             {/* <Typography variant="h4">음악 목록</Typography> */}
             <IconButton
-              color="primary"
-              onClick={() => fetchMusicList(session?.user.username)}
+              sx={{ color: 'text.primary' }}
+              onClick={() => fetchMusicList(username)}
             >
               <RefreshIcon />
             </IconButton>
@@ -250,16 +253,33 @@ export default function Generate() {
                     >
                       <ListItem disablePadding>
                         <ListItemIcon
-                          onClick={() =>
-                            fetchMusicFile(session?.user.username, music.title)
-                          }
+                          onClick={() => fetchMusicFile(username, music.title)}
                         >
                           <AudiotrackIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText
                           primary={music.title}
-                          secondary={music.date}
+                          // secondary={music.date}
                         />
+                        <IconButton
+                          color="primary"
+                          onClick={() => {
+                            setMusicShareData({
+                              username,
+                              title: music.title,
+                            })
+                            setModalOpen(true)
+                          }}
+                        >
+                          <ShareIcon />
+                        </IconButton>
+
+                        <MusicShareModal
+                          open={modalOpen}
+                          setOpen={setModalOpen}
+                          musicShareData={musicShareData}
+                        />
+
                         <Box
                           marginLeft={4}
                           display="flex"
