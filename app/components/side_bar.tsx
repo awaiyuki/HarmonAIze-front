@@ -77,16 +77,19 @@ export default function SideBar() {
             display="flex"
             flexDirection="column"
             alignItems="center"
+            gap={2}
           >
             <ColorModeButton />
             {session && (
-              <Box>
-                <AccountCircleIcon />
-                <Typography variant="body1" marginLeft={1} marginRight={1}>
-                  {/* {session?.user.username} 님 */}
-                </Typography>
+              <>
+                <Grid container direction="row" justifyContent="center">
+                  <AccountCircleIcon fontSize="large" />
+                  <Typography variant="body1" marginLeft={1} marginRight={1}>
+                    {session?.user.username} 님
+                  </Typography>
+                </Grid>
                 <Button onClick={() => signOut()}>로그아웃</Button>
-              </Box>
+              </>
             )}
           </Box>
         </Grid>

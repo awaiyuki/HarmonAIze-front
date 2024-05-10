@@ -9,7 +9,7 @@ import { grey } from '@mui/material/colors'
 
 export default function PostBox({ postViewId }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
-  const [postViewData, setPostViewData] = useState({})
+  const [postViewData, setPostViewData] = useState(null)
 
   const fetchPost = async (id) => {
     const res = await fetch('api/community/post?id=' + id, {
@@ -26,7 +26,10 @@ export default function PostBox({ postViewId }) {
   return (
     <Fade in={true} timeout={{ enter: 600 }}>
       <Box borderLeft={1} borderColor={grey[400]} minWidth="32vw">
-        <Box padding={4} sx={{ '&:hover': { backgroundColor: 'purple' } }}>
+        <Box padding={4}>
+          {!postViewData && (
+            <Typography variant="h6">게시글을 선택하세요.</Typography>
+          )}
           {postViewData && (
             <Grid container direction="column" gap={2}>
               <Typography variant="h4">{postViewData.postTitle}</Typography>

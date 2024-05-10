@@ -63,7 +63,7 @@ export default function ToggleColorMode({ children }) {
           mode,
           primary: {
             main: purple[500],
-            light: purple[400],
+            light: purple[100],
             dark: purple[600],
           },
           secondary: pink,

@@ -1,7 +1,7 @@
 //@ts-nocheck
 
 'use client'
-import { Box, Typography, Button, IconButton } from '@mui/material'
+import { Box, Typography, Button, IconButton, Grid } from '@mui/material'
 import { grey, pink, purple } from '@mui/material/colors'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
@@ -17,7 +17,6 @@ export default function FeedItem({
   postTitle,
   setPostViewId,
 }) {
-  const { setAudioSrc } = useContext(AudioContext)
   return (
     <Box
       width="100%"
@@ -28,20 +27,23 @@ export default function FeedItem({
       borderColor={grey[400]}
       padding={1}
       onClick={() => setPostViewId(id)}
+      sx={{
+        '&:hover': {
+          bgcolor: 'primary.light',
+        },
+      }}
     >
       <Box
         width="100%"
         display="flex"
         justifyContent="flex-start"
         alignItems="center"
+        gap={1}
       >
-        <Box marginRight={2}>
-          <AccountCircle fontSize="large" />
-        </Box>
-        <Box>
-          <Typography variant="h6">{username}</Typography>
-          <Typography variant="body">{postTitle}</Typography>
-        </Box>
+        <AccountCircle fontSize="large" />
+        <Typography variant="h6" fontWeight="bold">
+          {username}
+        </Typography>
       </Box>
       <Box
         display="flex"
@@ -49,12 +51,29 @@ export default function FeedItem({
         width="100%"
         alignItems="center"
       >
-        <Box display="flex" alignItems="center">
-          <IconButton color="primary">
-            <AudiotrackIcon fontSize="large" />
-          </IconButton>
-          <Typography variant="h6">{mediaTitle}</Typography>
-        </Box>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          gap={1}
+        >
+          <Typography variant="h6" fontWeight="bold">
+            {postTitle}
+          </Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            bgcolor="primary.main"
+            borderRadius="8px"
+            color="white"
+            paddingLeft={1}
+            paddingRight={1}
+          >
+            <AudiotrackIcon color="white" />
+            <Typography variant="body1">{mediaTitle}</Typography>
+          </Box>
+        </Grid>
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">
         <IconButton color="primary" aria-label="repost">
