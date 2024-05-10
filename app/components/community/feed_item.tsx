@@ -10,7 +10,13 @@ import { AudioContext } from '@/app/context/audio_context'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AccountCircle } from '@mui/icons-material'
 
-export default function FeedItem({ title, content, username }) {
+export default function FeedItem({
+  id,
+  username,
+  mediaTitle,
+  postTitle,
+  setPostViewId,
+}) {
   const { setAudioSrc } = useContext(AudioContext)
   return (
     <Box
@@ -21,6 +27,7 @@ export default function FeedItem({ title, content, username }) {
       borderBottom={1}
       borderColor={grey[400]}
       padding={1}
+      onClick={() => setPostViewId(id)}
     >
       <Box
         width="100%"
@@ -33,7 +40,7 @@ export default function FeedItem({ title, content, username }) {
         </Box>
         <Box>
           <Typography variant="h6">{username}</Typography>
-          <Typography variant="body">{content}</Typography>
+          <Typography variant="body">{postTitle}</Typography>
         </Box>
       </Box>
       <Box
@@ -46,7 +53,7 @@ export default function FeedItem({ title, content, username }) {
           <IconButton color="primary">
             <AudiotrackIcon fontSize="large" />
           </IconButton>
-          <Typography variant="h6">좋은 반주</Typography>
+          <Typography variant="h6">{e.mediaTitle}</Typography>
         </Box>
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">

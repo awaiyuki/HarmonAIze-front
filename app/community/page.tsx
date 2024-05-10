@@ -15,7 +15,8 @@ import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import FeedItem from '../components/community/feed_item'
 import { grey } from '@mui/material/colors'
-
+import { useEffect } from 'react'
+import PostBox from '../components/community/post_box'
 export default function Community() {
   const { data: session, status } = useSession({
     required: true,
@@ -26,6 +27,8 @@ export default function Community() {
 
   console.log(session)
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
+  const [postList, setPostList] = useState([])
+  const [postViewId, setPostViewId] = useState(null)
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -55,86 +58,60 @@ export default function Community() {
     SetAudioInfo({ name: responseFile.name, url })
   }
 
+  const fetchPostList = async () => {
+    const res = await fetch('api/community/postlist', {
+      method: 'GET',
+    })
+    const resData = await res.json()
+    setPostList(resData)
+    console.log(postList)
+  }
+  useEffect(() => {
+    fetchPostList()
+  }, [])
+
   return (
     <Container maxWidth="sm">
       <Fade in={true} timeout={{ enter: 700 }}>
         <Box
           sx={{
-            marginTop: 10,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
           }}
         >
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            width="100%"
-            marginBottom={2}
+            sx={{
+              marginTop: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <TextField
-              variant="standard"
-              placeholder="입력하세요"
-              sx={{
-                width: '100%',
-                marginBottom: 1,
-              }}
-              minRows={2}
-              multiline
-            />
-            <Box display="flex" width="100%" justifyContent="space-between">
-              <Box display="flex">
-                <Button variant="text">음악</Button>
-                <Button variant="text">사진</Button>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  flexGrow: 0.5,
-                }}
-              >
-                게시
-              </Button>
+            <Box
+              width="100%"
+              borderTop={1}
+              borderColor={grey[400]}
+              marginBottom={20}
+            >
+              {postList &&
+                postList.map((e) => (
+                  <FeedItem
+                    key={e.id}
+                    sx={{
+                      width: '100%',
+                      height: '100px',
+                      border: '1px',
+                      borderColor: 'white',
+                    }}
+                    id={e.id}
+                    username={e.username}
+                    mediaTitle={e.mediaTitle}
+                    postTitle={e.postTitle}
+                    setPostViewId={setPostViewId}
+                  />
+                ))}
             </Box>
           </Box>
-          <Box
-            width="100%"
-            borderTop={1}
-            borderColor={grey[400]}
-            marginBottom={20}
-          >
-            <FeedItem
-              sx={{
-                width: '100%',
-                height: '100px',
-                border: '1px',
-                borderColor: 'white',
-              }}
-              username="username1"
-              content="이 반주 진짜 좋은 것 같아요."
-            />
-            <FeedItem
-              sx={{
-                width: '100%',
-                height: '100px',
-                border: '1px',
-                borderColor: 'white',
-              }}
-              username="username2"
-              content="이 반주 진짜 좋은 것 같아요."
-            />
-            <FeedItem
-              sx={{
-                width: '100%',
-                height: '100px',
-                border: '1px',
-                borderColor: 'white',
-              }}
-              username="username3"
-              content="이 반주 진짜 좋은 것 같아요."
-            />
-          </Box>
+          {postViewId && <PostBox postViewData={postViewId} />}
         </Box>
       </Fade>
     </Container>
