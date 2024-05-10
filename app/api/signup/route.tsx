@@ -38,8 +38,7 @@ export async function POST(req: Request) {
       nickname: reqDataJSON.username,
     }),
   })
-  // const resData = await res.json()
-  // console.log('signup' + JSON.stringify(resData))
-
-  return Response.json({})
+  const resData = await res.json()
+  console.log('signup resData:', resData)
+  return Response.json(resData)
 }

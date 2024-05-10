@@ -15,6 +15,9 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Logo from '../components/logo'
 import { Fade } from '@mui/material'
+import { useRouter } from 'next/navigation'
+import DoneIcon from '@mui/icons-material/Done'
+import { useState } from 'react'
 function Copyright(props: any) {
   return (
     <Typography
@@ -36,6 +39,8 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignUp() {
+  const router = useRouter()
+  const [success, setSuccess] = useState(false)
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -51,6 +56,13 @@ export default function SignUp() {
       body: formData,
     })
     console.log(res)
+    const resData = await res.json()
+    if (res.ok && resData) {
+      setSuccess(true)
+      setTimeout(() => {
+        router.push('/')
+      }, 1000)
+    }
   }
 
   return (
@@ -134,6 +146,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
+          {success && <DoneIcon fontSize="large" />}
         </Box>
         {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
