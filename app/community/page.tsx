@@ -71,49 +71,44 @@ export default function Community() {
   }, [])
 
   return (
-    <Container maxWidth="sm">
-      <Fade in={true} timeout={{ enter: 700 }}>
+    <Fade in={true} timeout={{ enter: 700 }}>
+      <Box
+        sx={{
+          width: '100%',
+          marginTop: 4,
+          display: 'flex',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
           }}
         >
-          <Box
-            sx={{
-              marginTop: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              width="100%"
-              borderTop={1}
-              borderColor={grey[400]}
-              marginBottom={20}
-            >
-              {postList &&
-                postList.map((e) => (
-                  <FeedItem
-                    key={e.id}
-                    sx={{
-                      width: '100%',
-                      height: '100px',
-                      border: '1px',
-                      borderColor: 'white',
-                    }}
-                    id={e.id}
-                    username={e.username}
-                    mediaTitle={e.mediaTitle}
-                    postTitle={e.postTitle}
-                    setPostViewId={setPostViewId}
-                  />
-                ))}
-            </Box>
+          <Box borderTop={1} borderColor={grey[400]} marginBottom={10}>
+            {postList &&
+              postList.toReversed().map((e) => (
+                <FeedItem
+                  key={e.id}
+                  sx={{
+                    width: '100%',
+                    height: '100px',
+                    border: '1px',
+                    borderColor: 'white',
+                  }}
+                  id={e.id}
+                  username={e.username}
+                  mediaTitle={e.mediaTitle}
+                  postTitle={e.postTitle}
+                  setPostViewId={setPostViewId}
+                />
+              ))}
           </Box>
-          {postViewId && <PostBox postViewData={postViewId} />}
         </Box>
-      </Fade>
-    </Container>
+        {postViewId && <PostBox postViewId={postViewId} />}
+      </Box>
+    </Fade>
   )
 }

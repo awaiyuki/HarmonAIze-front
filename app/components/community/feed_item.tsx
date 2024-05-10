@@ -53,7 +53,7 @@ export default function FeedItem({
           <IconButton color="primary">
             <AudiotrackIcon fontSize="large" />
           </IconButton>
-          <Typography variant="h6">{e.mediaTitle}</Typography>
+          <Typography variant="h6">{mediaTitle}</Typography>
         </Box>
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">

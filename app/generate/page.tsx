@@ -233,8 +233,8 @@ export default function Generate() {
             <Box
               sx={{
                 width: '100%',
-                maxHeight: '500px',
                 overflow: 'auto',
+                padding: 4,
               }}
             >
               <List
@@ -251,64 +251,74 @@ export default function Generate() {
                       timeout={{ enter: 1000 }}
                       delay
                     >
-                      <ListItem disablePadding>
-                        <ListItemIcon
-                          onClick={() => fetchMusicFile(username, music.title)}
-                        >
-                          <AudiotrackIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={music.title}
-                          // secondary={music.date}
-                        />
-                        <IconButton
-                          color="primary"
-                          onClick={() => {
-                            setMusicShareData({
-                              username,
-                              title: music.title,
-                            })
-                            setModalOpen(true)
-                          }}
-                        >
-                          <ShareIcon />
-                        </IconButton>
+                      <Box
+                        sx={{
+                          padding: 1,
+                          borderRadius: '8px',
+                          bgcolor: purple[200],
+                        }}
+                      >
+                        <ListItem disablePadding>
+                          <ListItemIcon
+                            onClick={() =>
+                              fetchMusicFile(username, music.title)
+                            }
+                          >
+                            <AudiotrackIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={music.title}
+                            // secondary={music.date}
+                          />
+                          <IconButton
+                            color="primary"
+                            onClick={() => {
+                              setMusicShareData({
+                                username,
+                                title: music.title,
+                              })
+                              setModalOpen(true)
+                            }}
+                          >
+                            <ShareIcon />
+                          </IconButton>
 
-                        <MusicShareModal
-                          open={modalOpen}
-                          setOpen={setModalOpen}
-                          musicShareData={musicShareData}
-                        />
+                          <MusicShareModal
+                            open={modalOpen}
+                            setOpen={setModalOpen}
+                            musicShareData={musicShareData}
+                          />
 
-                        <Box
-                          marginLeft={4}
-                          display="flex"
-                          flexDirection="column"
-                        >
-                          <Box>
-                            {music.progress ? (
-                              <></>
-                            ) : (
-                              <RotateLeftIcon
-                                sx={{
-                                  animation: 'spin 2s linear infinite',
-                                  '@keyframes spin': {
-                                    '0%': {
-                                      transform: 'rotate(360deg)',
+                          <Box
+                            marginLeft={4}
+                            display="flex"
+                            flexDirection="column"
+                          >
+                            <Box>
+                              {music.progress ? (
+                                <></>
+                              ) : (
+                                <RotateLeftIcon
+                                  sx={{
+                                    animation: 'spin 2s linear infinite',
+                                    '@keyframes spin': {
+                                      '0%': {
+                                        transform: 'rotate(360deg)',
+                                      },
+                                      '100%': {
+                                        transform: 'rotate(0deg)',
+                                      },
                                     },
-                                    '100%': {
-                                      transform: 'rotate(0deg)',
-                                    },
-                                  },
-                                }}
-                              />
-                            )}
+                                  }}
+                                />
+                              )}
+                            </Box>
+                            <Box>
+                              <DownloadIcon />
+                            </Box>
                           </Box>
-                          <Box>
-                            <DownloadIcon />
-                          </Box>
-                        </Box>
-                      </ListItem>
+                        </ListItem>
+                      </Box>
                     </Fade>
                   ))}
               </List>

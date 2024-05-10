@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Box, Typography } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 export default function PostBox({ postViewId }) {
   const [postViewData, setPostViewData] = useState({})
 
@@ -18,11 +18,11 @@ export default function PostBox({ postViewId }) {
   if (!postViewData) return <>{'error'}</>
 
   return (
-    <Box>
-      <Typography>{postViewData.username}</Typography>
-      <Typography>{postViewData.postTitle}</Typography>
-      <Typography>{postViewData.postContent}</Typography>
-      <Typography>{postViewData.mediaTitle}</Typography>
+    <Box padding={4}>
+      <Typography variant="h4">{postViewData.postTitle}</Typography>
+      <Typography variant="h6">{postViewData.username}a</Typography>
+      <Typography variant="h5">{postViewData.postContent}</Typography>
+      <Typography variant="h5">{postViewData.mediaTitle}</Typography>
     </Box>
   )
 }

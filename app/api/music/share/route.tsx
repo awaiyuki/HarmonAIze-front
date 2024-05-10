@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const res = await fetch(process.env.BACK_HOST + '/user/share', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: reqData,
+    body: JSON.stringify(reqData),
   })
   const resData = await res.json()
   console.log(resData)

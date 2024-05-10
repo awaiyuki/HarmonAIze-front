@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
           <CssBaseline />
           <SideBar />
           <NavBar />
-          <Box marginLeft={{ default: '0px', sm: '160px' }}>{children}</Box>
+          {children}
           <AudioPlayerBottom />
         </Provider>
       </body>
