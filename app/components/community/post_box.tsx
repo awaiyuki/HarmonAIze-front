@@ -4,19 +4,42 @@ import { useEffect, useState } from 'react'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AudioContext } from '@/app/context/audio_context'
 import { useContext } from 'react'
-import { AccountCircle } from '@mui/icons-material'
+import { AccountCircle, FavoriteBorderOutlined } from '@mui/icons-material'
 import { grey } from '@mui/material/colors'
-
+import CommentItem from './comment_item'
+import CommentInputBox from './comment_input_box'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 export default function PostBox({ postViewId }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const [postViewData, setPostViewData] = useState(null)
 
   const fetchPost = async (id) => {
-    const res = await fetch('api/community/post?id=' + id, {
-      method: 'GET',
-    })
-    const resData = await res.json()
-    setPostViewData(resData)
+    // const res = await fetch('api/community/post?id=' + id, {
+    //   method: 'GET',
+    // })
+    // const resData = await res.json()
+    const dummyData = {
+      id: 1,
+      username: 'name',
+      mediaTitle: 'mediaTitle',
+      postTitle: 'post title',
+      postContent: 'post content',
+      mediaURL: 'url',
+      numLikes: 5,
+      hasLiked: false,
+      commentList: [
+        {
+          id: 1,
+          username: 'commenter',
+          content: 'comment content',
+          numLikes: 1,
+          hasLiked: false,
+        },
+      ],
+    }
+    setPostViewData(dummyData)
   }
   useEffect(() => {
     if (!postViewId) return
@@ -50,6 +73,30 @@ export default function PostBox({ postViewId }) {
                 <Typography variant="h6">{postViewData.username}</Typography>
               </Grid>
               <Typography variant="h6">{postViewData.postContent}</Typography>
+              <Box display="flex" width="100%" justifyContent="space-evenly">
+                <Grid container justifyContent="center">
+                  <FavoriteBorderOutlinedIcon />
+                  <Typography variant="body1">
+                    {postViewData.numLikes}
+                  </Typography>
+                </Grid>
+                <Grid container justifyContent="center">
+                  <ChatBubbleOutlineIcon />
+                  <Typography variant="body1">
+                    {postViewData.commentList.length}
+                  </Typography>
+                </Grid>
+              </Box>
+              <CommentInputBox />
+              {postViewData.commentList.map((e) => (
+                <CommentItem
+                  id={e.id}
+                  username={e.username}
+                  content={e.content}
+                  numLikes={e.numLikes}
+                  hasLiked={e.hasLiked}
+                />
+              ))}
             </Grid>
           )}
         </Box>

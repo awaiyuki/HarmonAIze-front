@@ -137,8 +137,8 @@ export default function Generate() {
   return (
     <Fade in={true} timeout={{ enter: 600 }}>
       <Box
+        display={{ default: 'flex', sm: 'column' }}
         sx={{
-          display: 'flex',
           // alignItems: 'flex-start',
           width: '100%',
           height: '90vh',

@@ -59,13 +59,25 @@ export default function Community() {
   }
 
   const fetchPostList = async () => {
-    const res = await fetch('api/community/postlist', {
-      method: 'GET',
-      cache: 'no-store',
-    })
-    const resData = await res.json()
-    setPostList(resData)
-    console.log(postList)
+    // const res = await fetch('api/community/postlist', {
+    //   method: 'GET',
+    //   cache: 'no-store',
+    // })
+    // const resData = await res.json()
+    // setPostList(resData)
+    // console.log(postList)
+    const dummyPostList = [
+      {
+        id: 1,
+        username: 'hello',
+        mediaTitle: 'music',
+        postTitle: 'posttitle',
+        numLikes: 5,
+        hasLiked: false,
+        numComments: 8,
+      },
+    ]
+    setPostList(dummyPostList)
   }
   useEffect(() => {
     fetchPostList()
@@ -105,6 +117,8 @@ export default function Community() {
                     mediaTitle={e.mediaTitle}
                     postTitle={e.postTitle}
                     setPostViewId={setPostViewId}
+                    numLikes={e.numLikes}
+                    numComments={e.numComments}
                   />
                 ))}
           </Box>

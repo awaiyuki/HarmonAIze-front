@@ -9,12 +9,14 @@ import { useContext } from 'react'
 import { AudioContext } from '@/app/context/audio_context'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AccountCircle } from '@mui/icons-material'
-
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 export default function FeedItem({
   id,
   username,
   mediaTitle,
   postTitle,
+  numLikes,
+  numComments,
   setPostViewId,
 }) {
   return (
@@ -31,6 +33,7 @@ export default function FeedItem({
         '&:hover': {
           bgcolor: 'primary.light',
         },
+        cursor: 'pointer',
       }}
     >
       <Box
@@ -76,12 +79,14 @@ export default function FeedItem({
         </Grid>
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">
-        <IconButton color="primary" aria-label="repost">
-          <RepeatOutlinedIcon />
-        </IconButton>
-        <IconButton color="primary" aria-label="favorite">
+        <Grid container justifyContent="center">
           <FavoriteBorderOutlinedIcon />
-        </IconButton>
+          <Typography variant="body1">{numLikes}</Typography>
+        </Grid>
+        <Grid container justifyContent="center">
+          <ChatBubbleOutlineIcon />
+          <Typography variant="body1">{numComments}</Typography>
+        </Grid>
       </Box>
     </Box>
   )

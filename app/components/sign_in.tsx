@@ -37,6 +37,15 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  // temporary code to sign in directly
+  ;(async () => {
+    await signIn('credentials', {
+      username: 'dummy',
+      password: 'dummy',
+      callbackUrl: '/generate',
+    })
+  })()
+
   const router = useRouter()
   const handleSubmit = async (event) => {
     event.preventDefault()

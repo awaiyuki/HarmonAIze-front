@@ -26,6 +26,7 @@ const authOptions = {
         // (i.e., the request IP address)
 
         // return credentials
+        return credentials
         const loginData = {
           id: credentials.username,
           pw: credentials.password,
