@@ -15,13 +15,13 @@ import { useContext } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import { grey } from '@mui/material/colors'
 
-export default function CommentInputBox({ username, postId }) {
+export default function CommentInputBox({ currentUsername, postId }) {
   const [inputData, setInputData] = useState('')
 
   const handleCommentWrite = async () => {
     await fetch('/api/community/writeComment?postId=' + postId, {
       method: 'POST',
-      body: JSON.Stringify({ username, content: inputData }),
+      body: JSON.stringify({ username: currentUsername, content: inputData }),
     })
   }
 

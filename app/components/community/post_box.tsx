@@ -11,7 +11,7 @@ import CommentInputBox from './comment_input_box'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
-export default function PostBox({ postViewId }) {
+export default function PostBox({ postViewId, username }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const [postViewData, setPostViewData] = useState(null)
 
@@ -41,6 +41,16 @@ export default function PostBox({ postViewId }) {
     }
     setPostViewData(dummyData)
   }
+
+  const handleLike = async (postId) => {
+    const res = await fetch('/api/community/likePost?postId=' + postId, {
+      method: 'POST',
+      body: JSON.Stringify({ username }),
+    })
+    const resData = res.json()
+    console.log(resData)
+  }
+
   useEffect(() => {
     if (!postViewId) return
     fetchPost(postViewId)
@@ -75,7 +85,9 @@ export default function PostBox({ postViewId }) {
               <Typography variant="h6">{postViewData.postContent}</Typography>
               <Box display="flex" width="100%" justifyContent="space-evenly">
                 <Grid container justifyContent="center">
-                  <FavoriteBorderOutlinedIcon />
+                  <IconButton onClick={handleLike}>
+                    <FavoriteBorderOutlinedIcon />
+                  </IconButton>
                   <Typography variant="body1">
                     {postViewData.numLikes}
                   </Typography>
@@ -90,6 +102,7 @@ export default function PostBox({ postViewId }) {
               <CommentInputBox />
               {postViewData.commentList.map((e) => (
                 <CommentItem
+                  key={e.id}
                   id={e.id}
                   username={e.username}
                   content={e.content}
