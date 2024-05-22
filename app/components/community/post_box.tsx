@@ -58,7 +58,12 @@ export default function PostBox({ postViewId, username }) {
 
   return (
     <Fade in={true} timeout={{ enter: 600 }}>
-      <Box borderLeft={1} borderColor={grey[400]} minWidth="32vw">
+      <Box
+        borderLeft={1}
+        borderColor={grey[400]}
+        minWidth="32vw"
+        minHeight="100vh"
+      >
         <Box padding={4}>
           {!postViewData && (
             <Typography variant="h6">게시글을 선택하세요.</Typography>
