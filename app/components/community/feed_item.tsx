@@ -8,7 +8,7 @@ import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import { useContext } from 'react'
 import { AudioContext } from '@/app/context/audio_context'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
-import { AccountCircle } from '@mui/icons-material'
+import { AccountCircle, Favorite } from '@mui/icons-material'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 export default function FeedItem({
   id,
@@ -18,6 +18,7 @@ export default function FeedItem({
   numLikes,
   numComments,
   setPostViewId,
+  hasLiked,
 }) {
   return (
     <Box
@@ -80,7 +81,7 @@ export default function FeedItem({
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">
         <Grid container justifyContent="center">
-          <FavoriteBorderOutlinedIcon />
+          {hasLiked ? <Favorite /> : <FavoriteBorderOutlinedIcon />}
           <Typography variant="body1">{numLikes}</Typography>
         </Grid>
         <Grid container justifyContent="center">

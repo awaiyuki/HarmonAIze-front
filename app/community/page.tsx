@@ -59,7 +59,7 @@ export default function Community() {
   }
 
   const fetchPostList = async () => {
-    // const res = await fetch('api/community/postlist', {
+    // const res = await fetch(`api/community/postlist?username=${session?.user.username}`, {
     //   method: 'GET',
     //   cache: 'no-store',
     // })
@@ -119,11 +119,15 @@ export default function Community() {
                     setPostViewId={setPostViewId}
                     numLikes={e.numLikes}
                     numComments={e.numComments}
+                    hasLiked={e.hasLiked}
                   />
                 ))}
           </Box>
         </Box>
-        <PostBox postViewId={postViewId} />
+        <PostBox
+          postViewId={postViewId}
+          currentUsername={session?.user.username}
+        />
       </Box>
     </Fade>
   )

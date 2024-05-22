@@ -23,6 +23,7 @@ export default function CommentItem({
     )
     const resData = res.json()
     console.log(resData)
+    // 여기서 mutate 혹은 refetch 필요해보임.
   }
 
   return (

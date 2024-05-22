@@ -4,19 +4,23 @@ import { useEffect, useState } from 'react'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AudioContext } from '@/app/context/audio_context'
 import { useContext } from 'react'
-import { AccountCircle, FavoriteBorderOutlined } from '@mui/icons-material'
+import {
+  AccountCircle,
+  Favorite,
+  FavoriteBorderOutlined,
+} from '@mui/icons-material'
 import { grey } from '@mui/material/colors'
 import CommentItem from './comment_item'
 import CommentInputBox from './comment_input_box'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
-export default function PostBox({ postViewId, username }) {
+export default function PostBox({ postViewId, currentUsername }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const [postViewData, setPostViewData] = useState(null)
 
-  const fetchPost = async (id) => {
-    // const res = await fetch('api/community/post?id=' + id, {
+  const fetchPost = async (id, currentUsername) => {
+    // const res = await fetch(`api/community/post?id=${id}&username=${currentUsername}`, {
     //   method: 'GET',
     // })
     // const resData = await res.json()
@@ -53,7 +57,7 @@ export default function PostBox({ postViewId, username }) {
 
   useEffect(() => {
     if (!postViewId) return
-    fetchPost(postViewId)
+    fetchPost(postViewId, currentUsername)
   }, [postViewId])
 
   return (
@@ -91,7 +95,11 @@ export default function PostBox({ postViewId, username }) {
               <Box display="flex" width="100%" justifyContent="space-evenly">
                 <Grid container justifyContent="center">
                   <IconButton onClick={handleLike}>
-                    <FavoriteBorderOutlinedIcon />
+                    {postViewData.hasLiked ? (
+                      <Favorite />
+                    ) : (
+                      <FavoriteBorderOutlinedIcon />
+                    )}
                   </IconButton>
                   <Typography variant="body1">
                     {postViewData.numLikes}
@@ -113,6 +121,7 @@ export default function PostBox({ postViewId, username }) {
                   content={e.content}
                   numLikes={e.numLikes}
                   hasLiked={e.hasLiked}
+                  currentUsername={currentUsername}
                 />
               ))}
             </Grid>
