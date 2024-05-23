@@ -290,24 +290,32 @@ export default function Generate() {
                         musicShareData={musicShareData}
                       />
 
-                      <Box marginLeft={4} display="flex" flexDirection="column">
+                      <Box
+                        marginLeft={4}
+                        display="flex"
+                        flexDirection="row"
+                        gap="2"
+                      >
                         <Box>
                           {music.progress ? (
                             <></>
                           ) : (
-                            <RotateLeftIcon
-                              sx={{
-                                animation: 'spin 2s linear infinite',
-                                '@keyframes spin': {
-                                  '0%': {
-                                    transform: 'rotate(360deg)',
+                            <Box sx={{ display: 'flex', gap: 1 }}>
+                              <RotateLeftIcon
+                                sx={{
+                                  animation: 'spin 2s linear infinite',
+                                  '@keyframes spin': {
+                                    '0%': {
+                                      transform: 'rotate(360deg)',
+                                    },
+                                    '100%': {
+                                      transform: 'rotate(0deg)',
+                                    },
                                   },
-                                  '100%': {
-                                    transform: 'rotate(0deg)',
-                                  },
-                                },
-                              }}
-                            />
+                                }}
+                              />
+                              <Typography variant="body1">생성중...</Typography>
+                            </Box>
                           )}
                         </Box>
                         <Box>

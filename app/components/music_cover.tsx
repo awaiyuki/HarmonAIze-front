@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box } from '@mui/material'
 import Audiotrack from '@mui/icons-material/Audiotrack'
 

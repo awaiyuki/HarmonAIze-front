@@ -4,9 +4,14 @@ import { useEffect, useState } from 'react'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AudioContext } from '@/app/context/audio_context'
 import { useContext } from 'react'
-import { AccountCircle, FavoriteBorderOutlined } from '@mui/icons-material'
+import {
+  AccountCircle,
+  Favorite,
+  FavoriteBorderOutlined,
+} from '@mui/icons-material'
 import { grey, red } from '@mui/material/colors'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export default function CommentItem({
   postId,
@@ -17,26 +22,37 @@ export default function CommentItem({
   hasLiked,
   currentUsername,
 }) {
-  const handleLikeComment = async (postId, commentId, currentUsername) => {
+  const queryClient = useQueryClient()
+  const handleLikeComment = async ({ postId, commentId, currentUsername }) => {
     console.log(
-      `api/community/likeComment?postId=${postId}&commentId=${commentId}`
+      `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`
     )
 
     const res = await fetch(
-      `api/community/likeComment?postId=${postId}&commentId=${commentId}`,
+      `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: currentUsername }),
+        body: JSON.stringify({}),
       }
     )
     const resData = await res.json()
+    return resData
     console.log(resData)
     // 여기서 mutate 혹은 refetch 필요해보임.
   }
 
+  const mutation = useMutation({
+    mutationFn: handleLikeComment,
+    onSuccess: () => {
+      // Invalidate and refetch
+      console.log('on success')
+      queryClient.invalidateQueries({ queryKey: ['post'] })
+      queryClient.invalidateQueries({ queryKey: ['postList'] })
+    },
+  })
   return (
     <Box
       sx={{
@@ -54,9 +70,13 @@ export default function CommentItem({
         <Typography variant="body1">{content}</Typography>
       </Box>
       <IconButton
-        onClick={() => handleLikeComment(postId, commentId, currentUsername)}
+        onClick={() => mutation.mutate({ postId, commentId, currentUsername })}
       >
-        <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+        {hasLiked ? (
+          <Favorite sx={{ color: red[400] }} />
+        ) : (
+          <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+        )}
         <Typography>{numLikes}</Typography>
       </IconButton>
     </Box>

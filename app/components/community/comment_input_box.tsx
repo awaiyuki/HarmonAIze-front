@@ -15,11 +15,14 @@ import { useContext } from 'react'
 import { AccountCircle } from '@mui/icons-material'
 import { grey } from '@mui/material/colors'
 import SendIcon from '@mui/icons-material/Send'
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
 
 export default function CommentInputBox({ currentUsername, postId }) {
+  const queryClient = useQueryClient()
+
   const [inputData, setInputData] = useState('')
 
-  const handleCommentWrite = async (currentUsername, postId) => {
+  const handleCommentWrite = async ({ currentUsername, postId, content }) => {
     console.log({
       username: currentUsername,
       content: inputData,
@@ -31,12 +34,24 @@ export default function CommentInputBox({ currentUsername, postId }) {
       },
       body: JSON.stringify({
         username: currentUsername,
-        content: inputData,
+        content,
       }),
     })
     const resData = await res.json()
+    setInputData('')
+    return resData
     console.log(resData)
   }
+
+  const mutation = useMutation({
+    mutationFn: handleCommentWrite,
+    onSuccess: () => {
+      // Invalidate and refetch
+      console.log('on success')
+      queryClient.invalidateQueries({ queryKey: ['post'] })
+      queryClient.invalidateQueries({ queryKey: ['postList'] })
+    },
+  })
 
   return (
     <Grid container sx={{ width: '100%' }}>
@@ -54,7 +69,9 @@ export default function CommentInputBox({ currentUsername, postId }) {
       />
       <Button
         variant="contained"
-        onClick={() => handleCommentWrite(currentUsername, postId)}
+        onClick={() =>
+          mutation.mutate({ currentUsername, postId, content: inputData })
+        }
       >
         <SendIcon />
       </Button>

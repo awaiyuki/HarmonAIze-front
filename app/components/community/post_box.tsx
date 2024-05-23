@@ -17,11 +17,12 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 import MusicCover from '../music_cover'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function PostBox({ postViewId, currentUsername }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
-  const [postViewData, setPostViewData] = useState(null)
-
+  // const [postViewData, setPostViewData] = useState(null)
+  const queryClient = useQueryClient()
   const fetchPost = async (id, currentUsername) => {
     const res = await fetch(
       `api/community/post?id=${id}&username=${currentUsername}`,
@@ -30,7 +31,8 @@ export default function PostBox({ postViewId, currentUsername }) {
       }
     )
     const resData = await res.json()
-    setPostViewData(resData)
+    return resData
+    // setPostViewData(resData)
     // const dummyData = {
     //   id: 1,
     //   username: 'name',
@@ -55,20 +57,45 @@ export default function PostBox({ postViewId, currentUsername }) {
 
   const handleLike = async () => {
     console.log('handlelike' + postViewId + ', ' + currentUsername)
-    const res = await fetch(`/api/community/likePost?id=${postViewId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: currentUsername }),
-    })
+    const res = await fetch(
+      `/api/community/likePost?id=${postViewId}&username=${currentUsername}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      }
+    )
     const resData = await res.json()
     console.log(resData)
   }
 
+  const mutation = useMutation({
+    mutationFn: handleLike,
+    onSuccess: () => {
+      // Invalidate and refetch
+      console.log('on success')
+      queryClient.invalidateQueries({ queryKey: ['post'] })
+      queryClient.invalidateQueries({ queryKey: ['postList'] })
+    },
+  })
+
+  const {
+    data: postViewData,
+    error,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['post'],
+    queryFn: () => {
+      if (!postViewId) return
+      return fetchPost(postViewId, currentUsername)
+    },
+  })
+
   useEffect(() => {
-    if (!postViewId) return
-    fetchPost(postViewId, currentUsername)
+    refetch()
   }, [postViewId])
 
   return (
@@ -115,7 +142,7 @@ export default function PostBox({ postViewId, currentUsername }) {
             <Typography variant="body1">{postViewData.postContent}</Typography>
             <Box display="flex" width="100%" justifyContent="space-evenly">
               <Grid container justifyContent="center" alignItems="center">
-                <IconButton onClick={handleLike}>
+                <IconButton onClick={() => mutation.mutate()}>
                   {postViewData.hasLiked ? (
                     <Favorite sx={{ color: red[400] }} />
                   ) : (

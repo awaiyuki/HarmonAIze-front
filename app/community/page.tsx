@@ -18,6 +18,8 @@ import { grey } from '@mui/material/colors'
 import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
 import Loading from '../components/loading'
+import { useQuery, useMutation } from '@tanstack/react-query'
+
 export default function Community() {
   const { data: session, status } = useSession({
     required: true,
@@ -28,9 +30,9 @@ export default function Community() {
 
   console.log(session)
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
-  const [postList, setPostList] = useState([])
+  // const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -61,7 +63,7 @@ export default function Community() {
   }
 
   const fetchPostList = async () => {
-    setIsLoading(true)
+    // setIsLoading(true)
     const res = await fetch(
       `api/community/postlist?username=${session?.user.username}`,
       {
@@ -70,7 +72,8 @@ export default function Community() {
       }
     )
     const resData = await res.json()
-    setPostList(resData)
+    // setPostList(resData)
+    return resData
     console.log(postList)
     // const dummyPostList = [
     //   {
@@ -84,11 +87,25 @@ export default function Community() {
     //   },
     // ]
     // setPostList(dummyPostList)
-    setIsLoading(false)
+    // setIsLoading(false)
   }
-  useEffect(() => {
-    fetchPostList()
-  }, [])
+
+  const {
+    data: postList,
+    error,
+    isLoading,
+  } = useQuery({ queryKey: ['postList'], queryFn: fetchPostList })
+
+  // const mutation = useMutation(postComment, {
+  //   onSuccess: () => {
+  //     // Invalidate and refetch
+  //     queryClient.invalidateQueries('postLists')
+  //   },
+  // })
+
+  // useEffect(() => {
+  //   fetchPostList()
+  // }, [])
 
   if (isLoading) return Loading
 
