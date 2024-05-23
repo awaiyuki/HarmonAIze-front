@@ -17,9 +17,6 @@ export default function AudioPlayerBottom() {
   return (
     <Box
       sx={{
-        position: 'fixed',
-        bottom: '0',
-        left: '0',
         width: '100vw',
         height: '100',
         zIndex: 2,

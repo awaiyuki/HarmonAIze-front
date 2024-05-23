@@ -57,7 +57,7 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
           </Typography>
           <Grid container justifyContent="center" padding={2}>
             <Audiotrack color="primary" fontSize="large" />
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="h6" fontWeight="medium">
               {musicShareData.title}
             </Typography>
           </Grid>

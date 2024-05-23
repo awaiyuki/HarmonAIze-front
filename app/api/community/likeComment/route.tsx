@@ -5,9 +5,12 @@ export async function POST(req: Request) {
   const reqData = await req.json()
   const res = await fetch(
     process.env.BACK_HOST +
-      `/community/writeComment?postId=${postId}&commentId=${commentId}`,
+      `/community/likeComment?postId=${postId}&commentId=${commentId}`,
     {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(reqData),
     }
   )

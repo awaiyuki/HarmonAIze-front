@@ -17,6 +17,7 @@ import FeedItem from '../components/community/feed_item'
 import { grey } from '@mui/material/colors'
 import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
+import Loading from '../components/loading'
 export default function Community() {
   const { data: session, status } = useSession({
     required: true,
@@ -29,6 +30,7 @@ export default function Community() {
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
   const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleFileUpload = async (e) => {
     e.preventDefault()
@@ -59,76 +61,84 @@ export default function Community() {
   }
 
   const fetchPostList = async () => {
-    // const res = await fetch(`api/community/postlist?username=${session?.user.username}`, {
-    //   method: 'GET',
-    //   cache: 'no-store',
-    // })
-    // const resData = await res.json()
-    // setPostList(resData)
-    // console.log(postList)
-    const dummyPostList = [
+    setIsLoading(true)
+    const res = await fetch(
+      `api/community/postlist?username=${session?.user.username}`,
       {
-        id: 1,
-        username: 'hello',
-        mediaTitle: 'music',
-        postTitle: 'posttitle',
-        numLikes: 5,
-        hasLiked: false,
-        numComments: 8,
-      },
-    ]
-    setPostList(dummyPostList)
+        method: 'GET',
+        cache: 'no-store',
+      }
+    )
+    const resData = await res.json()
+    setPostList(resData)
+    console.log(postList)
+    // const dummyPostList = [
+    //   {
+    //     id: 1,
+    //     username: 'hello',
+    //     mediaTitle: 'music',
+    //     postTitle: 'posttitle',
+    //     numLikes: 5,
+    //     hasLiked: false,
+    //     numComments: 8,
+    //   },
+    // ]
+    // setPostList(dummyPostList)
+    setIsLoading(false)
   }
   useEffect(() => {
     fetchPostList()
   }, [])
 
+  if (isLoading) return Loading
+
   return (
-    <Fade in={true} timeout={{ enter: 700 }}>
+    // <Fade in={true} timeout={{ enter: 700 }}>
+    <Box
+      sx={{
+        height: '100%',
+        width: '100%',
+        // marginTop: 4,
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+      }}
+    >
       <Box
         sx={{
-          width: '100%',
-          // marginTop: 4,
+          flex: '0.5',
           display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          // width: '100%',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <Box
-            width="100%"
-            borderTop={1}
-            borderColor={grey[400]}
-            marginBottom={10}
-          >
-            {postList &&
-              postList
-                .toReversed()
-                .map((e) => (
-                  <FeedItem
-                    key={e.id}
-                    id={e.id}
-                    username={e.username}
-                    mediaTitle={e.mediaTitle}
-                    postTitle={e.postTitle}
-                    setPostViewId={setPostViewId}
-                    numLikes={e.numLikes}
-                    numComments={e.numComments}
-                    hasLiked={e.hasLiked}
-                  />
-                ))}
-          </Box>
+        <Box width="100%" borderColor={grey[400]} marginBottom={10}>
+          {postList &&
+            postList
+              .toReversed()
+              .map((e) => (
+                <FeedItem
+                  key={e.id}
+                  id={e.id}
+                  username={e.username}
+                  mediaTitle={e.mediaTitle}
+                  postTitle={e.postTitle}
+                  postViewId={postViewId}
+                  setPostViewId={setPostViewId}
+                  numLikes={e.numLikes}
+                  numComments={e.numComments}
+                  hasLiked={e.hasLiked}
+                />
+              ))}
         </Box>
+      </Box>
+      <Box sx={{ flex: '0.5' }}>
         <PostBox
           postViewId={postViewId}
           currentUsername={session?.user.username}
         />
       </Box>
-    </Fade>
+    </Box>
+    // </Fade>
   )
 }

@@ -2,7 +2,7 @@
 
 'use client'
 import { Box, Typography, Button, IconButton, Grid } from '@mui/material'
-import { grey, pink, purple } from '@mui/material/colors'
+import { grey, pink, purple, red } from '@mui/material/colors'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import { useContext } from 'react'
@@ -10,6 +10,9 @@ import { AudioContext } from '@/app/context/audio_context'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AccountCircle, Favorite } from '@mui/icons-material'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
+import MusicCover from '../music_cover'
+import ChatIcon from '@mui/icons-material/Chat'
+
 export default function FeedItem({
   id,
   username,
@@ -17,9 +20,11 @@ export default function FeedItem({
   postTitle,
   numLikes,
   numComments,
+  postViewId,
   setPostViewId,
   hasLiked,
 }) {
+  console.log(hasLiked)
   return (
     <Box
       width="100%"
@@ -28,26 +33,44 @@ export default function FeedItem({
       alignItems="flex-start"
       borderBottom={1}
       borderColor={grey[400]}
-      padding={1}
+      padding={2}
+      bgcolor={id == postViewId ? 'secondary.main' : 'transparent'}
       onClick={() => setPostViewId(id)}
       sx={{
         '&:hover': {
-          bgcolor: 'primary.light',
+          bgcolor: 'secondary.main',
         },
         cursor: 'pointer',
       }}
     >
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="flex-start"
-        alignItems="center"
-        gap={1}
-      >
-        <AccountCircle fontSize="large" />
-        <Typography variant="h6" fontWeight="bold">
-          {username}
-        </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <MusicCover />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box paddingBottom={2}>
+            <Typography variant="body1" fontWeight="medium">
+              {mediaTitle}
+            </Typography>
+
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              gap={1}
+            >
+              <AccountCircle fontSize="medium" />
+              <Typography variant="body1" fontWeight="medium">
+                {username}
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ChatIcon />
+            <Typography variant="body1" fontWeight="medium">
+              {postTitle}
+            </Typography>
+          </Box>
+        </Box>
       </Box>
       <Box
         display="flex"
@@ -57,14 +80,12 @@ export default function FeedItem({
       >
         <Grid
           container
-          direction="row"
+          direction="column"
           justifyContent="center"
           alignItems="center"
           gap={1}
+          margin={1}
         >
-          <Typography variant="h6" fontWeight="bold">
-            {postTitle}
-          </Typography>
           <Box
             display="flex"
             alignItems="center"
@@ -73,18 +94,19 @@ export default function FeedItem({
             color="white"
             paddingLeft={1}
             paddingRight={1}
-          >
-            <AudiotrackIcon color="white" />
-            <Typography variant="body1">{mediaTitle}</Typography>
-          </Box>
+          ></Box>
         </Grid>
       </Box>
       <Box display="flex" width="100%" justifyContent="space-evenly">
-        <Grid container justifyContent="center">
-          {hasLiked ? <Favorite /> : <FavoriteBorderOutlinedIcon />}
+        <Grid container justifyContent="center" gap={1}>
+          {hasLiked ? (
+            <Favorite sx={{ color: red[400] }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+          )}
           <Typography variant="body1">{numLikes}</Typography>
         </Grid>
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" gap={1}>
           <ChatBubbleOutlineIcon />
           <Typography variant="body1">{numComments}</Typography>
         </Grid>

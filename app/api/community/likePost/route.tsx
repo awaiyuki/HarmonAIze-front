@@ -6,6 +6,9 @@ export async function POST(req: Request) {
     process.env.BACK_HOST + `/community/likePost?id=${id}`,
     {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(reqData),
     }
   )

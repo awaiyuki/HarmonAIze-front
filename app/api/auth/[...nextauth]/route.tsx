@@ -25,7 +25,6 @@ const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
 
-        // return credentials
         return credentials
         const loginData = {
           id: credentials.username,

@@ -5,23 +5,34 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AudioContext } from '@/app/context/audio_context'
 import { useContext } from 'react'
 import { AccountCircle, FavoriteBorderOutlined } from '@mui/icons-material'
-import { grey } from '@mui/material/colors'
+import { grey, red } from '@mui/material/colors'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 
 export default function CommentItem({
-  id,
+  postId,
+  commentId,
   username,
   content,
   numLikes,
   hasLiked,
   currentUsername,
 }) {
-  const handleLikeComment = async (postId, commentId) => {
+  const handleLikeComment = async (postId, commentId, currentUsername) => {
+    console.log(
+      `api/community/likeComment?postId=${postId}&commentId=${commentId}`
+    )
+
     const res = await fetch(
       `api/community/likeComment?postId=${postId}&commentId=${commentId}`,
-      { method: 'POST', body: JSON.stringify({ username: currentUsername }) }
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: currentUsername }),
+      }
     )
-    const resData = res.json()
+    const resData = await res.json()
     console.log(resData)
     // 여기서 mutate 혹은 refetch 필요해보임.
   }
@@ -29,18 +40,24 @@ export default function CommentItem({
   return (
     <Box
       sx={{
-        borderWidth: '1px',
-        borderBottom: '1px',
-        borderColor: 'black',
+        borderBottom: '1px solid',
+        borderColor: grey[500],
+        marginBottom: 1,
+        padding: 1,
       }}
     >
-      <Grid container alignContent="center">
+      <Grid container alignItems="center" gap={1}>
         <AccountCircle />
-        <Typography variant="h6">{username}</Typography>
+        <Typography variant="body1">{username}</Typography>
       </Grid>
-      <Typography variant="body1">{content}</Typography>
-      <IconButton onClick={handleLikeComment}>
-        <FavoriteBorderOutlinedIcon />
+      <Box marginTop={1}>
+        <Typography variant="body1">{content}</Typography>
+      </Box>
+      <IconButton
+        onClick={() => handleLikeComment(postId, commentId, currentUsername)}
+      >
+        <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+        <Typography>{numLikes}</Typography>
       </IconButton>
     </Box>
   )
