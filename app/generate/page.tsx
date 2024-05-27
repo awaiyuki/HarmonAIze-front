@@ -23,19 +23,23 @@ import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
-import { AddBox, CurrencyYenTwoTone } from '@mui/icons-material'
+import { AddBox, CheckBox, CurrencyYenTwoTone } from '@mui/icons-material'
 import { useTheme } from '@emotion/react'
 import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { grey, pink, purple } from '@mui/material/colors'
-import { ListItemButton, ListItemIcon, Modal } from '@mui/material'
+import { Input, ListItemButton, ListItemIcon, Modal } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useSWR from 'swr'
 import ShareIcon from '@mui/icons-material/Share'
 import MusicShareModal from '../components/music_share_modal'
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'
 import MusicCover from '../components/music_cover'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -95,8 +99,13 @@ export default function Generate() {
   const handleGenerateAccompaniment = async (username) => {
     const file = uploadedAudioData.file
     const formData = new FormData()
-    formData.append('name', username)
+    formData.append('username', username)
+    formData.append('mediaTitle', 'This is title.')
+    formData.append('mode', 1)
     formData.append('file', file)
+    formData.append('tags', ['hello', 'world'])
+    formData.append('instrument', 'p')
+    formData.append('content_name', 'pgbd')
 
     const fileContent = formData.get('file')
     for (let value of formData.values()) {
@@ -123,14 +132,11 @@ export default function Generate() {
   //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
   // ]
 
-  const fetchMusicFile = async (username, title) => {
-    const res = await fetch(
-      `/api/music/play?username=${username}&music=${title}`,
-      {
-        method: 'GET',
-        headers: {},
-      }
-    )
+  const fetchMusicFile = async (id) => {
+    const res = await fetch(`/api/music/play?id=${id}`, {
+      method: 'GET',
+      headers: {},
+    })
 
     const responseData = await res.json()
     console.log(responseData)
@@ -187,18 +193,38 @@ export default function Generate() {
           />
         </Button>
         {uploadedAudioData && uploadedAudioData.title && (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 4,
-            }}
-          >
-            <Typography variant="h5">{uploadedAudioData.title}</Typography>
-            <audio src={uploadedAudioData.url} type="audio/mp3" controls />
-          </Box>
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 4,
+              }}
+            >
+              <Typography variant="h5">{uploadedAudioData.title}</Typography>
+              <audio src={uploadedAudioData.url} type="audio/mp3" controls />
+            </Box>
+
+            <Input placeholder="제목" />
+            <Input placeholder="태그" />
+            <Typography variant="body1">입력 음악 악기</Typography>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox />} label="피아노" />
+              <FormControlLabel control={<Checkbox />} label="기타" />
+              <FormControlLabel control={<Checkbox />} label="베이스" />
+            </FormGroup>
+
+            <Typography variant="body1">생성 음악 악기</Typography>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox />} label="피아노" />
+              <FormControlLabel control={<Checkbox />} label="기타" />
+              <FormControlLabel control={<Checkbox />} label="베이스" />
+              <FormControlLabel control={<Checkbox />} label="드럼" />
+            </FormGroup>
+          </>
         )}
+
         <Button
           component="label"
           role={undefined}
@@ -256,7 +282,7 @@ export default function Generate() {
                       '&:hover': { bgcolor: 'secondary.main' },
                       cursor: 'pointer',
                     }}
-                    onClick={() => fetchMusicFile(username, music.title)}
+                    onClick={() => fetchMusicFile(music.id)}
                   >
                     <ListItem disablePadding>
                       <Box sx={{ marginRight: 2 }}>
