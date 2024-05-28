@@ -30,6 +30,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { grey, pink, purple } from '@mui/material/colors'
 import {
+  FormControl,
   Input,
   ListItemButton,
   ListItemIcon,
@@ -87,6 +88,10 @@ export default function Generate() {
     url: '',
   })
 
+  const [mediaTitle, setMediaTitle] = useState('')
+  const [tags, setTags] = useState([])
+  const [inputFileMode, setInputFileMode] = useState(0)
+
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const fetchMusicList = async (url) => {
     const res = await fetch(url, {
@@ -130,15 +135,17 @@ export default function Generate() {
     for (let i = 0; i < keys.length; i++) {
       if (outputInstrumentList[keys[i]]) content_name += keys[i]
     }
+
     console.log(content_name)
+
     const file = uploadedAudioData.file
     const formData = new FormData()
     formData.append('username', username)
     formData.append('mediaTitle', mediaTitle)
-    formData.append('mode', mode)
+    formData.append('mode', inputFileMode)
     formData.append('file', file)
     formData.append('tags', tags)
-    formData.append('instrument', instrumentData)
+    formData.append('instrument', inputInstrument)
     formData.append('content_name', content_name)
 
     const fileContent = formData.get('file')
@@ -244,8 +251,22 @@ export default function Generate() {
               <audio src={uploadedAudioData.url} type="audio/mp3" controls />
             </Box>
 
-            <Input placeholder="제목" />
-            <Input placeholder="태그" />
+            <FormControl required>
+              <Input
+                placeholder="제목"
+                value={mediaTitle}
+                onChange={(e) => setMediaTitle(e.target.value)}
+              />
+            </FormControl>
+            <Input
+              placeholder="태그"
+              value={tags}
+              onChange={(e) => {
+                const newTags = e.target.value.replace(/\s+/g, '').split(',')
+                setTags(newTags)
+                console.log(newTags)
+              }}
+            />
             <Typography variant="body1">입력 음악 악기</Typography>
             <RadioGroup
               aria-labelledby="radio-buttons-input-instruments"
