@@ -123,14 +123,14 @@ export default function Generate() {
     setUploadedAudioData({ title: file.name, url, file })
   }
 
-  const handleGenerateAccompaniment = async (
-    username,
-    mediaTitle,
-    mode,
-    tags,
-    inputInstrument,
-    content_name
-  ) => {
+  const handleGenerateAccompaniment = async (username) => {
+    /* convert output instrument data */
+    let content_name = ''
+    const keys = Object.keys(outputInstrumentList)
+    for (let i = 0; i < keys.length; i++) {
+      if (outputInstrumentList[keys[i]]) content_name += keys[i]
+    }
+    console.log(content_name)
     const file = uploadedAudioData.file
     const formData = new FormData()
     formData.append('username', username)
@@ -138,7 +138,7 @@ export default function Generate() {
     formData.append('mode', mode)
     formData.append('file', file)
     formData.append('tags', tags)
-    formData.append('instrument', instrument)
+    formData.append('instrument', instrumentData)
     formData.append('content_name', content_name)
 
     const fileContent = formData.get('file')
@@ -200,7 +200,7 @@ export default function Generate() {
           borderRight: 1,
           borderColor: grey[400],
           padding: 2,
-          overflow: 'hidden',
+          overflow: 'auto',
         }}
       >
         <Button
@@ -301,14 +301,7 @@ export default function Generate() {
           startIcon={<AutoFixHighIcon />}
           disabled={uploadedAudioData.title ? false : true}
           onClick={() => {
-            handleGenerateAccompaniment(
-              username,
-              mediaTitle,
-              mode,
-              tags,
-              inputInstrument,
-              outputInstrumentList
-            )
+            handleGenerateAccompaniment(username)
           }}
         >
           반주 생성
