@@ -29,7 +29,14 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
 import { grey, pink, purple } from '@mui/material/colors'
-import { Input, ListItemButton, ListItemIcon, Modal } from '@mui/material'
+import {
+  Input,
+  ListItemButton,
+  ListItemIcon,
+  Modal,
+  Radio,
+  RadioGroup,
+} from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useSWR from 'swr'
 import ShareIcon from '@mui/icons-material/Share'
@@ -66,11 +73,20 @@ export default function Generate() {
   const [musicShareData, setMusicShareData] = useState({})
 
   const [uploadedAudioData, setUploadedAudioData] = useState({})
-  // const [musicListData, setMusicListData] = useState([])
+
+  const [inputInstrument, setInputInstrument] = useState('')
+  const [outputInstrumentList, setOutputInstrumentList] = useState({
+    p: true,
+    g: false,
+    b: false,
+    d: false,
+  })
+
   const [currentMusicData, setCurrentMusicData] = useState({
     title: '',
     url: '',
   })
+
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const fetchMusicList = async (url) => {
     const res = await fetch(url, {
@@ -91,21 +107,39 @@ export default function Generate() {
   console.log(musicListData, error, isLoading)
   console.log(musicListData)
 
+  // Music List Dummy Data
+  // const musicListData = [
+  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
+  // ]
+
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
     setUploadedAudioData({ title: file.name, url, file })
   }
 
-  const handleGenerateAccompaniment = async (username) => {
+  const handleGenerateAccompaniment = async (
+    username,
+    mediaTitle,
+    mode,
+    tags,
+    inputInstrument,
+    content_name
+  ) => {
     const file = uploadedAudioData.file
     const formData = new FormData()
     formData.append('username', username)
-    formData.append('mediaTitle', 'This is title.')
-    formData.append('mode', 1)
+    formData.append('mediaTitle', mediaTitle)
+    formData.append('mode', mode)
     formData.append('file', file)
-    formData.append('tags', ['hello', 'world'])
-    formData.append('instrument', 'p')
-    formData.append('content_name', 'pgbd')
+    formData.append('tags', tags)
+    formData.append('instrument', instrument)
+    formData.append('content_name', content_name)
 
     const fileContent = formData.get('file')
     for (let value of formData.values()) {
@@ -121,17 +155,6 @@ export default function Generate() {
     mutate()
   }
 
-  // Music List Dummy Data
-  // musicListData = [
-  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  //   { id: 1, music: 'd', progress: true, title: 'hello', date: '2010-02-28' },
-  // ]
-
   const fetchMusicFile = async (id) => {
     const res = await fetch(`/api/music/play?id=${id}`, {
       method: 'GET',
@@ -144,6 +167,21 @@ export default function Generate() {
     setAudioSrc(responseData.url)
   }
 
+  const handleInputInstrumentChange = (e) => {
+    setInputInstrumentList(e.target.value)
+    console.log(e.target.value)
+  }
+
+  const handleOutputInstrumentChange = (e) => {
+    setOutputInstrumentList({
+      ...outputInstrumentList,
+      [e.target.name]: e.target.checked,
+    })
+    console.log({
+      ...outputInstrumentList,
+      [e.target.name]: e.target.checked,
+    })
+  }
   return (
     // <Fade in={true} timeout={{ enter: 600 }}>
     <Box
@@ -209,18 +247,43 @@ export default function Generate() {
             <Input placeholder="제목" />
             <Input placeholder="태그" />
             <Typography variant="body1">입력 음악 악기</Typography>
-            <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="피아노" />
-              <FormControlLabel control={<Checkbox />} label="기타" />
-              <FormControlLabel control={<Checkbox />} label="베이스" />
-            </FormGroup>
+            <RadioGroup
+              aria-labelledby="radio-buttons-input-instruments"
+              defaultValue="p"
+              name="radio-buttons-group"
+              onChange={handleInputInstrumentChange}
+            >
+              <FormControlLabel value="p" control={<Radio />} label="피아노" />
+              <FormControlLabel value="g" control={<Radio />} label="기타" />
+              <FormControlLabel value="b" control={<Radio />} label="베이스" />
+            </RadioGroup>
 
             <Typography variant="body1">생성 음악 악기</Typography>
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="피아노" />
-              <FormControlLabel control={<Checkbox />} label="기타" />
-              <FormControlLabel control={<Checkbox />} label="베이스" />
-              <FormControlLabel control={<Checkbox />} label="드럼" />
+              <FormControlLabel
+                checked={outputInstrumentList.p}
+                name="p"
+                control={<Checkbox onChange={handleOutputInstrumentChange} />}
+                label="피아노"
+              />
+              <FormControlLabel
+                checked={outputInstrumentList.g}
+                name="g"
+                control={<Checkbox onChange={handleOutputInstrumentChange} />}
+                label="기타"
+              />
+              <FormControlLabel
+                checked={outputInstrumentList.b}
+                name="b"
+                control={<Checkbox onChange={handleOutputInstrumentChange} />}
+                label="베이스"
+              />
+              <FormControlLabel
+                checked={outputInstrumentList.d}
+                name="d"
+                control={<Checkbox onChange={handleOutputInstrumentChange} />}
+                label="드럼"
+              />
             </FormGroup>
           </>
         )}
@@ -238,7 +301,14 @@ export default function Generate() {
           startIcon={<AutoFixHighIcon />}
           disabled={uploadedAudioData.title ? false : true}
           onClick={() => {
-            handleGenerateAccompaniment(username)
+            handleGenerateAccompaniment(
+              username,
+              mediaTitle,
+              mode,
+              tags,
+              inputInstrument,
+              outputInstrumentList
+            )
           }}
         >
           반주 생성
@@ -268,7 +338,7 @@ export default function Generate() {
               bgcolor: 'background.paper',
             }}
           >
-            {musicListData &&
+            {Array.isArray(musicListData) &&
               musicListData.toReversed().map((music, i) => (
                 <Fade
                   key={'music' + music.id}
