@@ -47,6 +47,7 @@ import MusicCover from '../components/music_cover'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
+import { useQuery } from '@tanstack/react-query'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -93,8 +94,8 @@ export default function Generate() {
   const [inputFileMode, setInputFileMode] = useState(0)
 
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
-  const fetchMusicList = async (url) => {
-    const res = await fetch(url, {
+  const fetchMusicList = async () => {
+    const res = await fetch(`/api/music/list?username=${username}`, {
       method: 'GET',
       headers: {},
     })
@@ -103,15 +104,18 @@ export default function Generate() {
     return responseData
   }
 
-  let {
+  const {
     data: musicListData,
     error,
     isLoading,
-    mutate,
-  } = useSWR('/api/music/list?username=' + username, fetchMusicList)
-  console.log(musicListData, error, isLoading)
-  console.log(musicListData)
+    isFetching,
+  } = useQuery({
+    queryKey: ['musicList'],
+    queryFn: fetchMusicList,
+    refetchInterval: 1000,
+  })
 
+  // console.log(musicListData, error, isLoading, isFetching)
   // Music List Dummy Data
   // const musicListData = [
   //   { id: 1, music: 'd', progress: false, title: 'hello', date: '2010-02-28' },
@@ -159,7 +163,7 @@ export default function Generate() {
       body: formData,
     })
 
-    mutate()
+    // mutate()
   }
 
   const fetchMusicFile = async (id) => {
@@ -175,7 +179,7 @@ export default function Generate() {
   }
 
   const handleInputInstrumentChange = (e) => {
-    setInputInstrumentList(e.target.value)
+    setInputInstrument(e.target.value)
     console.log(e.target.value)
   }
 
