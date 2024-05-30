@@ -91,7 +91,6 @@ export default function Generate() {
 
   const [mediaTitle, setMediaTitle] = useState('')
   const [tags, setTags] = useState([])
-  const [inputFileMode, setInputFileMode] = useState(0)
 
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const fetchMusicList = async () => {
@@ -129,7 +128,8 @@ export default function Generate() {
 
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
-    setUploadedAudioData({ title: file.name, url, file })
+    const type = file.type.split('/')[0]
+    setUploadedAudioData({ title: file.name, url, type, file })
   }
 
   const handleGenerateAccompaniment = async (username) => {
@@ -146,7 +146,7 @@ export default function Generate() {
     const formData = new FormData()
     formData.append('username', username)
     formData.append('mediaTitle', mediaTitle)
-    formData.append('mode', inputFileMode)
+    formData.append('mode', uploadedAudioData.type === 'audio' ? 0 : 1)
     formData.append('file', file)
     formData.append('tags', tags)
     formData.append('instrument', inputInstrument)
@@ -252,7 +252,12 @@ export default function Generate() {
               }}
             >
               <Typography variant="h5">{uploadedAudioData.title}</Typography>
-              <audio src={uploadedAudioData.url} type="audio/mp3" controls />
+              {uploadedAudioData.type === 'audio' && (
+                <audio src={uploadedAudioData.url} type="audio/mp3" controls />
+              )}
+              {uploadedAudioData.type === 'video' && (
+                <video src={uploadedAudioData.url} width="100%" controls />
+              )}
             </Box>
 
             <FormControl required>
@@ -370,12 +375,21 @@ export default function Generate() {
                       '&:hover': { bgcolor: 'secondary.main' },
                       cursor: 'pointer',
                     }}
-                    onClick={() => fetchMusicFile(music.id)}
                   >
                     <ListItem disablePadding>
-                      <Box sx={{ marginRight: 2 }}>
-                        <MusicCover />
-                      </Box>
+                      {music.musicType === 'audio' && (
+                        <Box
+                          sx={{ marginRight: 2 }}
+                          onClick={() => fetchMusicFile(music.id)}
+                        >
+                          <MusicCover />
+                        </Box>
+                      )}
+                      {music.musicType === 'video' && (
+                        <Box>
+                          <video src={music.url} controls width="100%" />
+                        </Box>
+                      )}
                       <ListItemText
                         disableTypography
                         primary={
@@ -391,6 +405,7 @@ export default function Generate() {
                           setMusicShareData({
                             username,
                             title: music.title,
+                            mediaId: music.id,
                           })
                           setModalOpen(true)
                         }}

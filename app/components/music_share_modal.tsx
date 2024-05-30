@@ -28,6 +28,7 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: musicShareData.username,
+        mediaId: musicShareData.mediaId,
         mediaTitle: musicShareData.title,
         postTitle: formData.get('post-title'),
         postContent: formData.get('post-content'),

@@ -114,13 +114,20 @@ export default function PostBox({ postViewId, currentUsername }) {
         {postViewData && (
           <Grid container direction="column" gap={1}>
             <Grid container direction="row" alignItems="center" gap={2}>
-              <Button
-                color="primary"
-                fontSize="large"
-                onClick={() => setAudioSrc(postViewData.mediaURL)}
-              >
-                <MusicCover />
-              </Button>
+              {postViewData.mediaType === 'audio' && (
+                <Button
+                  color="primary"
+                  fontSize="large"
+                  onClick={() => setAudioSrc(postViewData.mediaURL)}
+                >
+                  <MusicCover />
+                </Button>
+              )}
+              {postViewData.mediaType === 'video' && (
+                <Box>
+                  <video src={postViewData.mediaURL} />
+                </Box>
+              )}
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h6" fontWeight="500">
                   {postViewData.mediaTitle}
