@@ -59,10 +59,6 @@ export default function CommentItem({
                 }
               : comment
           ),
-          numLikes: oldData?.hasLiked
-            ? oldData?.numLikes - 1
-            : oldData?.numLikes + 1,
-          hasLiked: !oldData?.hasLiked,
         }
       })
       return { previousPostData }
@@ -98,18 +94,20 @@ export default function CommentItem({
       <Box marginTop={1}>
         <Typography variant="body1">{content}</Typography>
       </Box>
-      <IconButton
-        onClick={() =>
-          handleLikeComment.mutate({ postId, commentId, currentUsername })
-        }
-      >
-        {hasLiked ? (
-          <Favorite sx={{ color: red[400] }} />
-        ) : (
-          <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
-        )}
+      <Box sx={{ display: 'flex' }} alignContent="center">
+        <IconButton
+          onClick={() =>
+            handleLikeComment.mutate({ postId, commentId, currentUsername })
+          }
+        >
+          {hasLiked ? (
+            <Favorite sx={{ color: red[400] }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+          )}
+        </IconButton>
         <Typography>{numLikes}</Typography>
-      </IconButton>
+      </Box>
     </Box>
   )
 }
