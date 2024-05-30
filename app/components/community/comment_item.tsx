@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 export default function CommentItem({
   postId,
   commentId,
+  postViewData,
   username,
   content,
   numLikes,
@@ -23,34 +24,65 @@ export default function CommentItem({
   currentUsername,
 }) {
   const queryClient = useQueryClient()
-  const handleLikeComment = async ({ postId, commentId, currentUsername }) => {
-    console.log(
-      `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`
-    )
 
-    const res = await fetch(
-      `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      }
-    )
-    const resData = await res.json()
-    return resData
-    console.log(resData)
-    // 여기서 mutate 혹은 refetch 필요해보임.
-  }
+  const handleLikeComment = useMutation({
+    mutationFn: async ({ postId, commentId, currentUsername }) => {
+      console.log(
+        `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`
+      )
 
-  const mutation = useMutation({
-    mutationFn: handleLikeComment,
+      const res = await fetch(
+        `api/community/likeComment?postId=${postId}&commentId=${commentId}&username=${currentUsername}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        }
+      )
+      const resData = await res.json()
+      return resData
+      console.log(resData)
+    },
+    onMutate: async () => {
+      const previousPostData = queryClient.getQueryData(['post'])
+      await queryClient.cancelQueries(['post'])
+      queryClient.setQueryData(['post'], () => {
+        return {
+          ...postViewData,
+          commentList: {
+            ...postViewData.commentList.map((comment) => {
+              if (comment.id == commentId) {
+                return {
+                  ...comment,
+                  numLikes: hasLiked ? numLikes - 1 : numLikes + 1,
+                  hasLiked: !hasLiked,
+                }
+              }
+            }),
+          },
+          numLikes: postViewData?.hasLiked
+            ? postViewData?.numLikes - 1
+            : postViewData?.numLikes + 1,
+          hasLiked: !postViewData?.hasLiked,
+        }
+      })
+      return { previousPostData }
+    },
     onSuccess: () => {
-      // Invalidate and refetch
       console.log('on success')
       queryClient.invalidateQueries({ queryKey: ['post'] })
-      queryClient.invalidateQueries({ queryKey: ['postList'] })
+      // queryClient.invalidateQueries({
+      //   queryKey: ['postList'],
+      //   refetchType: 'all',
+      // })
+    },
+    onError: (error, variables, context) => {
+      console.log('on error', error)
+      queryClient.setQueryData(['post'], () => {
+        return { ...context?.previousPostData }
+      })
     },
   })
   return (
@@ -70,7 +102,9 @@ export default function CommentItem({
         <Typography variant="body1">{content}</Typography>
       </Box>
       <IconButton
-        onClick={() => mutation.mutate({ postId, commentId, currentUsername })}
+        onClick={() =>
+          handleLikeComment.mutate({ postId, commentId, currentUsername })
+        }
       >
         {hasLiked ? (
           <Favorite sx={{ color: red[400] }} />

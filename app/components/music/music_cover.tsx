@@ -1,8 +1,9 @@
 //@ts-nocheck
 import { Box } from '@mui/material'
 import Audiotrack from '@mui/icons-material/Audiotrack'
+import { RotateLeft } from '@mui/icons-material'
 
-export default function MusicCover() {
+export default function MusicCover(isLoading) {
   return (
     <Box
       width="80px"
@@ -16,7 +17,23 @@ export default function MusicCover() {
       borderColor="primary.main"
       margin={1}
     >
-      <Audiotrack fontSize="large" color="primary" />
+      {isLoading ? (
+        <RotateLeft
+          sx={{
+            animation: 'spin 2s linear infinite',
+            '@keyframes spin': {
+              '0%': {
+                transform: 'rotate(360deg)',
+              },
+              '100%': {
+                transform: 'rotate(0deg)',
+              },
+            },
+          }}
+        />
+      ) : (
+        <Audiotrack fontSize="large" color="primary" />
+      )}
     </Box>
   )
 }

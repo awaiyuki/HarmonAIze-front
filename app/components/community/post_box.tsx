@@ -56,46 +56,8 @@ export default function PostBox({ postViewId, currentUsername }) {
   }
 
   // const handleLike = async () => {
-  //   console.log('handlelike' + postViewId + ', ' + currentUsername)
-  //   const res = await fetch(
-  //     `/api/community/likePost?id=${postViewId}&username=${currentUsername}`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({}),
-  //     }
-  //   )
-  //   const resData = await res.json()
-  //   console.log(resData)
+  //
   // }
-
-  const handleLike = useMutation({
-    mutationFn: async () => {
-      const previousPostData = queryClient.getQueryData(['post'])
-      await queryClient.cancelQueries(['post'])
-      queryClient.cancelQueries
-      queryClient.setQueryData(['post'], () => {
-        return {
-          ...postViewData,
-          hasLiked: !postViewData?.hasLiked,
-        }
-      })
-      return { previousPostData }
-    },
-    onSuccess: () => {
-      // Invalidate and refetch
-      console.log('on success')
-      queryClient.invalidateQueries({ queryKey: ['post'] })
-      queryClient.invalidateQueries({ queryKey: ['postList'] })
-    },
-    onError: (error, variables, context) => {
-      queryClient.setQueryData(['post'], () => {
-        return { ...context?.previousPostData }
-      })
-    },
-  })
 
   const {
     data: postViewData,
@@ -105,7 +67,7 @@ export default function PostBox({ postViewId, currentUsername }) {
   } = useQuery({
     queryKey: ['post'],
     queryFn: () => {
-      if (!postViewId) return
+      if (!postViewId) return null
       return fetchPost(postViewId, currentUsername)
     },
   })
@@ -113,6 +75,51 @@ export default function PostBox({ postViewId, currentUsername }) {
   useEffect(() => {
     refetch()
   }, [postViewId])
+
+  const handleLike = useMutation({
+    mutationFn: async () => {
+      console.log('handlelike' + postViewId + ', ' + currentUsername)
+      const res = await fetch(
+        `/api/community/likePost?id=${postViewId}&username=${currentUsername}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        }
+      )
+      const resData = await res.json()
+    },
+    onMutate: async () => {
+      const previousPostData = queryClient.getQueryData(['post'])
+      await queryClient.cancelQueries(['post'])
+      queryClient.setQueryData(['post'], () => {
+        return {
+          ...postViewData,
+          numLikes: postViewData?.hasLiked
+            ? postViewData?.numLikes - 1
+            : postViewData?.numLikes + 1,
+          hasLiked: !postViewData?.hasLiked,
+        }
+      })
+      return { previousPostData }
+    },
+    onSuccess: () => {
+      console.log('on success')
+      queryClient.invalidateQueries({ queryKey: ['post'], refetchType: 'all' })
+      queryClient.invalidateQueries({
+        queryKey: ['postList'],
+        refetchType: 'all',
+      })
+    },
+    onError: (error, variables, context) => {
+      console.log('on error', error)
+      queryClient.setQueryData(['post'], () => {
+        return { ...context?.previousPostData }
+      })
+    },
+  })
 
   return (
     // <Fade in={true} timeout={{ enter: 600 }}>
@@ -165,7 +172,7 @@ export default function PostBox({ postViewId, currentUsername }) {
             <Typography variant="body1">{postViewData.postContent}</Typography>
             <Box display="flex" width="100%" justifyContent="space-evenly">
               <Grid container justifyContent="center" alignItems="center">
-                <IconButton onClick={() => mutation.mutate()}>
+                <IconButton onClick={() => handleLike.mutate()}>
                   {postViewData.hasLiked ? (
                     <Favorite sx={{ color: red[400] }} />
                   ) : (
@@ -199,13 +206,14 @@ export default function PostBox({ postViewId, currentUsername }) {
                 currentUsername={currentUsername}
               />
               <Box>
-                {postViewData.commentList &&
+                {Array.isArray(postViewData.commentList) &&
                   postViewData.commentList
                     .toReversed()
                     .map((e) => (
                       <CommentItem
                         key={e.id}
                         postId={postViewId}
+                        postViewData={postViewData}
                         commentId={e.id}
                         username={e.username}
                         content={e.content}

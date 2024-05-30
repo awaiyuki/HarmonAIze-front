@@ -239,6 +239,7 @@ export default function Generate() {
           음악 업로드
           <VisuallyHiddenInput
             type="file"
+            accept="image/*, audio/*, video/*"
             onChange={(e) => {
               e.preventDefault()
               if (!e.target.files) return
@@ -387,15 +388,15 @@ export default function Generate() {
                     }}
                   >
                     <ListItem disablePadding>
-                      {music.musicType === 'audio' && (
+                      {music.mediaType === 'audio' && (
                         <Box
                           sx={{ marginRight: 2 }}
                           onClick={() => fetchMusicFile(music.id)}
                         >
-                          <MusicCover />
+                          <MusicCover isLoading={music.progress} />
                         </Box>
                       )}
-                      {music.musicType === 'video' && (
+                      {music.mediaType === 'video' && (
                         <Box>
                           <video src={music.url} controls width="100%" />
                         </Box>
@@ -403,9 +404,14 @@ export default function Generate() {
                       <ListItemText
                         disableTypography
                         primary={
-                          <Typography variant="body1" fontWeight="500">
-                            {music.title}
-                          </Typography>
+                          <>
+                            <Typography variant="h6" fontWeight="500">
+                              {music.title}
+                            </Typography>
+                            <Typography variant="body1" fontWeight="500">
+                              {music.tags}
+                            </Typography>
+                          </>
                         }
                       />
                       <IconButton
