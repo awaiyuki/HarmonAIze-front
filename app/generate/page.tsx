@@ -146,7 +146,7 @@ export default function Generate() {
     const formData = new FormData()
     formData.append('username', username)
     formData.append('mediaTitle', mediaTitle)
-    formData.append('mode', uploadedAudioData.type === 'audio' ? 0 : 1)
+    formData.append('mode', uploadedAudioData.type)
     formData.append('file', file)
     formData.append('tags', tags)
     formData.append('instrument', inputInstrument)
