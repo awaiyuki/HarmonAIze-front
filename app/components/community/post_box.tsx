@@ -17,7 +17,12 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 import MusicCover from '../music/music_cover'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 export default function PostBox({ postViewId, currentUsername }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
@@ -70,6 +75,7 @@ export default function PostBox({ postViewId, currentUsername }) {
       if (!postViewId) return null
       return fetchPost(postViewId, currentUsername)
     },
+    keepPreviousData: true,
   })
 
   useEffect(() => {
@@ -94,13 +100,13 @@ export default function PostBox({ postViewId, currentUsername }) {
     onMutate: async () => {
       const previousPostData = queryClient.getQueryData(['post'])
       await queryClient.cancelQueries(['post'])
-      queryClient.setQueryData(['post'], () => {
+      queryClient.setQueryData(['post'], (oldData) => {
         return {
-          ...postViewData,
-          numLikes: postViewData?.hasLiked
-            ? postViewData?.numLikes - 1
-            : postViewData?.numLikes + 1,
-          hasLiked: !postViewData?.hasLiked,
+          ...oldData,
+          numLikes: oldData?.hasLiked
+            ? oldData?.numLikes - 1
+            : oldData?.numLikes + 1,
+          hasLiked: !oldData?.hasLiked,
         }
       })
       return { previousPostData }
@@ -213,7 +219,6 @@ export default function PostBox({ postViewId, currentUsername }) {
                       <CommentItem
                         key={e.id}
                         postId={postViewId}
-                        postViewData={postViewData}
                         commentId={e.id}
                         username={e.username}
                         content={e.content}

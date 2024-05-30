@@ -16,7 +16,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 export default function CommentItem({
   postId,
   commentId,
-  postViewData,
   username,
   content,
   numLikes,
@@ -48,24 +47,22 @@ export default function CommentItem({
     onMutate: async () => {
       const previousPostData = queryClient.getQueryData(['post'])
       await queryClient.cancelQueries(['post'])
-      queryClient.setQueryData(['post'], () => {
+      queryClient.setQueryData(['post'], (oldData) => {
         return {
-          ...postViewData,
-          commentList: {
-            ...postViewData.commentList.map((comment) => {
-              if (comment.id == commentId) {
-                return {
+          ...oldData,
+          commentList: oldData.commentList.map((comment) =>
+            comment.id == commentId
+              ? {
                   ...comment,
                   numLikes: hasLiked ? numLikes - 1 : numLikes + 1,
                   hasLiked: !hasLiked,
                 }
-              }
-            }),
-          },
-          numLikes: postViewData?.hasLiked
-            ? postViewData?.numLikes - 1
-            : postViewData?.numLikes + 1,
-          hasLiked: !postViewData?.hasLiked,
+              : comment
+          ),
+          numLikes: oldData?.hasLiked
+            ? oldData?.numLikes - 1
+            : oldData?.numLikes + 1,
+          hasLiked: !oldData?.hasLiked,
         }
       })
       return { previousPostData }
