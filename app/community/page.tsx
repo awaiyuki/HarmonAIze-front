@@ -17,7 +17,7 @@ import FeedItem from '../components/community/feed_item'
 import { grey } from '@mui/material/colors'
 import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
-import Loading from '../components/loading'
+import Loading from '../components/common/loading'
 import { useQuery, useMutation } from '@tanstack/react-query'
 
 export default function Community() {

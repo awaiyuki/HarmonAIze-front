@@ -4,7 +4,7 @@ import { Box } from '@mui/material'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import { useContext } from 'react'
-import { AudioContext } from '../context/audio_context'
+import { AudioContext } from '../../context/audio_context'
 import { useSession } from 'next-auth/react'
 export default function AudioPlayerBottom() {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)

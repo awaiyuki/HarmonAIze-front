@@ -16,7 +16,7 @@ import CommentInputBox from './comment_input_box'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
-import MusicCover from '../music_cover'
+import MusicCover from '../music/music_cover'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function PostBox({ postViewId, currentUsername }) {
@@ -55,29 +55,45 @@ export default function PostBox({ postViewId, currentUsername }) {
     // setPostViewData(dummyData)
   }
 
-  const handleLike = async () => {
-    console.log('handlelike' + postViewId + ', ' + currentUsername)
-    const res = await fetch(
-      `/api/community/likePost?id=${postViewId}&username=${currentUsername}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      }
-    )
-    const resData = await res.json()
-    console.log(resData)
-  }
+  // const handleLike = async () => {
+  //   console.log('handlelike' + postViewId + ', ' + currentUsername)
+  //   const res = await fetch(
+  //     `/api/community/likePost?id=${postViewId}&username=${currentUsername}`,
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({}),
+  //     }
+  //   )
+  //   const resData = await res.json()
+  //   console.log(resData)
+  // }
 
-  const mutation = useMutation({
-    mutationFn: handleLike,
+  const handleLike = useMutation({
+    mutationFn: async () => {
+      const previousPostData = queryClient.getQueryData(['post'])
+      await queryClient.cancelQueries(['post'])
+      queryClient.cancelQueries
+      queryClient.setQueryData(['post'], () => {
+        return {
+          ...postViewData,
+          hasLiked: !postViewData?.hasLiked,
+        }
+      })
+      return { previousPostData }
+    },
     onSuccess: () => {
       // Invalidate and refetch
       console.log('on success')
       queryClient.invalidateQueries({ queryKey: ['post'] })
       queryClient.invalidateQueries({ queryKey: ['postList'] })
+    },
+    onError: (error, variables, context) => {
+      queryClient.setQueryData(['post'], () => {
+        return { ...context?.previousPostData }
+      })
     },
   })
 

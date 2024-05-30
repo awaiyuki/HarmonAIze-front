@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Fade from '@mui/material/Fade'
-import SignIn from './components/sign_in'
+import SignIn from './components/common/sign_in'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
