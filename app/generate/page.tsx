@@ -144,13 +144,23 @@ export default function Generate() {
 
     const file = uploadedAudioData.file
     const formData = new FormData()
-    formData.append('username', username)
-    formData.append('mediaTitle', mediaTitle)
-    formData.append('mode', uploadedAudioData.type)
+    formData.append(
+      'mediaInfo',
+      new Blob(
+        [
+          JSON.stringify({
+            username,
+            mediaTitle,
+            mediaMode: uploadedAudioData.type,
+            instrument: inputInstrument,
+            content_name,
+            tags: tags,
+          }),
+        ],
+        { type: 'application/json' }
+      )
+    )
     formData.append('file', file)
-    formData.append('tags', tags)
-    formData.append('instrument', inputInstrument)
-    formData.append('content_name', content_name)
 
     const fileContent = formData.get('file')
     for (let value of formData.values()) {
