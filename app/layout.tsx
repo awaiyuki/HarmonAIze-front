@@ -9,6 +9,7 @@ import NavBar from './components/common/nav_bar'
 import AudioPlayerBottom from './components/music/audio_player_bottom'
 import SideBar from './components/common/side_bar'
 import { Box, Grid, useMediaQuery } from '@mui/material'
+import DrawerGenerateButton from './components/common/drawer_generate_button'
 
 export default function RootLayout({ children }) {
   return (
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
               {children}
             </Box>
             <Box>
+              <DrawerGenerateButton />
               <AudioPlayerBottom />
             </Box>
           </Box>
