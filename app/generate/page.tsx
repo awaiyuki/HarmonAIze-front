@@ -51,6 +51,8 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import { useQuery } from '@tanstack/react-query'
+import { TransitionGroup } from 'react-transition-group'
+import Loading from '../components/common/loading'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -397,121 +399,124 @@ export default function Generate() {
           margin: '0',
         }}
       >
-        <Box
-          sx={{
-            margin: '0',
-            width: '100%',
-            overflow: 'auto',
-          }}
-        >
-          <List
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Box
             sx={{
               margin: '0',
-              bgcolor: 'background.paper',
+              width: '100%',
+              overflow: 'auto',
             }}
           >
-            {Array.isArray(musicListData) &&
-              musicListData.toReversed().map((music, i) => (
-                <Fade
-                  key={'music' + music.id}
-                  in={true}
-                  // style={{ transitionDelay: `${i * 150}ms` }}
-                  timeout={{ enter: 1000 }}
-                >
-                  <Box
-                    sx={{
-                      padding: 2,
-                      '&:hover': { bgcolor: 'secondary.main' },
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <ListItem disablePadding>
-                      {music.mediaType === 'audio' && (
-                        <Box
-                          sx={{ marginRight: 2 }}
-                          onClick={() => fetchMusicFile(music.id)}
-                        >
-                          <MusicCover isLoading={music.progress} />
-                        </Box>
-                      )}
-                      {music.mediaType === 'video' && (
-                        <Box>
-                          <video src={music.url} controls width="100%" />
-                        </Box>
-                      )}
-                      <ListItemText
-                        disableTypography
-                        primary={
-                          <>
-                            <Typography variant="h6" fontWeight="500">
-                              {music.title}
-                            </Typography>
-                            <Typography variant="body1" fontWeight="500">
-                              {/* {Array.isArray(tags) &&
-                                music.tags.map((tag) => '#' + tag)} */}
-                            </Typography>
-                          </>
-                        }
-                      />
-                      <IconButton
-                        color="primary"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setMusicShareData({
-                            username,
-                            title: music.title,
-                            mediaId: music.id,
-                          })
-                          setModalOpen(true)
+            <List
+              sx={{
+                margin: '0',
+                bgcolor: 'background.paper',
+              }}
+            >
+              <TransitionGroup>
+                {Array.isArray(musicListData) &&
+                  musicListData.toReversed().map((music, i) => (
+                    <Collapse key={'music' + music.id}>
+                      <Box
+                        sx={{
+                          padding: 2,
+                          '&:hover': { bgcolor: 'secondary.main' },
+                          cursor: 'pointer',
                         }}
                       >
-                        <ShareIcon />
-                      </IconButton>
-
-                      <MusicShareModal
-                        open={modalOpen}
-                        setOpen={setModalOpen}
-                        musicShareData={musicShareData}
-                      />
-
-                      <Box
-                        marginLeft={4}
-                        display="flex"
-                        flexDirection="row"
-                        gap="2"
-                      >
-                        <Box>
-                          {music.progress ? (
-                            <></>
-                          ) : (
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                              <RotateLeftIcon
-                                sx={{
-                                  animation: 'spin 2s linear infinite',
-                                  '@keyframes spin': {
-                                    '0%': {
-                                      transform: 'rotate(360deg)',
-                                    },
-                                    '100%': {
-                                      transform: 'rotate(0deg)',
-                                    },
-                                  },
-                                }}
-                              />
-                              <Typography variant="body1">생성중...</Typography>
+                        <ListItem disablePadding>
+                          {music.mediaType === 'audio' && (
+                            <Box
+                              sx={{ marginRight: 2 }}
+                              onClick={() => fetchMusicFile(music.id)}
+                            >
+                              <MusicCover isLoading={music.progress} />
                             </Box>
                           )}
-                        </Box>
-                        <Box>
-                          <DownloadIcon />
-                        </Box>
+                          {music.mediaType === 'video' && (
+                            <Box>
+                              <video src={music.url} controls width="100%" />
+                            </Box>
+                          )}
+                          <ListItemText
+                            disableTypography
+                            primary={
+                              <>
+                                <Typography variant="h6" fontWeight="500">
+                                  {music.title}
+                                </Typography>
+                                <Typography variant="body1" fontWeight="500">
+                                  {/* {Array.isArray(tags) &&
+                                music.tags.map((tag) => '#' + tag)} */}
+                                </Typography>
+                              </>
+                            }
+                          />
+                          <IconButton
+                            color="primary"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setMusicShareData({
+                                username,
+                                title: music.title,
+                                mediaId: music.id,
+                              })
+                              setModalOpen(true)
+                            }}
+                          >
+                            <ShareIcon />
+                          </IconButton>
+
+                          <MusicShareModal
+                            open={modalOpen}
+                            setOpen={setModalOpen}
+                            musicShareData={musicShareData}
+                          />
+
+                          <Box
+                            marginLeft={4}
+                            display="flex"
+                            flexDirection="row"
+                            gap="2"
+                          >
+                            <Box>
+                              {music.progress ? (
+                                <></>
+                              ) : (
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <RotateLeftIcon
+                                    sx={{
+                                      animation: 'spin 2s linear infinite',
+                                      '@keyframes spin': {
+                                        '0%': {
+                                          transform: 'rotate(360deg)',
+                                        },
+                                        '100%': {
+                                          transform: 'rotate(0deg)',
+                                        },
+                                      },
+                                    }}
+                                  />
+                                  <Typography variant="body1">
+                                    생성중...
+                                  </Typography>
+                                </Box>
+                              )}
+                            </Box>
+                            <Box>
+                              <DownloadIcon />
+                            </Box>
+                          </Box>
+                        </ListItem>
                       </Box>
-                    </ListItem>
-                  </Box>
-                </Fade>
-              ))}
-          </List>
-        </Box>
+                    </Collapse>
+                  ))}
+              </TransitionGroup>
+            </List>
+          </Box>
+        )}
       </Box>
     </Box>
     // </Fade>

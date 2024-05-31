@@ -19,6 +19,8 @@ import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
 import Loading from '../components/common/loading'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import { Collapse } from '@mui/material'
+import { TransitionGroup } from 'react-transition-group'
 
 export default function Community() {
   const { data: session, status } = useSession({
@@ -107,8 +109,6 @@ export default function Community() {
   //   fetchPostList()
   // }, [])
 
-  if (isLoading) return Loading
-
   return (
     <Fade in={true}>
       <Box
@@ -129,25 +129,31 @@ export default function Community() {
             // width: '100%',
           }}
         >
-          <Box width="100%" borderColor={grey[400]} marginBottom={10}>
-            {postList &&
-              postList
-                .toReversed()
-                .map((e) => (
-                  <FeedItem
-                    key={e.id}
-                    id={e.id}
-                    username={e.username}
-                    mediaTitle={e.mediaTitle}
-                    postTitle={e.postTitle}
-                    postViewId={postViewId}
-                    setPostViewId={setPostViewId}
-                    numLikes={e.numLikes}
-                    numComments={e.numComments}
-                    hasLiked={e.hasLiked}
-                  />
-                ))}
-          </Box>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box width="100%" borderColor={grey[400]} marginBottom={10}>
+              <TransitionGroup>
+                {postList &&
+                  postList.toReversed().map((e) => (
+                    <Collapse key={e.id}>
+                      <FeedItem
+                        key={e.id}
+                        id={e.id}
+                        username={e.username}
+                        mediaTitle={e.mediaTitle}
+                        postTitle={e.postTitle}
+                        postViewId={postViewId}
+                        setPostViewId={setPostViewId}
+                        numLikes={e.numLikes}
+                        numComments={e.numComments}
+                        hasLiked={e.hasLiked}
+                      />
+                    </Collapse>
+                  ))}
+              </TransitionGroup>
+            </Box>
+          )}
         </Box>
         <Box sx={{ flex: '0.5' }}>
           <PostBox

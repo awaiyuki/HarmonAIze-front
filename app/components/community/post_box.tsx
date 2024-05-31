@@ -32,6 +32,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 import { TransitionGroup } from 'react-transition-group'
+import Loading from '../common/loading'
 
 export default function PostBox({ postViewId, currentUsername }) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
@@ -139,7 +140,9 @@ export default function PostBox({ postViewId, currentUsername }) {
     },
   })
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <Fade in={fadeIn}>
       <Box
         borderLeft={1}

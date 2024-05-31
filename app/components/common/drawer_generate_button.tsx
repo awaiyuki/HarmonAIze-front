@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box, Drawer, IconButton } from '@mui/material'
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'
 import React from 'react'

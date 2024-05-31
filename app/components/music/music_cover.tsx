@@ -11,8 +11,7 @@ export default function MusicCover(isLoading) {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      border="solid"
-      borderWidth="1px"
+      border="0.16rem solid"
       borderRadius="4px"
       borderColor="primary.main"
       margin={1}

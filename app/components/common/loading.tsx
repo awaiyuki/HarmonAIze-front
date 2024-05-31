@@ -1,5 +1,7 @@
+//@ts-nocheck
 import { Box } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
+
 export default function Loading() {
   return (
     <Box
@@ -11,7 +13,7 @@ export default function Loading() {
         height: '100%',
       }}
     >
-      <CircularProgress />
+      <CircularProgress size="2.4rem" color="primary" />
     </Box>
   )
 }
