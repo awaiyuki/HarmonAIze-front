@@ -38,13 +38,13 @@ function Copyright(props) {
 
 export default function SignIn() {
   /* temporary code to sign in directly */
-  ;(async () => {
-    await signIn('credentials', {
-      username: 'hello2',
-      password: 'a',
-      callbackUrl: '/generate',
-    })
-  })()
+  // ;(async () => {
+  //   await signIn('credentials', {
+  //     username: 'hello2',
+  //     password: 'a',
+  //     callbackUrl: '/generate',
+  //   })
+  // })()
 
   const router = useRouter()
   const handleSubmit = async (event) => {
