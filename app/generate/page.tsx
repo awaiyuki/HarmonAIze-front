@@ -23,12 +23,17 @@ import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
-import { AddBox, CheckBox, CurrencyYenTwoTone } from '@mui/icons-material'
+import {
+  AddBox,
+  Check,
+  CheckBox,
+  CurrencyYenTwoTone,
+} from '@mui/icons-material'
 import { useTheme } from '@emotion/react'
 import RotateLeftIcon from '@mui/icons-material/RotateLeft'
 import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '../context/audio_context'
-import { grey, pink, purple } from '@mui/material/colors'
+import { blue, grey, pink, purple } from '@mui/material/colors'
 import {
   Collapse,
   FormControl,
@@ -80,7 +85,7 @@ export default function Generate() {
   const [musicShareData, setMusicShareData] = useState({})
 
   const [uploadedAudioData, setUploadedAudioData] = useState({})
-
+  const [generateResult, setGenerateResult] = useState(false)
   const [inputInstrument, setInputInstrument] = useState('p')
   const [outputInstrumentList, setOutputInstrumentList] = useState({
     p: true,
@@ -178,7 +183,14 @@ export default function Generate() {
       body: formData,
     })
 
-    // mutate()
+    const resData = await res.json()
+    console.log('generate result:', resData)
+    if (resData) {
+      setGenerateResult(true)
+      setTimeout(() => {
+        setGenerateResult(false)
+      }, 2000)
+    }
   }
 
   const fetchMusicFile = async (id) => {
@@ -187,10 +199,10 @@ export default function Generate() {
       headers: {},
     })
 
-    const responseData = await res.json()
+    const responseData = await res.text()
     console.log(responseData)
-    setCurrentMusicData({ title: responseData.title, url: responseData.url })
-    setAudioSrc(responseData.url)
+    setCurrentMusicData({ title: 'dummy', url: responseData })
+    setAudioSrc(responseData)
   }
 
   const handleInputInstrumentChange = (e) => {
@@ -372,16 +384,17 @@ export default function Generate() {
                   size="large"
                   sx={{
                     mt: 4,
+                    mb: 4,
                     width: '100%',
                   }}
-                  startIcon={<AutoFixHighIcon />}
+                  startIcon={generateResult ? <Check /> : <AutoFixHighIcon />}
                   disabled={uploadedAudioData.title ? false : true}
                   onClick={(e) => {
                     e.preventDefault()
                     handleGenerateAccompaniment(username)
                   }}
                 >
-                  반주 생성
+                  {generateResult ? '' : '반주 생성'}
                 </Button>
               </Box>
             </Box>
@@ -447,9 +460,15 @@ export default function Generate() {
                                 <Typography variant="h6" fontWeight="500">
                                   {music.title}
                                 </Typography>
-                                <Typography variant="body1" fontWeight="500">
-                                  {/* {Array.isArray(tags) &&
-                                music.tags.map((tag) => '#' + tag)} */}
+                                <Typography
+                                  variant="body1"
+                                  fontWeight="500"
+                                  color={blue[500]}
+                                >
+                                  {/* {Array.isArray(music.tags) &&
+                                    music.tags.map((tag) => '#' + tag)}
+                                  {console.log(music.tags)} */}
+                                  {'#더미태그1 #더미태그2'}
                                 </Typography>
                               </>
                             }
@@ -481,7 +500,7 @@ export default function Generate() {
                             flexDirection="row"
                             gap="2"
                           >
-                            <Box>
+                            {/* <Box>
                               {!music.progress ? (
                                 <></>
                               ) : (
@@ -504,7 +523,7 @@ export default function Generate() {
                                   </Typography>
                                 </Box>
                               )}
-                            </Box>
+                            </Box> */}
                             <Box>
                               <DownloadIcon />
                             </Box>

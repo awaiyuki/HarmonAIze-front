@@ -4,6 +4,7 @@ import { useState } from 'react'
 import DoneIcon from '@mui/icons-material/Done'
 import { AccountCircle, Audiotrack } from '@mui/icons-material'
 import { blue } from '@mui/material/colors'
+import MusicCover from './music_cover'
 
 export default function MusicShareModal({ open, setOpen, musicShareData }) {
   const [success, setSuccess] = useState(false)
@@ -56,23 +57,53 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             음악 공유
           </Typography>
-          <Grid container justifyContent="center" padding={2}>
-            <Audiotrack color="primary" fontSize="large" />
-            <Typography variant="h6" fontWeight="medium">
-              {musicShareData.title}
-            </Typography>
-          </Grid>
-          <Grid container direction="row" gap={1}>
-            <AccountCircle fontSize="large" />
-            <Typography variant="h6">{musicShareData.username}</Typography>
-          </Grid>
-          <TextField name="post-title" placeholder="제목" />
-          <TextField
-            name="post-content"
-            multiline
-            minRows={3}
-            placeholder="내용"
-          />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <Grid container direction="row" gap={1}>
+              <AccountCircle fontSize="medium" />
+              <Typography variant="body1">{musicShareData.username}</Typography>
+            </Grid>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+              padding={2}
+            >
+              <MusicCover isLoading={false} />
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h6" fontWeight="500">
+                  {musicShareData.title}
+                </Typography>
+                <Typography variant="body1" fontWeight="500" color={blue[500]}>
+                  {'#더미태그1 #더미태그2'}
+                </Typography>
+              </Box>
+            </Grid>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+              }}
+            >
+              <TextField name="post-title" label="제목" size="small" />
+              <TextField
+                name="post-content"
+                multiline
+                minRows={3}
+                label="내용"
+                size="small"
+              />
+            </Box>
+          </Box>
           <Button type="submit" variant="contained">
             공유
           </Button>

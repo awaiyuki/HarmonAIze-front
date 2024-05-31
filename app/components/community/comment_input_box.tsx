@@ -17,7 +17,11 @@ import { grey } from '@mui/material/colors'
 import SendIcon from '@mui/icons-material/Send'
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
 
-export default function CommentInputBox({ currentUsername, postId }) {
+export default function CommentInputBox({
+  currentUsername,
+  postId,
+  numAllComments,
+}) {
   const queryClient = useQueryClient()
 
   const [inputData, setInputData] = useState('')
@@ -61,7 +65,7 @@ export default function CommentInputBox({ currentUsername, postId }) {
         return {
           ...oldData,
           commentList: oldData.commentList.push({
-            id: oldData.commentList.length,
+            id: numAllComments + 1,
             username: currentUsername,
             content: inputData,
             numLikes: 0,

@@ -34,6 +34,7 @@ export default function Community() {
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
   // const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
+  const [sortingMode, setSortingMode] = useState('latest')
   // const [isLoading, setIsLoading] = useState(false)
 
   const handleFileUpload = async (e) => {
@@ -92,12 +93,19 @@ export default function Community() {
     // setIsLoading(false)
   }
 
-  const {
+  let {
     data: postList,
     error,
     isLoading,
+    isFetched,
   } = useQuery({ queryKey: ['postList'], queryFn: fetchPostList })
 
+  if (isFetched) {
+    if (sortingMode == 'like') postList.sort((a, b) => b.numLikes - a.numLikes)
+    if (sortingMode == 'comment')
+      postList.sort((a, b) => b.numComments - a.numComments)
+    if (sortingMode == 'latest') postList = postList.toReversed()
+  }
   // const mutation = useMutation(postComment, {
   //   onSuccess: () => {
   //     // Invalidate and refetch
@@ -133,9 +141,27 @@ export default function Community() {
             <Loading />
           ) : (
             <Box width="100%" borderColor={grey[400]} marginBottom={10}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  borderBottom: 'solid 1px',
+                  borderColor: grey[400],
+                }}
+              >
+                <Button onClick={() => setSortingMode('like')}>
+                  좋아요 순
+                </Button>
+                <Button onClick={() => setSortingMode('comment')}>
+                  댓글 순
+                </Button>
+                <Button onClick={() => setSortingMode('latest')}>
+                  최신 순
+                </Button>
+              </Box>
               <TransitionGroup>
                 {postList &&
-                  postList.toReversed().map((e) => (
+                  postList.map((e) => (
                     <Collapse key={e.id}>
                       <FeedItem
                         key={e.id}
@@ -159,6 +185,13 @@ export default function Community() {
           <PostBox
             postViewId={postViewId}
             currentUsername={session?.user.username}
+            numAllComments={
+              Array.isArray(postList)
+                ? postList.reduce((accumulator, currentObject) => {
+                    return accumulator + currentObject.numComments
+                  })
+                : 0
+            }
           />
         </Box>
       </Box>

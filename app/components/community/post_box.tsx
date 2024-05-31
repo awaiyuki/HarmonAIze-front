@@ -34,7 +34,11 @@ import {
 import { TransitionGroup } from 'react-transition-group'
 import Loading from '../common/loading'
 
-export default function PostBox({ postViewId, currentUsername }) {
+export default function PostBox({
+  postViewId,
+  currentUsername,
+  numAllComments,
+}) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const [fadeIn, setFadeIn] = useState(false)
   // const [postViewData, setPostViewData] = useState(null)
@@ -231,6 +235,7 @@ export default function PostBox({ postViewId, currentUsername }) {
                 <CommentInputBox
                   postId={postViewId}
                   currentUsername={currentUsername}
+                  numAllComments={numAllComments}
                 />
                 <Box>
                   <TransitionGroup>
