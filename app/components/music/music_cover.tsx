@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import Audiotrack from '@mui/icons-material/Audiotrack'
 import { RotateLeft } from '@mui/icons-material'
 
-export default function MusicCover(isLoading) {
+export default function MusicCover({ isLoading }) {
   return (
     <Box
       width="80px"
