@@ -79,6 +79,7 @@ export default function PostBox({ postViewId, currentUsername }) {
     data: postViewData,
     error,
     isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ['post'],

@@ -482,7 +482,7 @@ export default function Generate() {
                             gap="2"
                           >
                             <Box>
-                              {music.progress ? (
+                              {!music.progress ? (
                                 <></>
                               ) : (
                                 <Box sx={{ display: 'flex', gap: 1 }}>
