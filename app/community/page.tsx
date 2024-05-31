@@ -110,52 +110,52 @@ export default function Community() {
   if (isLoading) return Loading
 
   return (
-    // <Fade in={true} timeout={{ enter: 700 }}>
-    <Box
-      sx={{
-        height: '100%',
-        width: '100%',
-        // marginTop: 4,
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-      }}
-    >
+    <Fade in={true}>
       <Box
         sx={{
-          flex: '0.5',
+          height: '100%',
+          width: '100%',
+          // marginTop: 4,
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          // width: '100%',
+          flexDirection: { xs: 'column', sm: 'row' },
         }}
       >
-        <Box width="100%" borderColor={grey[400]} marginBottom={10}>
-          {postList &&
-            postList
-              .toReversed()
-              .map((e) => (
-                <FeedItem
-                  key={e.id}
-                  id={e.id}
-                  username={e.username}
-                  mediaTitle={e.mediaTitle}
-                  postTitle={e.postTitle}
-                  postViewId={postViewId}
-                  setPostViewId={setPostViewId}
-                  numLikes={e.numLikes}
-                  numComments={e.numComments}
-                  hasLiked={e.hasLiked}
-                />
-              ))}
+        <Box
+          sx={{
+            flex: '0.5',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            // width: '100%',
+          }}
+        >
+          <Box width="100%" borderColor={grey[400]} marginBottom={10}>
+            {postList &&
+              postList
+                .toReversed()
+                .map((e) => (
+                  <FeedItem
+                    key={e.id}
+                    id={e.id}
+                    username={e.username}
+                    mediaTitle={e.mediaTitle}
+                    postTitle={e.postTitle}
+                    postViewId={postViewId}
+                    setPostViewId={setPostViewId}
+                    numLikes={e.numLikes}
+                    numComments={e.numComments}
+                    hasLiked={e.hasLiked}
+                  />
+                ))}
+          </Box>
+        </Box>
+        <Box sx={{ flex: '0.5' }}>
+          <PostBox
+            postViewId={postViewId}
+            currentUsername={session?.user.username}
+          />
         </Box>
       </Box>
-      <Box sx={{ flex: '0.5' }}>
-        <PostBox
-          postViewId={postViewId}
-          currentUsername={session?.user.username}
-        />
-      </Box>
-    </Box>
-    // </Fade>
+    </Fade>
   )
 }

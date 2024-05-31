@@ -44,7 +44,7 @@ export default function FeedItem({
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <MusicCover />
+        <MusicCover isLoading={false} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box paddingBottom={2}>
             <Typography variant="body1" fontWeight="medium">
