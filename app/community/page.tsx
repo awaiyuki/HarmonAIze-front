@@ -18,7 +18,7 @@ import { grey } from '@mui/material/colors'
 import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
 import Loading from '../components/common/loading'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Collapse } from '@mui/material'
 import { TransitionGroup } from 'react-transition-group'
 
@@ -34,8 +34,15 @@ export default function Community() {
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
   // const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
+<<<<<<< Updated upstream
+=======
+  const [sortingMode, setSortingMode] = useState('latest')
+  const [searchData, setSearchData] = useState('')
+  const [searchedPostList, setSearchedPostList] = useState([])
+>>>>>>> Stashed changes
   // const [isLoading, setIsLoading] = useState(false)
 
+  const queryClient = useQueryClient()
   const handleFileUpload = async (e) => {
     e.preventDefault()
 
@@ -98,16 +105,42 @@ export default function Community() {
     isLoading,
   } = useQuery({ queryKey: ['postList'], queryFn: fetchPostList })
 
+<<<<<<< Updated upstream
   // const mutation = useMutation(postComment, {
   //   onSuccess: () => {
   //     // Invalidate and refetch
   //     queryClient.invalidateQueries('postLists')
   //   },
   // })
+=======
+  if (isFetched) {
+    console.log(postList)
+    if (sortingMode == 'like') postList.sort((a, b) => b.numLikes - a.numLikes)
+    if (sortingMode == 'comment')
+      postList.sort((a, b) => b.numComments - a.numComments)
+    if (sortingMode == 'latest') postList = postList.toReversed()
+  }
+>>>>>>> Stashed changes
 
-  // useEffect(() => {
-  //   fetchPostList()
-  // }, [])
+  const handleSearch = (e) => {
+    const inputValue = e.target.value
+    setSearchData(inputValue)
+
+    // set query data to be filtered with searchData after refetch
+    postList = postList.filter(
+      (post) =>
+        post.postTitle.includes(inputValue) ||
+        post.mediaTitle.includes(inputValue) ||
+        post.username.includes(inputValue)
+    )
+    console.log(postList)
+  }
+
+  const handler = (e) => {
+    return handler
+
+    console.log(e)
+  }
 
   return (
     <Fade in={true}>
@@ -133,9 +166,42 @@ export default function Community() {
             <Loading />
           ) : (
             <Box width="100%" borderColor={grey[400]} marginBottom={10}>
+<<<<<<< Updated upstream
               <TransitionGroup>
                 {postList &&
                   postList.toReversed().map((e) => (
+=======
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  borderBottom: 'solid 1px',
+                  borderColor: grey[400],
+                }}
+              >
+                <Box>
+                  <TextField
+                    label="검색"
+                    value={searchData}
+                    onChange={handleSearch}
+                  />
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <Button onClick={() => setSortingMode('like')}>
+                    좋아요 순
+                  </Button>
+                  <Button onClick={() => setSortingMode('comment')}>
+                    댓글 순
+                  </Button>
+                  <Button onClick={() => setSortingMode('latest')}>
+                    최신 순
+                  </Button>
+                </Box>
+              </Box>
+              <TransitionGroup>
+                {Array.isArray(postList) &&
+                  postList.map((e) => (
+>>>>>>> Stashed changes
                     <Collapse key={e.id}>
                       <FeedItem
                         key={e.id}
@@ -159,6 +225,16 @@ export default function Community() {
           <PostBox
             postViewId={postViewId}
             currentUsername={session?.user.username}
+<<<<<<< Updated upstream
+=======
+            numAllComments={
+              postList && postList.length != 0 && Array.isArray(postList)
+                ? postList.reduce((accumulator, currentObject) => {
+                    return accumulator + currentObject.numComments
+                  })
+                : 0
+            }
+>>>>>>> Stashed changes
           />
         </Box>
       </Box>
