@@ -34,12 +34,9 @@ export default function Community() {
   const [audioInfo, SetAudioInfo] = useState({ name: '', url: '' })
   // const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
-<<<<<<< Updated upstream
-=======
   const [sortingMode, setSortingMode] = useState('latest')
   const [searchData, setSearchData] = useState('')
   const [searchedPostList, setSearchedPostList] = useState([])
->>>>>>> Stashed changes
   // const [isLoading, setIsLoading] = useState(false)
 
   const queryClient = useQueryClient()
@@ -105,14 +102,6 @@ export default function Community() {
     isLoading,
   } = useQuery({ queryKey: ['postList'], queryFn: fetchPostList })
 
-<<<<<<< Updated upstream
-  // const mutation = useMutation(postComment, {
-  //   onSuccess: () => {
-  //     // Invalidate and refetch
-  //     queryClient.invalidateQueries('postLists')
-  //   },
-  // })
-=======
   if (isFetched) {
     console.log(postList)
     if (sortingMode == 'like') postList.sort((a, b) => b.numLikes - a.numLikes)
@@ -120,7 +109,6 @@ export default function Community() {
       postList.sort((a, b) => b.numComments - a.numComments)
     if (sortingMode == 'latest') postList = postList.toReversed()
   }
->>>>>>> Stashed changes
 
   const handleSearch = (e) => {
     const inputValue = e.target.value
@@ -166,11 +154,6 @@ export default function Community() {
             <Loading />
           ) : (
             <Box width="100%" borderColor={grey[400]} marginBottom={10}>
-<<<<<<< Updated upstream
-              <TransitionGroup>
-                {postList &&
-                  postList.toReversed().map((e) => (
-=======
               <Box
                 sx={{
                   display: 'flex',
@@ -201,7 +184,6 @@ export default function Community() {
               <TransitionGroup>
                 {Array.isArray(postList) &&
                   postList.map((e) => (
->>>>>>> Stashed changes
                     <Collapse key={e.id}>
                       <FeedItem
                         key={e.id}
@@ -225,8 +207,6 @@ export default function Community() {
           <PostBox
             postViewId={postViewId}
             currentUsername={session?.user.username}
-<<<<<<< Updated upstream
-=======
             numAllComments={
               postList && postList.length != 0 && Array.isArray(postList)
                 ? postList.reduce((accumulator, currentObject) => {
@@ -234,7 +214,6 @@ export default function Community() {
                   })
                 : 0
             }
->>>>>>> Stashed changes
           />
         </Box>
       </Box>
