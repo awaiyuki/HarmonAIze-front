@@ -35,8 +35,11 @@ export default function Community() {
   // const [postList, setPostList] = useState([])
   const [postViewId, setPostViewId] = useState(null)
   const [sortingMode, setSortingMode] = useState('latest')
+<<<<<<< HEAD
   const [searchData, setSearchData] = useState('')
   const [searchedPostList, setSearchedPostList] = useState([])
+=======
+>>>>>>> main
   // const [isLoading, setIsLoading] = useState(false)
 
   const queryClient = useQueryClient()
@@ -96,19 +99,32 @@ export default function Community() {
     // setIsLoading(false)
   }
 
-  const {
+  let {
     data: postList,
     error,
     isLoading,
+    isFetched,
   } = useQuery({ queryKey: ['postList'], queryFn: fetchPostList })
 
   if (isFetched) {
+<<<<<<< HEAD
     console.log(postList)
+=======
+>>>>>>> main
     if (sortingMode == 'like') postList.sort((a, b) => b.numLikes - a.numLikes)
     if (sortingMode == 'comment')
       postList.sort((a, b) => b.numComments - a.numComments)
     if (sortingMode == 'latest') postList = postList.toReversed()
   }
+<<<<<<< HEAD
+=======
+  // const mutation = useMutation(postComment, {
+  //   onSuccess: () => {
+  //     // Invalidate and refetch
+  //     queryClient.invalidateQueries('postLists')
+  //   },
+  // })
+>>>>>>> main
 
   const handleSearch = (e) => {
     const inputValue = e.target.value
@@ -157,11 +173,16 @@ export default function Community() {
               <Box
                 sx={{
                   display: 'flex',
+<<<<<<< HEAD
                   justifyContent: 'space-between',
+=======
+                  justifyContent: 'flex-end',
+>>>>>>> main
                   borderBottom: 'solid 1px',
                   borderColor: grey[400],
                 }}
               >
+<<<<<<< HEAD
                 <Box>
                   <TextField
                     label="검색"
@@ -183,6 +204,20 @@ export default function Community() {
               </Box>
               <TransitionGroup>
                 {Array.isArray(postList) &&
+=======
+                <Button onClick={() => setSortingMode('like')}>
+                  좋아요 순
+                </Button>
+                <Button onClick={() => setSortingMode('comment')}>
+                  댓글 순
+                </Button>
+                <Button onClick={() => setSortingMode('latest')}>
+                  최신 순
+                </Button>
+              </Box>
+              <TransitionGroup>
+                {postList &&
+>>>>>>> main
                   postList.map((e) => (
                     <Collapse key={e.id}>
                       <FeedItem
@@ -208,7 +243,11 @@ export default function Community() {
             postViewId={postViewId}
             currentUsername={session?.user.username}
             numAllComments={
+<<<<<<< HEAD
               postList && postList.length != 0 && Array.isArray(postList)
+=======
+              Array.isArray(postList)
+>>>>>>> main
                 ? postList.reduce((accumulator, currentObject) => {
                     return accumulator + currentObject.numComments
                   })

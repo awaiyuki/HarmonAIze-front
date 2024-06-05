@@ -62,7 +62,7 @@ export default function ToggleColorMode({ children }) {
         palette: {
           mode,
           primary: {
-            main: purple[500],
+            main: mode == 'dark' ? '#603F8B' : '#A16AE8',
           },
           secondary: {
             main: mode == 'dark' ? '#652f9050' : '#ece0f570',

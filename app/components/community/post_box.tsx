@@ -34,7 +34,11 @@ import {
 import { TransitionGroup } from 'react-transition-group'
 import Loading from '../common/loading'
 
-export default function PostBox({ postViewId, currentUsername }) {
+export default function PostBox({
+  postViewId,
+  currentUsername,
+  numAllComments,
+}) {
   const { audioSrc, setAudioSrc } = useContext(AudioContext)
   const [fadeIn, setFadeIn] = useState(false)
   // const [postViewData, setPostViewData] = useState(null)
@@ -79,6 +83,7 @@ export default function PostBox({ postViewId, currentUsername }) {
     data: postViewData,
     error,
     isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ['post'],
@@ -158,20 +163,14 @@ export default function PostBox({ postViewId, currentUsername }) {
           {postViewData && (
             <Grid container direction="column" gap={1}>
               <Grid container direction="row" alignItems="center" gap={2}>
-                {postViewData.mediaType === 'audio' && (
-                  <Button
-                    color="primary"
-                    fontSize="large"
-                    onClick={() => setAudioSrc(postViewData.mediaURL)}
-                  >
-                    <MusicCover />
-                  </Button>
-                )}
-                {postViewData.mediaType === 'video' && (
-                  <Box>
-                    <video src={postViewData.mediaURL} />
-                  </Box>
-                )}
+                {console.log(postViewData)}
+                <Button
+                  color="primary"
+                  fontSize="large"
+                  onClick={() => setAudioSrc(postViewData.mediaURL)}
+                >
+                  <MusicCover />
+                </Button>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h6" fontWeight="500">
                     {postViewData.mediaTitle}
@@ -230,6 +229,7 @@ export default function PostBox({ postViewId, currentUsername }) {
                 <CommentInputBox
                   postId={postViewId}
                   currentUsername={currentUsername}
+                  numAllComments={numAllComments}
                 />
                 <Box>
                   <TransitionGroup>

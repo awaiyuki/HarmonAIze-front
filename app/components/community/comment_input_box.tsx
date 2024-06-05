@@ -17,39 +17,77 @@ import { grey } from '@mui/material/colors'
 import SendIcon from '@mui/icons-material/Send'
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
 
-export default function CommentInputBox({ currentUsername, postId }) {
+export default function CommentInputBox({
+  currentUsername,
+  postId,
+  numAllComments,
+}) {
   const queryClient = useQueryClient()
 
   const [inputData, setInputData] = useState('')
 
-  const handleCommentWrite = async ({ currentUsername, postId, content }) => {
-    console.log({
-      username: currentUsername,
-      content: inputData,
-    })
-    const res = await fetch('/api/community/writeComment?postId=' + postId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: currentUsername,
-        content,
-      }),
-    })
-    const resData = await res.json()
-    setInputData('')
-    return resData
-    console.log(resData)
-  }
+  // const handleCommentWrite =
 
-  const mutation = useMutation({
-    mutationFn: handleCommentWrite,
+  // const mutation = useMutation({
+  //   mutationFn: handleCommentWrite,
+  //   onSuccess: () => {
+  //     // Invalidate and refetch
+  //     console.log('on success')
+  //     queryClient.invalidateQueries({ queryKey: ['post'] })
+  //     queryClient.invalidateQueries({ queryKey: ['postList'] })
+  //   },
+  // })
+
+  const handleCommentWrite = useMutation({
+    mutationFn: async ({ currentUsername, postId, content }) => {
+      console.log({
+        username: currentUsername,
+        content: inputData,
+      })
+      const res = await fetch('/api/community/writeComment?postId=' + postId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: currentUsername,
+          content,
+        }),
+      })
+      const resData = await res.json()
+      setInputData('')
+      return resData
+    },
+    onMutate: async () => {
+      const previousPostData = queryClient.getQueryData(['post'])
+      await queryClient.cancelQueries(['post'])
+      queryClient.setQueryData(['post'], (oldData) => {
+        return {
+          ...oldData,
+          commentList: oldData.commentList.push({
+            id: numAllComments + 1,
+            username: currentUsername,
+            content: inputData,
+            numLikes: 0,
+            hasLiked: false,
+          }),
+        }
+      })
+      return { previousPostData }
+    },
     onSuccess: () => {
-      // Invalidate and refetch
       console.log('on success')
-      queryClient.invalidateQueries({ queryKey: ['post'] })
-      queryClient.invalidateQueries({ queryKey: ['postList'] })
+      queryClient.invalidateQueries({ queryKey: ['post'], refetchType: 'all' })
+      queryClient.invalidateQueries({
+        queryKey: ['postList'],
+        refetchType: 'all',
+      })
+    },
+    onError: (error, variables, context) => {
+      console.log('on error', error)
+      queryClient.setQueryData(['post'], () => {
+        return { ...context?.previousPostData }
+      })
     },
   })
 
@@ -70,7 +108,11 @@ export default function CommentInputBox({ currentUsername, postId }) {
       <Button
         variant="contained"
         onClick={() =>
-          mutation.mutate({ currentUsername, postId, content: inputData })
+          handleCommentWrite.mutate({
+            currentUsername,
+            postId,
+            content: inputData,
+          })
         }
       >
         <SendIcon />
