@@ -125,11 +125,14 @@ export default function Community() {
     console.log(postList)
   }
 
-  const handler = (e) => {
-    return handler
-
-    console.log(e)
-  }
+  const filteredData = postList
+    ? postList.filter(
+        (post) =>
+          post.postTitle.toLowerCase().includes(searchData) ||
+          post.mediaTitle.toLowerCase().includes(searchData) ||
+          post.username.toLowerCase().includes(searchData)
+      )
+    : undefined
 
   return (
     <Fade in={true}>
@@ -144,11 +147,12 @@ export default function Community() {
       >
         <Box
           sx={{
-            flex: '0.5',
+            flex: { xs: 1, sm: 0.5 },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             // width: '100%',
+            overflowY: 'auto',
           }}
         >
           {isLoading ? (
@@ -161,6 +165,7 @@ export default function Community() {
                   justifyContent: 'space-between',
                   borderBottom: 'solid 1px',
                   borderColor: grey[400],
+                  p: 1,
                 }}
               >
                 <Box>
@@ -168,6 +173,7 @@ export default function Community() {
                     label="검색"
                     value={searchData}
                     onChange={handleSearch}
+                    size="small"
                   />
                 </Box>
                 <Box sx={{ display: 'flex' }}>
@@ -183,8 +189,8 @@ export default function Community() {
                 </Box>
               </Box>
               <TransitionGroup>
-                {Array.isArray(postList) &&
-                  postList.map((e) => (
+                {Array.isArray(filteredData) &&
+                  filteredData.map((e) => (
                     <Collapse key={e.id}>
                       <FeedItem
                         key={e.id}
@@ -204,7 +210,7 @@ export default function Community() {
             </Box>
           )}
         </Box>
-        <Box sx={{ flex: '0.5' }}>
+        <Box sx={{ flex: { xs: 0, sm: 0.5 } }}>
           <PostBox
             postViewId={postViewId}
             currentUsername={session?.user.username}

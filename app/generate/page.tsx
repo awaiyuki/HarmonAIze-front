@@ -221,286 +221,306 @@ export default function Generate() {
     })
   }
   return (
-    // <Fade in={true} timeout={{ enter: 600 }}>
-    <Box
-      sx={{
-        display: 'flex',
-        flex: '1',
-        flexDirection: { xs: 'column', sm: 'row' },
-        width: '100%',
-        height: '100%',
-      }}
-    >
+    <Fade in={true}>
       <Box
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: 'flex',
+          flex: '1',
+          flexDirection: { xs: 'column', sm: 'row' },
+          width: '100%',
           height: '100%',
-          minWidth: '320px',
-          flex: '0.3',
-          borderRight: 1,
-          borderColor: grey[400],
-          padding: 2,
-          overflowY: 'auto',
         }}
       >
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          size="large"
-          startIcon={<CloudUploadIcon />}
+        <Box
           sx={{
-            marginTop: 2,
-            width: '100%',
+            display: { xs: 'none', sm: 'block' },
+            height: '100%',
+            minWidth: '320px',
+            flex: '0.3',
+            borderRight: 1,
+            borderColor: grey[400],
+            padding: 2,
+            overflowY: 'auto',
           }}
         >
-          음악 업로드
-          <VisuallyHiddenInput
-            type="file"
-            accept="image/*, audio/*, video/*"
-            onChange={(e) => {
-              e.preventDefault()
-              if (!e.target.files) return
-
-              const file = e.target.files[0]
-
-              if (!file) return
-
-              handleFileUpload(file)
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            size="large"
+            startIcon={<CloudUploadIcon />}
+            sx={{
+              marginTop: 2,
+              width: '100%',
             }}
-          />
-        </Button>
-        <div>
-          <Grow
-            in={uploadedAudioData && uploadedAudioData.title}
-            style={{ transformOrigin: 'top center' }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: 4,
-              }}
-            >
-              <Typography variant="subtitle1">
-                {uploadedAudioData.title}
-              </Typography>
-              {uploadedAudioData.type === 'audio' && (
-                <audio src={uploadedAudioData.url} type="audio/mp3" controls />
-              )}
-              {uploadedAudioData.type === 'video' && (
-                <video src={uploadedAudioData.url} width="100%" controls />
-              )}
+            음악 업로드
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*, audio/*, video/*"
+              onChange={(e) => {
+                e.preventDefault()
+                if (!e.target.files) return
 
-              <Box component="form" sx={{ mt: 4 }} autoComplete="off">
-                <TextField
-                  width="100%"
-                  required
-                  label="제목"
-                  value={mediaTitle}
-                  onChange={(e) => setMediaTitle(e.target.value)}
-                  sx={{ mb: 2 }}
-                  size="small"
-                  fullWidth
-                />
-                <TextField
-                  variant="outlined"
-                  label="태그"
-                  value={tags}
-                  onChange={(e) => {
-                    const newTags = e.target.value
-                      .replace(/\s+/g, '')
-                      .split(',')
-                    setTags(newTags)
-                    console.log(newTags)
-                  }}
-                  size="small"
-                  fullWidth
-                />
-                <Typography sx={{ mt: 4 }} variant="subtitle1" fontWeight={500}>
-                  입력 음악 악기
+                const file = e.target.files[0]
+
+                if (!file) return
+
+                handleFileUpload(file)
+              }}
+            />
+          </Button>
+          <div>
+            <Grow
+              in={uploadedAudioData && uploadedAudioData.title}
+              style={{ transformOrigin: 'top center' }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  marginTop: 4,
+                }}
+              >
+                <Typography variant="subtitle1">
+                  {uploadedAudioData.title}
                 </Typography>
-                <RadioGroup
-                  aria-labelledby="radio-buttons-input-instruments"
-                  defaultValue="p"
-                  name="radio-buttons-group"
-                  onChange={handleInputInstrumentChange}
-                >
-                  <Box sx={{ display: 'flex' }}>
+                {uploadedAudioData.type === 'audio' && (
+                  <audio
+                    src={uploadedAudioData.url}
+                    type="audio/mp3"
+                    controls
+                  />
+                )}
+                {uploadedAudioData.type === 'video' && (
+                  <video src={uploadedAudioData.url} width="100%" controls />
+                )}
+
+                <Box component="form" sx={{ mt: 4 }} autoComplete="off">
+                  <TextField
+                    width="100%"
+                    required
+                    label="제목"
+                    value={mediaTitle}
+                    onChange={(e) => setMediaTitle(e.target.value)}
+                    sx={{ mb: 2 }}
+                    size="small"
+                    fullWidth
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="태그"
+                    value={tags}
+                    onChange={(e) => {
+                      const newTags = e.target.value
+                        .replace(/\s+/g, '')
+                        .split(',')
+                      setTags(newTags)
+                      console.log(newTags)
+                    }}
+                    size="small"
+                    fullWidth
+                  />
+                  <Typography
+                    sx={{ mt: 4 }}
+                    variant="subtitle1"
+                    fontWeight={500}
+                  >
+                    입력 음악 악기
+                  </Typography>
+                  <RadioGroup
+                    aria-labelledby="radio-buttons-input-instruments"
+                    defaultValue="p"
+                    name="radio-buttons-group"
+                    onChange={handleInputInstrumentChange}
+                  >
+                    <Box sx={{ display: 'flex' }}>
+                      <FormControlLabel
+                        value="p"
+                        control={<Radio />}
+                        label="피아노"
+                      />
+                      <FormControlLabel
+                        value="g"
+                        control={<Radio />}
+                        label="기타"
+                      />
+                      <FormControlLabel
+                        value="b"
+                        control={<Radio />}
+                        label="베이스"
+                      />
+                    </Box>
+                  </RadioGroup>
+
+                  <Typography
+                    sx={{ mt: 4 }}
+                    variant="subtitle1"
+                    fontWeight={500}
+                  >
+                    생성 음악 악기
+                  </Typography>
+                  <FormGroup>
                     <FormControlLabel
-                      value="p"
-                      control={<Radio />}
+                      checked={outputInstrumentList.p}
+                      name="p"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
                       label="피아노"
                     />
                     <FormControlLabel
-                      value="g"
-                      control={<Radio />}
+                      checked={outputInstrumentList.g}
+                      name="g"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
                       label="기타"
                     />
                     <FormControlLabel
-                      value="b"
-                      control={<Radio />}
+                      checked={outputInstrumentList.b}
+                      name="b"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
                       label="베이스"
                     />
-                  </Box>
-                </RadioGroup>
+                    <FormControlLabel
+                      checked={outputInstrumentList.d}
+                      name="d"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
+                      label="드럼"
+                    />
+                  </FormGroup>
 
-                <Typography sx={{ mt: 4 }} variant="subtitle1" fontWeight={500}>
-                  생성 음악 악기
-                </Typography>
-                <FormGroup>
-                  <FormControlLabel
-                    checked={outputInstrumentList.p}
-                    name="p"
-                    control={<Switch onChange={handleOutputInstrumentChange} />}
-                    label="피아노"
-                  />
-                  <FormControlLabel
-                    checked={outputInstrumentList.g}
-                    name="g"
-                    control={<Switch onChange={handleOutputInstrumentChange} />}
-                    label="기타"
-                  />
-                  <FormControlLabel
-                    checked={outputInstrumentList.b}
-                    name="b"
-                    control={<Switch onChange={handleOutputInstrumentChange} />}
-                    label="베이스"
-                  />
-                  <FormControlLabel
-                    checked={outputInstrumentList.d}
-                    name="d"
-                    control={<Switch onChange={handleOutputInstrumentChange} />}
-                    label="드럼"
-                  />
-                </FormGroup>
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  tabIndex={-1}
-                  size="large"
-                  sx={{
-                    mt: 4,
-                    mb: 4,
-                    width: '100%',
-                  }}
-                  startIcon={generateResult ? <Check /> : <AutoFixHighIcon />}
-                  disabled={uploadedAudioData.title ? false : true}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleGenerateAccompaniment(username)
-                  }}
-                >
-                  {generateResult ? '' : '반주 생성'}
-                </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    tabIndex={-1}
+                    size="large"
+                    sx={{
+                      mt: 4,
+                      mb: 4,
+                      width: '100%',
+                    }}
+                    startIcon={generateResult ? <Check /> : <AutoFixHighIcon />}
+                    disabled={uploadedAudioData.title ? false : true}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleGenerateAccompaniment(username)
+                    }}
+                  >
+                    {generateResult ? '' : '반주 생성'}
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          </Grow>
-        </div>
-      </Box>
+            </Grow>
+          </div>
+        </Box>
 
-      <Box
-        sx={{
-          flex: '0.7',
-          display: 'flex',
-          height: '100%',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          margin: '0',
-        }}
-      >
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Box
-            sx={{
-              margin: '0',
-              width: '100%',
-              overflow: 'auto',
-            }}
-          >
-            <List
+        <Box
+          sx={{
+            flex: '0.7',
+            display: 'flex',
+            height: '100%',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            margin: '0',
+          }}
+        >
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box
               sx={{
                 margin: '0',
-                bgcolor: 'background.paper',
+                width: '100%',
+                overflow: 'auto',
               }}
             >
-              <TransitionGroup>
-                {Array.isArray(musicListData) &&
-                  musicListData.toReversed().map((music, i) => (
-                    <Collapse key={'music' + music.id}>
-                      <Box
-                        sx={{
-                          padding: 2,
-                          '&:hover': { bgcolor: 'secondary.main' },
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <ListItem disablePadding>
-                          {music.mediaType === 'audio' && (
-                            <Box
-                              sx={{ marginRight: 2 }}
-                              onClick={() => fetchMusicFile(music.id)}
-                            >
-                              <MusicCover isLoading={music.progress} />
-                            </Box>
-                          )}
-                          {music.mediaType === 'video' && (
-                            <Box>
-                              <video src={music.url} controls width="100%" />
-                            </Box>
-                          )}
-                          <ListItemText
-                            disableTypography
-                            primary={
-                              <>
-                                <Typography variant="h6" fontWeight="500">
-                                  {music.title}
-                                </Typography>
-                                <Typography
-                                  variant="body1"
-                                  fontWeight="500"
-                                  color={blue[500]}
-                                >
-                                  {/* {Array.isArray(music.tags) &&
+              <List
+                sx={{
+                  margin: '0',
+                  bgcolor: 'background.paper',
+                }}
+              >
+                <TransitionGroup>
+                  {Array.isArray(musicListData) &&
+                    musicListData.toReversed().map((music, i) => (
+                      <Collapse key={'music' + music.id}>
+                        <Box
+                          sx={{
+                            padding: 2,
+                            '&:hover': { bgcolor: 'secondary.main' },
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <ListItem disablePadding>
+                            {music.mediaType === 'audio' && (
+                              <Box
+                                sx={{ marginRight: 2 }}
+                                onClick={() => fetchMusicFile(music.id)}
+                              >
+                                <MusicCover isLoading={music.progress} />
+                              </Box>
+                            )}
+                            {music.mediaType === 'video' && (
+                              <Box>
+                                <video src={music.url} controls width="100%" />
+                              </Box>
+                            )}
+                            <ListItemText
+                              disableTypography
+                              primary={
+                                <>
+                                  <Typography variant="h6" fontWeight="500">
+                                    {music.title}
+                                  </Typography>
+                                  <Typography
+                                    variant="body1"
+                                    fontWeight="500"
+                                    color={blue[500]}
+                                  >
+                                    {/* {Array.isArray(music.tags) &&
                                     music.tags.map((tag) => '#' + tag)}
                                   {console.log(music.tags)} */}
-                                  {'#더미태그1 #더미태그2'}
-                                </Typography>
-                              </>
-                            }
-                          />
-                          <IconButton
-                            color="primary"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setMusicShareData({
-                                username,
-                                title: music.title,
-                                mediaId: music.id,
-                              })
-                              setModalOpen(true)
-                            }}
-                          >
-                            <ShareIcon />
-                          </IconButton>
+                                    {'#더미태그1 #더미태그2'}
+                                  </Typography>
+                                </>
+                              }
+                            />
+                            <IconButton
+                              color="primary"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setMusicShareData({
+                                  username,
+                                  title: music.title,
+                                  mediaId: music.id,
+                                })
+                                setModalOpen(true)
+                              }}
+                            >
+                              <ShareIcon />
+                            </IconButton>
 
-                          <MusicShareModal
-                            open={modalOpen}
-                            setOpen={setModalOpen}
-                            musicShareData={musicShareData}
-                          />
+                            <MusicShareModal
+                              open={modalOpen}
+                              setOpen={setModalOpen}
+                              musicShareData={musicShareData}
+                            />
 
-                          <Box
-                            marginLeft={4}
-                            display="flex"
-                            flexDirection="row"
-                            gap="2"
-                          >
-                            {/* <Box>
+                            <Box
+                              marginLeft={4}
+                              display="flex"
+                              flexDirection="row"
+                              gap="2"
+                            >
+                              {/* <Box>
                               {!music.progress ? (
                                 <></>
                               ) : (
@@ -524,20 +544,20 @@ export default function Generate() {
                                 </Box>
                               )}
                             </Box> */}
-                            <Box>
-                              <DownloadIcon />
+                              <Box>
+                                <DownloadIcon />
+                              </Box>
                             </Box>
-                          </Box>
-                        </ListItem>
-                      </Box>
-                    </Collapse>
-                  ))}
-              </TransitionGroup>
-            </List>
-          </Box>
-        )}
+                          </ListItem>
+                        </Box>
+                      </Collapse>
+                    ))}
+                </TransitionGroup>
+              </List>
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Box>
-    // </Fade>
+    </Fade>
   )
 }
