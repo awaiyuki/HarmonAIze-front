@@ -52,7 +52,7 @@ export default function SideBar() {
       sx={{
         p: 1,
         zIndex: 1,
-        width: '160px',
+        width: '200px',
         height: '100%',
         bgColor: '#ffffffa0',
         borderRight: 1,

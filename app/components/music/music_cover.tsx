@@ -7,14 +7,18 @@ import Image from 'next/image'
 export default function MusicCover({ isLoading, src }) {
   return (
     <Box
-      width="80px"
-      height="80px"
+      position="relative"
+      width="100px"
+      height="100px"
       display="flex"
       justifyContent="center"
       alignItems="center"
-      border="0.16rem solid"
-      borderRadius="4px"
-      borderColor="primary.main"
+      border="none"
+      sx={{
+        border: '1px solid',
+        borderRadius: '4px',
+      }}
+      // borderColor="primary.main"
       margin={1}
     >
       <Image src={src} alt={'cover image'} fill />

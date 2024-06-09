@@ -169,7 +169,7 @@ export default function PostBox({
                   fontSize="large"
                   onClick={() => setAudioSrc(postViewData.mediaURL)}
                 >
-                  <MusicCover />
+                  <MusicCover src={postViewData.coverImageUrl} />
                 </Button>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h6" fontWeight="500">

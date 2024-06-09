@@ -76,7 +76,10 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
               gap={1}
               padding={2}
             >
-              <MusicCover isLoading={false} />
+              <MusicCover
+                isLoading={false}
+                src={musicShareData.coverImageUrl}
+              />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h6" fontWeight="500">
                   {musicShareData.title}

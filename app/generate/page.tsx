@@ -509,6 +509,7 @@ export default function Generate() {
                                   username,
                                   title: music.title,
                                   mediaId: music.id,
+                                  coverImageUrl: music.coverImageUrl,
                                 })
                                 setModalOpen(true)
                               }}

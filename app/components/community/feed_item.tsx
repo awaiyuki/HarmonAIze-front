@@ -17,6 +17,7 @@ export default function FeedItem({
   id,
   username,
   mediaTitle,
+  coverImageUrl,
   postTitle,
   numLikes,
   numComments,
@@ -44,7 +45,7 @@ export default function FeedItem({
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <MusicCover isLoading={false} />
+        <MusicCover isLoading={false} src={coverImageUrl} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box paddingBottom={2}>
             <Typography variant="body1" fontWeight="medium">

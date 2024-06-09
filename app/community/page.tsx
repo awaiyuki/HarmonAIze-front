@@ -197,6 +197,7 @@ export default function Community() {
                         id={e.id}
                         username={e.username}
                         mediaTitle={e.mediaTitle}
+                        coverImageUrl={e.coverImageUrl}
                         postTitle={e.postTitle}
                         postViewId={postViewId}
                         setPostViewId={setPostViewId}

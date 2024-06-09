@@ -2,7 +2,9 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [process.env.DB_HOST],
+    remotePatterns: [
+      { protocol: 'https', hostname: process.env.DB_HOST, port: '' },
+    ],
   },
 }
 

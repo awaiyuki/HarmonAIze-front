@@ -94,7 +94,7 @@ export default function CommentItem({
       <Box marginTop={1}>
         <Typography variant="body1">{content}</Typography>
       </Box>
-      <Box sx={{ display: 'flex' }} alignContent="center">
+      <Box sx={{ display: 'flex' }} alignItems="center">
         <IconButton
           onClick={() =>
             handleLikeComment.mutate({ postId, commentId, currentUsername })
