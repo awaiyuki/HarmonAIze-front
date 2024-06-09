@@ -8,18 +8,12 @@ import { AudioContext } from './context/audio_context'
 import { useState } from 'react'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 export default function Provider({ children }) {
-  const [audioSrc, setAudioSrc] = useState('')
-
   const queryClient = new QueryClient()
   return (
     <SessionProvider>
       <AppRouterCacheProvider options={{ enableCssLayer: true }}>
         <QueryClientProvider client={queryClient}>
-          <ToggleColorMode>
-            <AudioContext.Provider value={{ audioSrc, setAudioSrc }}>
-              {children}
-            </AudioContext.Provider>
-          </ToggleColorMode>
+          <ToggleColorMode>{children}</ToggleColorMode>
         </QueryClientProvider>
       </AppRouterCacheProvider>
     </SessionProvider>

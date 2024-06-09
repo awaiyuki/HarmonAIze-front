@@ -17,6 +17,7 @@ export async function POST(req: Request) {
   tags.map((tag) => {
     prompt += `'${tag}',`
   })
+  prompt += '. Fill the entire image with the album cover.'
   const coverImage = await openai.images.generate({
     model: 'dall-e-3',
     prompt,

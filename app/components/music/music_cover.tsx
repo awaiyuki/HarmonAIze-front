@@ -18,7 +18,6 @@ export default function MusicCover({ isLoading, src }) {
         border: '1px solid',
         borderRadius: '4px',
       }}
-      // borderColor="primary.main"
       margin={1}
     >
       <Image src={src} alt={'cover image'} fill />

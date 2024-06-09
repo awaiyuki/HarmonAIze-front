@@ -102,7 +102,7 @@ export default function Generate() {
   const [mediaTitle, setMediaTitle] = useState('')
   const [tags, setTags] = useState([])
 
-  const { audioSrc, setAudioSrc } = useContext(AudioContext)
+  const { audioData, setAudioData } = useContext(AudioContext)
   const fetchMusicList = async () => {
     const res = await fetch(`/api/music/list?username=${username}`, {
       method: 'GET',
@@ -197,7 +197,7 @@ export default function Generate() {
     }
   }
 
-  const fetchMusicFile = async (id) => {
+  const fetchMusicFile = async (id, musicData) => {
     const res = await fetch(`/api/music/play?id=${id}`, {
       method: 'GET',
       headers: {},
@@ -205,8 +205,8 @@ export default function Generate() {
 
     const responseData = await res.text()
     console.log(responseData)
-    setCurrentMusicData({ title: 'dummy', url: responseData })
-    setAudioSrc(responseData)
+    setAudioData({ ...musicData, audioSrc: responseData })
+    console.log('setAudioData', { ...musicData, audioSrc: responseData })
   }
 
   const handleInputInstrumentChange = (e) => {
@@ -330,7 +330,7 @@ export default function Generate() {
                   <Typography
                     sx={{ mt: 4 }}
                     variant="subtitle1"
-                    fontWeight={500}
+                    fontWeight="bold"
                   >
                     입력 음악 악기
                   </Typography>
@@ -362,7 +362,7 @@ export default function Generate() {
                   <Typography
                     sx={{ mt: 4 }}
                     variant="subtitle1"
-                    fontWeight={500}
+                    fontWeight="bold"
                   >
                     생성 음악 악기
                   </Typography>
@@ -449,7 +449,6 @@ export default function Generate() {
               <List
                 sx={{
                   margin: '0',
-                  bgcolor: 'background.paper',
                 }}
               >
                 <TransitionGroup>
@@ -460,14 +459,13 @@ export default function Generate() {
                           sx={{
                             padding: 2,
                             '&:hover': { bgcolor: 'secondary.main' },
-                            cursor: 'pointer',
                           }}
                         >
                           <ListItem disablePadding>
                             {music.mediaType === 'audio' && (
                               <Box
-                                sx={{ marginRight: 2 }}
-                                onClick={() => fetchMusicFile(music.id)}
+                                sx={{ marginRight: 2, cursor: 'pointer' }}
+                                onClick={() => fetchMusicFile(music.id, music)}
                               >
                                 {console.log(music.coverImageUrl)}
                                 <MusicCover
@@ -493,10 +491,9 @@ export default function Generate() {
                                     fontWeight="500"
                                     color={blue[500]}
                                   >
-                                    {/* {Array.isArray(music.tags) &&
-                                    music.tags.map((tag) => '#' + tag)}
-                                  {console.log(music.tags)} */}
-                                    {'#더미태그1 #더미태그2'}
+                                    {Array.isArray(music.tags) &&
+                                      music.tags.map((tag) => '#' + tag)}
+                                    {/* {'#더미태그1 #더미태그2'} */}
                                   </Typography>
                                 </>
                               }
