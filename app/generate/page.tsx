@@ -171,6 +171,10 @@ export default function Generate() {
       )
     )
     formData.append('file', file)
+    formData.append('mediaTitle', mediaTitle)
+    tags.forEach((tag, index) => {
+      formData.append(`tags[${index}]`, tag)
+    })
 
     const fileContent = formData.get('file')
     for (let value of formData.values()) {
@@ -465,7 +469,11 @@ export default function Generate() {
                                 sx={{ marginRight: 2 }}
                                 onClick={() => fetchMusicFile(music.id)}
                               >
-                                <MusicCover isLoading={music.progress} />
+                                {console.log(music.coverImageUrl)}
+                                <MusicCover
+                                  isLoading={music.progress}
+                                  src={music.coverImageUrl}
+                                />
                               </Box>
                             )}
                             {music.mediaType === 'video' && (
