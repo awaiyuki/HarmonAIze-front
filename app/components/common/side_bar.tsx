@@ -54,7 +54,7 @@ export default function SideBar() {
         zIndex: 1,
         width: '200px',
         height: '100%',
-        bgColor: '#ffffffa0',
+        bgcolor: '#ffffff',
         borderRight: 1,
         borderColor: grey[400],
         display: 'flex',

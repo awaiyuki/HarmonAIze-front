@@ -20,7 +20,7 @@ export default function MusicCover({ isLoading, src }) {
       }}
       margin={1}
     >
-      <Image src={src} alt={'cover image'} fill />
+      <Image src={src} alt={'cover image'} fill priority />
       {isLoading ? (
         <RotateLeft
           sx={{

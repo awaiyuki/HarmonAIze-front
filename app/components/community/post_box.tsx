@@ -39,7 +39,7 @@ export default function PostBox({
   currentUsername,
   numAllComments,
 }) {
-  const { audioSrc, setAudioSrc } = useContext(AudioContext)
+  const { audioData, setAudioData } = useContext(AudioContext)
   const [fadeIn, setFadeIn] = useState(false)
   // const [postViewData, setPostViewData] = useState(null)
   const queryClient = useQueryClient()
@@ -167,7 +167,12 @@ export default function PostBox({
                 <Button
                   color="primary"
                   fontSize="large"
-                  onClick={() => setAudioSrc(postViewData.mediaURL)}
+                  onClick={() =>
+                    setAudioData({
+                      ...postViewData,
+                      audioSrc: postViewData.mediaURL,
+                    })
+                  }
                 >
                   <MusicCover src={postViewData.coverImageUrl} />
                 </Button>
