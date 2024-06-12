@@ -10,7 +10,7 @@ import { AudioContext } from '@/app/context/audio_context'
 import AudiotrackIcon from '@mui/icons-material/Audiotrack'
 import { AccountCircle, Favorite } from '@mui/icons-material'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
-import MusicCover from '../music/music_cover'
+import MusicCover from '../common/music_cover'
 import ChatIcon from '@mui/icons-material/Chat'
 
 export default function FeedItem({
@@ -48,7 +48,7 @@ export default function FeedItem({
         <MusicCover isLoading={false} src={coverImageUrl} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box paddingBottom={2}>
-            <Typography variant="body1" fontWeight="medium">
+            <Typography variant="body1" fontWeight="bold">
               {mediaTitle}
             </Typography>
 

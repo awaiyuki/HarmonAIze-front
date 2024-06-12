@@ -6,17 +6,21 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Provider from './provider'
 import { ColorModeButton } from './components/common/toggle_color_mode'
 import NavBar from './components/common/nav_bar'
-import AudioPlayerBottom from './components/music/audio_player_bottom'
+import AudioPlayerBottom from './components/generate/audio_player_bottom'
 import SideBar from './components/common/side_bar'
 import { Box, Grid, useMediaQuery } from '@mui/material'
 import DrawerGenerateButton from './components/common/drawer_generate_button'
 import { useContext } from 'react'
 import { AudioContext } from './context/audio_context'
 import { useTheme } from '@mui/material'
+import Image from 'next/image'
+import BackgroundImage from './components/common/background_image'
 
 export default function RootLayout({ children }) {
   const [audioData, setAudioData] = React.useState('')
   const theme = useTheme()
+  const [imageLoaded, setImageLoaded] = React.useState(false)
+
   return (
     <html lang="en">
       <body>
@@ -33,18 +37,7 @@ export default function RootLayout({ children }) {
                 maxHeight: '100vh',
               }}
             >
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundImage: `url('${audioData.coverImageUrl}')`,
-                  zIndex: -2,
-                  transition: 'background-image 1s',
-                }}
-              ></Box>
+              <BackgroundImage />
               <Box
                 sx={{
                   position: 'absolute',

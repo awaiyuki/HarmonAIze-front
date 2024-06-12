@@ -17,6 +17,7 @@ export default function MusicCover({ isLoading, src }) {
       sx={{
         border: '1px solid',
         borderRadius: '4px',
+        boxShadow: 4,
       }}
       margin={1}
     >

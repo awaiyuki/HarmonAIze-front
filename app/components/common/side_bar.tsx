@@ -24,18 +24,23 @@ import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
 function MenuItem({ link, text }) {
   const pathname = usePathname()
+  const selected = link == pathname ? true : false
   return (
     <ListItemButton
       width="100%"
       component={Link}
       variant="filled"
       href={link}
-      selected={link == pathname ? true : false}
+      selected={selected}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         {text == '홈' && <HomeIcon />}
         {text == '커뮤니티' && <PeopleIcon />}
-        <ListItemText>{text}</ListItemText>
+        <ListItemText>
+          <Typography sx={{ fontWeight: selected ? 'bold' : 500 }}>
+            {text}
+          </Typography>
+        </ListItemText>
       </Box>
     </ListItemButton>
   )

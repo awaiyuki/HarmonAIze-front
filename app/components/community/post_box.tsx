@@ -24,7 +24,7 @@ import CommentInputBox from './comment_input_box'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
-import MusicCover from '../music/music_cover'
+import MusicCover from '../common/music_cover'
 import {
   keepPreviousData,
   useMutation,
@@ -163,21 +163,32 @@ export default function PostBox({
           {postViewData && (
             <Grid container direction="column" gap={1}>
               <Grid container direction="row" alignItems="center" gap={2}>
-                {console.log(postViewData)}
                 <Button
                   color="primary"
                   fontSize="large"
                   onClick={() =>
                     setAudioData({
                       ...postViewData,
-                      audioSrc: postViewData.mediaURL,
+                      audioSrc: postViewData.mediaUrl,
+                    })
+                  }
+                >
+                  <MusicCover src={postViewData.coverImageUrl} />
+                </Button>
+                <Button
+                  color="primary"
+                  fontSize="large"
+                  onClick={() =>
+                    setAudioData({
+                      ...postViewData,
+                      audioSrc: postViewData.mediaUrl2,
                     })
                   }
                 >
                   <MusicCover src={postViewData.coverImageUrl} />
                 </Button>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant="h6" fontWeight="500">
+                  <Typography variant="h6" fontWeight="bold">
                     {postViewData.mediaTitle}
                   </Typography>
 

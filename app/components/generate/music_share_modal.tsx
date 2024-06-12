@@ -4,7 +4,7 @@ import { useState } from 'react'
 import DoneIcon from '@mui/icons-material/Done'
 import { AccountCircle, Audiotrack } from '@mui/icons-material'
 import { blue } from '@mui/material/colors'
-import MusicCover from './music_cover'
+import MusicCover from '../common/music_cover'
 
 export default function MusicShareModal({ open, setOpen, musicShareData }) {
   const [success, setSuccess] = useState(false)
@@ -85,7 +85,8 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
                   {musicShareData.title}
                 </Typography>
                 <Typography variant="body1" fontWeight="500" color={blue[500]}>
-                  {'#더미태그1 #더미태그2'}
+                  {Array.isArray(musicShareData.tags) &&
+                    musicShareData.tags.map((tag) => '#' + tag + ' ')}
                 </Typography>
               </Box>
             </Grid>
