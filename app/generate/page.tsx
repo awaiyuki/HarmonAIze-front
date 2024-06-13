@@ -83,6 +83,11 @@ export default function Generate() {
             // borderColor: grey[400],
             padding: 1,
             overflowY: 'auto',
+            bgcolor: 'rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            borderRadius: '32px',
+            backdropFilter: 'blur(12px)',
+            p: 2,
           }}
         >
           <GenerateMusicMenu />

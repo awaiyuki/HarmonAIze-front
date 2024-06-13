@@ -62,6 +62,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { useQuery } from '@tanstack/react-query'
 import { TransitionGroup } from 'react-transition-group'
 import Loading from '@/app/components/common/loading'
+import styles from '@/app/styles/glassmorphism.module.css'
 
 export default function MusicList() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -126,14 +127,16 @@ export default function MusicList() {
                         '&:hover': { bgcolor: 'secondary.main' },
                         filter: music.progress ? 'blur(4px)' : 'none',
                         pointerEvents: music.progress ? 'none' : 'auto',
-                        bgcolor: 'rgba(255, 255, 255, 0.3)',
-                        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        backdropFilter: 'blur(14px)',
                         borderRadius: '32px',
-                        backdropFilter: 'blur(10px)',
+                        margin: '8px',
+                        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
                         m: 1,
                         pl: 4,
                         pr: 4,
                       }}
+                      className={styles.glassmorphism}
                     >
                       {music.progress && (
                         <Box

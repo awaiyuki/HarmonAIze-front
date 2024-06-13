@@ -180,15 +180,7 @@ export default function GenerateMusicMenu() {
   }
 
   return (
-    <Box
-      sx={{
-        bgcolor: 'rgba(255, 255, 255, 0.3)',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        borderRadius: '32px',
-        backdropFilter: 'blur(10px)',
-        p: 2,
-      }}
-    >
+    <Box>
       <Button
         component="label"
         role={undefined}
@@ -200,6 +192,7 @@ export default function GenerateMusicMenu() {
           marginTop: 2,
           width: '100%',
           fontWeight: 'bold',
+          borderRadius: '32px',
         }}
       >
         음악 업로드
@@ -344,6 +337,7 @@ export default function GenerateMusicMenu() {
                   mb: 4,
                   width: '100%',
                   fontWeight: 'bold',
+                  borderRadius: '32px',
                 }}
                 startIcon={
                   generateResult ? (

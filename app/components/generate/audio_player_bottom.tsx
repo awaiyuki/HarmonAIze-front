@@ -29,18 +29,19 @@ export default function AudioPlayerBottom() {
       <Box
         sx={{
           width: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          backdropFilter: 'blur(14px)',
           borderRadius: '32px',
           margin: '8px',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          p: 1,
         }}
       >
         <Typography variant="h5" fontWeight="bold">
-          {audioData?.title} {audioData?.username}
+          {audioData ? audioData?.title : '--'}
         </Typography>
         <AudioPlayer
           // ref={audioPlayerRef}
@@ -51,7 +52,7 @@ export default function AudioPlayerBottom() {
             width: '100%',
             backgroundColor: 'rgba(255, 255, 255, 0.0)',
             border: '0px',
-            boxShadow: '0px',
+            boxShadow: 'none',
           }}
         />
       </Box>
