@@ -21,12 +21,17 @@ export default function BackgroundImage() {
       }}
     >
       <Image
-        src={audioData?.coverImageUrl}
+        src={
+          audioData?.coverImageUrl
+            ? audioData?.coverImageUrl
+            : '/default_background.png'
+        }
         alt="background image"
         fill
+        objectFit="cover"
         priority
         style={{
-          opacity: imageLoaded ? 1 : 0,
+          // opacity: imageLoaded ? 1 : 0,
           transition: 'opacity 1s',
         }}
         onLoadStart={() => setImageLoaded(false)}

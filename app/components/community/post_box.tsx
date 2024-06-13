@@ -152,9 +152,15 @@ export default function PostBox({
       <Box
         borderLeft={1}
         borderColor={grey[400]}
-        width="100%"
-        height="100%"
+        height="98%"
         overflow="hidden"
+        sx={{
+          bgcolor: 'rgba(255, 255, 255, 0.3)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          borderRadius: '32px',
+          backdropFilter: 'blur(10px)',
+          m: 1,
+        }}
       >
         <Box padding={4} width="100%" maxHeight="100%" overflow="auto">
           {!postViewData && (

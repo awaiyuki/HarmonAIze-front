@@ -21,6 +21,7 @@ import Loading from '../components/common/loading'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Collapse } from '@mui/material'
 import { TransitionGroup } from 'react-transition-group'
+import { NodeNextRequest } from 'next/dist/server/base-http/node'
 
 export default function Community() {
   const { data: session, status } = useSession({
@@ -153,6 +154,13 @@ export default function Community() {
             alignItems: 'center',
             // width: '100%',
             overflowY: 'auto',
+
+            bgcolor: 'rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            borderRadius: '32px',
+            backdropFilter: 'blur(10px)',
+            m: 1,
+            p: 2,
           }}
         >
           {isLoading ? (
@@ -211,7 +219,12 @@ export default function Community() {
             </Box>
           )}
         </Box>
-        <Box sx={{ flex: { xs: 0, sm: 0.5 } }}>
+        <Box
+          sx={{
+            flex: { xs: 0, sm: 0.5 },
+            display: { xs: 'none', sm: 'block' },
+          }}
+        >
           <PostBox
             postViewId={postViewId}
             currentUsername={session?.user.username}

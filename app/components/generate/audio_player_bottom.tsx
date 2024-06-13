@@ -18,10 +18,11 @@ export default function AudioPlayerBottom() {
   return (
     <Box
       sx={{
-        width: '100vw',
-        height: '100',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
         zIndex: 2,
-        bgColor: 'white',
       }}
     >
       {/* audio 제목 */}
@@ -30,6 +31,14 @@ export default function AudioPlayerBottom() {
         autoPlay
         src={audioData?.audioSrc}
         onPlay={(e) => console.log('onPlay')}
+        style={{
+          width: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '32px',
+          margin: '8px',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        }}
       />
     </Box>
   )

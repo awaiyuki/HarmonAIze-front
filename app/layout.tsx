@@ -45,8 +45,8 @@ export default function RootLayout({ children }) {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  bgcolor: 'rgba(255, 255, 255, 0.7)',
-                  backdropFilter: 'blur(12px)',
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(0px)',
                   zIndex: -1,
                 }}
               ></Box>
@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
                 {children}
               </Box>
               <Box>
-                <DrawerGenerateButton />
+                {/* <DrawerGenerateButton /> */}
                 <AudioPlayerBottom />
               </Box>
             </Box>

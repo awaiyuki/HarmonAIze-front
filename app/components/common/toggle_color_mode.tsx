@@ -30,7 +30,7 @@ export function ColorModeButton() {
 }
 
 export default function ToggleColorMode({ children }) {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('dark')
+  const [mode, setMode] = React.useState<'light' | 'dark'>('light')
 
   let initialMode
 

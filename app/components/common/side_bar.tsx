@@ -58,16 +58,31 @@ export default function SideBar() {
         p: 1,
         zIndex: 1,
         width: '200px',
-        height: '100%',
-        bgcolor: '#ffffff',
-        borderRight: 1,
-        borderColor: grey[400],
+        height: '95%',
+        // borderRight: 1,
+        // borderColor: grey[400],
         display: 'flex',
         flexDirection: 'column',
+        bgcolor: 'rgba(255, 255, 255, 0.4)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: '30px',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        m: 1,
       }}
     >
-      <Box sx={{ marginTop: '8px' }}>
-        <Typography variant="h5">HarmonAIze</Typography>
+      <Box
+        sx={{
+          marginTop: '8px',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          pt: 4,
+          pb: 4,
+          pl: 1,
+        }}
+      >
+        <Typography variant="h5" fontWeight="500">
+          HarmonAIze
+        </Typography>
       </Box>
       <Grid
         container
@@ -93,10 +108,20 @@ export default function SideBar() {
           <ColorModeButton />
           {session && (
             <>
-              <Grid container direction="row" justifyContent="center">
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <AccountCircleIcon fontSize="large" />
-                <Typography variant="body1" marginLeft={1} marginRight={1}>
-                  {session?.user.username} 님
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  marginLeft={1}
+                  marginRight={1}
+                >
+                  {session?.user.username}
                 </Typography>
               </Grid>
               <Button onClick={() => signOut()}>로그아웃</Button>

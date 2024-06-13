@@ -35,15 +35,19 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '@/app/context/audio_context'
 import { blue, grey, pink, purple } from '@mui/material/colors'
 import {
+  CircularProgress,
   Collapse,
   FormControl,
   Grow,
   Input,
+  InputLabel,
   ListItemButton,
   ListItemIcon,
+  MenuItem,
   Modal,
   Radio,
   RadioGroup,
+  Select,
   Switch,
 } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -64,6 +68,7 @@ export default function MusicList() {
   const [musicShareData, setMusicShareData] = useState({})
 
   const { audioData, setAudioData } = useContext(AudioContext)
+  const [playOption, setPlayOption] = useState('without-original')
 
   const { data: session, status } = useSession({
     required: true,
@@ -79,7 +84,7 @@ export default function MusicList() {
       headers: {},
     })
     const responseData = await res.json()
-    console.log('musics:' + responseData)
+    console.log(responseData)
     return responseData
   }
 
@@ -93,13 +98,6 @@ export default function MusicList() {
     queryFn: fetchMusicList,
     refetchInterval: 1000,
   })
-
-  const handleDownloadMusic = async (music) => {
-    const res = await fetch('api/')
-    const blob = res.blob()
-    const file = window.URL.createObjectURL(blob)
-    window.location.assign(file)
-  }
 
   return (
     <>
@@ -126,8 +124,29 @@ export default function MusicList() {
                       sx={{
                         padding: 2,
                         '&:hover': { bgcolor: 'secondary.main' },
+                        filter: music.progress ? 'blur(4px)' : 'none',
+                        pointerEvents: music.progress ? 'none' : 'auto',
+                        bgcolor: 'rgba(255, 255, 255, 0.3)',
+                        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        borderRadius: '32px',
+                        backdropFilter: 'blur(10px)',
+                        m: 1,
+                        pl: 4,
+                        pr: 4,
                       }}
                     >
+                      {music.progress && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            filter: 'none',
+                          }}
+                        >
+                          <CircularProgress />
+                        </Box>
+                      )}
                       <ListItem disablePadding>
                         {music.mediaType === 'audio' && (
                           <>
@@ -136,7 +155,10 @@ export default function MusicList() {
                               onClick={() =>
                                 setAudioData({
                                   ...music,
-                                  audioSrc: music.mediaUrl,
+                                  audioSrc:
+                                    playOption == 'without-original'
+                                      ? music.mediaUrl
+                                      : music.mediaUrl2,
                                 })
                               }
                             >
@@ -145,20 +167,28 @@ export default function MusicList() {
                                 src={music.coverImageUrl}
                               />
                             </Button>
-                            <Button
-                              sx={{ marginRight: 2, cursor: 'pointer' }}
-                              onClick={() =>
-                                setAudioData({
-                                  ...music,
-                                  audioSrc: music.mediaUrl2,
-                                })
-                              }
+                            <FormControl
+                              sx={{ m: 1, minWidth: 120 }}
+                              size="small"
                             >
-                              <MusicCover
-                                isLoading={music.progress}
-                                src={music.coverImageUrl}
-                              />
-                            </Button>
+                              <InputLabel id="label-select-play-option">
+                                재생 옵션
+                              </InputLabel>
+                              <Select
+                                labelId="label-select-play-option"
+                                id="select-play-option"
+                                value={playOption}
+                                label="재생 옵션"
+                                onChange={(e) => setPlayOption(e.target.value)}
+                              >
+                                <MenuItem value={'without-original'}>
+                                  반주만
+                                </MenuItem>
+                                <MenuItem value={'with-original'}>
+                                  원음과 함께
+                                </MenuItem>
+                              </Select>
+                            </FormControl>
                           </>
                         )}
 
@@ -209,7 +239,6 @@ export default function MusicList() {
                         />
                         <Box
                           marginLeft={1}
-                          marginRight={6}
                           display="flex"
                           flexDirection="row"
                           gap="2"

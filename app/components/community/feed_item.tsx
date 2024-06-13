@@ -48,7 +48,7 @@ export default function FeedItem({
         <MusicCover isLoading={false} src={coverImageUrl} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box paddingBottom={2}>
-            <Typography variant="body1" fontWeight="bold">
+            <Typography variant="h5" fontWeight="bold">
               {mediaTitle}
             </Typography>
 
