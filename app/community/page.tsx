@@ -157,8 +157,8 @@ export default function Community() {
       >
         <Box
           sx={{
-            flex: { xs: 1, sm: 0.5 },
-            display: 'flex',
+            flex: { xs: postViewId ? 0 : 1, sm: 0.5 },
+            display: { xs: postViewId ? 'none' : 'flex', sm: 'flex' },
             flexDirection: 'column',
             alignItems: 'center',
             // width: '100%',
@@ -237,12 +237,13 @@ export default function Community() {
         </Box>
         <Box
           sx={{
-            flex: { xs: 0, sm: 0.5 },
-            display: { xs: 'none', sm: 'block' },
+            flex: { xs: postViewId ? '1' : '0', sm: 0.5 },
+            display: { xs: postViewId ? 'block' : 'none', sm: 'block' },
           }}
         >
           <PostBox
             postViewId={postViewId}
+            setPostViewId={setPostViewId}
             currentUsername={session?.user.username}
             numAllComments={
               postList && postList.length != 0 && Array.isArray(postList)
