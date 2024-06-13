@@ -65,6 +65,7 @@ import { TransitionGroup } from 'react-transition-group'
 import Loading from '@/app/components/common/loading'
 import MusicList from '../components/generate/music_list'
 import GenerateMusicMenu from '../components/generate/generate_music_menu'
+import { ColorModeContext } from '../components/common/toggle_color_mode'
 
 export default function Options({}) {
   const { data: session, status } = useSession({
@@ -79,6 +80,11 @@ export default function Options({}) {
     setAudioData({ ...audioData, playOption })
   }
 
+  const colorMode = useContext(ColorModeContext)
+  const theme = useTheme()
+  const handleThemeOptionChange = (e, themeOption) => {
+    colorMode?.setMode(themeOption)
+  }
   return (
     <Box
       sx={{
@@ -100,6 +106,9 @@ export default function Options({}) {
       <Typography variant="h4" fontWeight="bold">
         설정
       </Typography>
+      <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
+        재생 옵션
+      </Typography>
       <ToggleButtonGroup
         value={audioData?.playOption}
         exclusive
@@ -111,6 +120,22 @@ export default function Options({}) {
         </ToggleButton>
         <ToggleButton value="with-original" aria-label="with original">
           원음과 함께
+        </ToggleButton>
+      </ToggleButtonGroup>
+      <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
+        테마
+      </Typography>
+      <ToggleButtonGroup
+        value={theme.palette.mode}
+        exclusive
+        onChange={handleThemeOptionChange}
+        aria-label="theme option"
+      >
+        <ToggleButton value="light" aria-label="light">
+          밝게
+        </ToggleButton>
+        <ToggleButton value="dark" aria-label="dark">
+          어둡게
         </ToggleButton>
       </ToggleButtonGroup>
     </Box>

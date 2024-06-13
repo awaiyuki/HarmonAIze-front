@@ -48,11 +48,11 @@ export default function AudioPlayerBottom() {
         }}
       >
         {audioData?.mediaTitle ? (
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <Typography variant="h5" fontWeight="bold">
               {audioData?.mediaTitle}
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <AccountCircle />
               <Typography variant="h6" fontWeight="bold">
                 {audioData?.username}

@@ -9,7 +9,9 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useEffect } from 'react'
 import { green, lime, pink, purple, teal } from '@mui/material/colors'
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
+export const ColorModeContext = React.createContext({
+  toggleColorMode: () => {},
+})
 
 export function ColorModeButton() {
   const theme = useTheme()
@@ -52,6 +54,7 @@ export default function ToggleColorMode({ children }) {
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
       },
+      setMode,
     }),
     []
   )

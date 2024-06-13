@@ -22,6 +22,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { grey } from '@mui/material/colors'
 import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
+import { useTheme } from '@emotion/react'
 function MenuItem({ link, text }) {
   const pathname = usePathname()
   const selected = link == pathname ? true : false
@@ -53,6 +54,8 @@ export default function SideBar() {
     return <></>
   }
 
+  const theme = useTheme()
+
   return (
     <Box
       sx={{
@@ -64,9 +67,12 @@ export default function SideBar() {
         // borderColor: grey[400],
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: 'rgba(255, 255, 255, 0.4)',
+        bgcolor:
+          theme.palette.mode == 'light'
+            ? 'rgba(255, 255, 255, 0.5)'
+            : 'rgba(0, 0, 0, 0.5)',
         backdropFilter: 'blur(10px)',
-        borderRadius: '30px',
+        borderRadius: '16px',
         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
         m: 1,
       }}
@@ -107,7 +113,7 @@ export default function SideBar() {
           alignItems="center"
           gap={2}
         >
-          <ColorModeButton />
+          {/* <ColorModeButton /> */}
           {session && (
             <>
               <Grid

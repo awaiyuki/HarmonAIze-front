@@ -77,6 +77,7 @@ export default function MusicList() {
   const { audioPlayerRef, audioData, setAudioData } = useContext(AudioContext)
   const [playOption, setPlayOption] = useState('without-original')
   const username = session?.user.username
+  const theme = useTheme()
 
   const fetchMusicList = async () => {
     const res = await fetch(`/api/music/list?username=${username}`, {
@@ -126,9 +127,12 @@ export default function MusicList() {
                         '&:hover': { bgcolor: 'secondary.main' },
                         filter: music.progress ? 'blur(4px)' : 'none',
                         pointerEvents: music.progress ? 'none' : 'auto',
-                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        backgroundColor:
+                          theme.palette.mode == 'light'
+                            ? 'rgba(255, 255, 255, 0.5)'
+                            : 'rgba(0, 0, 0, 0.5)',
                         backdropFilter: 'blur(14px)',
-                        borderRadius: '32px',
+                        borderRadius: '16px',
                         margin: '8px',
                         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
                         m: 1,

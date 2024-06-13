@@ -180,186 +180,231 @@ export default function GenerateMusicMenu() {
   }
 
   return (
-    <Box>
-      <Button
-        component="label"
-        role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        size="large"
-        startIcon={<CloudUploadIcon />}
+    <Box m={1}>
+      <Box
         sx={{
-          marginTop: 2,
-          width: '100%',
-          fontWeight: 'bold',
-          borderRadius: '32px',
+          display: { xs: 'none', sm: 'block' },
+          height: '100%',
+          minWidth: '320px',
+          flex: '0.3',
+          // borderRight: 1,
+          // borderColor: grey[400],
+          padding: 1,
+          overflowY: 'auto',
+          backgroundColor:
+            theme.palette.mode == 'light'
+              ? 'rgba(255, 255, 255, 0.5)'
+              : 'rgba(0, 0, 0, 0.5)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          borderRadius: '16px',
+          backdropFilter: 'blur(12px)',
+          p: 2,
         }}
       >
-        음악 업로드
-        <VisuallyHiddenInput
-          type="file"
-          accept="image/*, audio/*, video/*"
-          onChange={(e) => {
-            e.preventDefault()
-            if (!e.target.files) return
-
-            const file = e.target.files[0]
-
-            if (!file) return
-
-            handleFileUpload(file)
-          }}
-        />
-      </Button>
-      <div>
-        <Grow
-          in={uploadedAudioData && uploadedAudioData.title}
-          style={{ transformOrigin: 'top center' }}
-        >
-          <Box
+        <Box>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            size="large"
+            startIcon={<CloudUploadIcon />}
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 4,
+              marginTop: 2,
+              width: '100%',
+              fontWeight: 'bold',
+              borderRadius: '32px',
             }}
           >
-            <Typography variant="h6" fontWeight="bold">
-              {uploadedAudioData.title}
-            </Typography>
-            {uploadedAudioData.type === 'audio' && (
-              <audio src={uploadedAudioData.url} type="audio/mp3" controls />
-            )}
-            {uploadedAudioData.type === 'video' && (
-              <video src={uploadedAudioData.url} width="100%" controls />
-            )}
+            음악 업로드
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*, audio/*, video/*"
+              onChange={(e) => {
+                e.preventDefault()
+                if (!e.target.files) return
 
-            <Box component="form" sx={{ mt: 4 }} autoComplete="off">
-              <TextField
-                width="100%"
-                required
-                label="제목"
-                value={mediaTitle}
-                onChange={(e) => setMediaTitle(e.target.value)}
-                sx={{ mb: 2 }}
-                size="small"
-                fullWidth
-              />
-              <TextField
-                variant="outlined"
-                label="태그"
-                value={tags}
-                onChange={(e) => {
-                  const newTags = e.target.value.replace(/\s+/g, '').split(',')
-                  setTags(newTags)
-                  console.log(newTags)
-                }}
-                sx={{ mb: 2 }}
-                size="small"
-                fullWidth
-              />
-              <TextField
-                variant="outlined"
-                label="템포"
-                type="number"
-                value={tempo}
-                onChange={(e) => {
-                  setTempo(e.target.value)
-                }}
-                size="small"
-                fullWidth
-              />
-              <Typography sx={{ mt: 4 }} variant="subtitle1" fontWeight="bold">
-                입력 음악 악기
-              </Typography>
-              <RadioGroup
-                aria-labelledby="radio-buttons-input-instruments"
-                defaultValue="p"
-                name="radio-buttons-group"
-                onChange={handleInputInstrumentChange}
-              >
-                <Box sx={{ display: 'flex' }}>
-                  <FormControlLabel
-                    value="p"
-                    control={<Radio />}
-                    label="피아노"
-                  />
-                  <FormControlLabel
-                    value="g"
-                    control={<Radio />}
-                    label="기타"
-                  />
-                  <FormControlLabel
-                    value="b"
-                    control={<Radio />}
-                    label="베이스"
-                  />
-                </Box>
-              </RadioGroup>
+                const file = e.target.files[0]
 
-              <Typography sx={{ mt: 4 }} variant="subtitle1" fontWeight="bold">
-                생성 음악 악기
-              </Typography>
-              <FormGroup>
-                <FormControlLabel
-                  checked={outputInstrumentList.p}
-                  name="p"
-                  control={<Switch onChange={handleOutputInstrumentChange} />}
-                  label="피아노"
-                />
-                <FormControlLabel
-                  checked={outputInstrumentList.g}
-                  name="g"
-                  control={<Switch onChange={handleOutputInstrumentChange} />}
-                  label="기타"
-                />
-                <FormControlLabel
-                  checked={outputInstrumentList.b}
-                  name="b"
-                  control={<Switch onChange={handleOutputInstrumentChange} />}
-                  label="베이스"
-                />
-                <FormControlLabel
-                  checked={outputInstrumentList.d}
-                  name="d"
-                  control={<Switch onChange={handleOutputInstrumentChange} />}
-                  label="드럼"
-                />
-              </FormGroup>
+                if (!file) return
 
-              <Button
-                type="submit"
-                variant="contained"
-                tabIndex={-1}
-                size="large"
+                handleFileUpload(file)
+              }}
+            />
+          </Button>
+          <div>
+            <Grow
+              in={uploadedAudioData && uploadedAudioData.title}
+              style={{ transformOrigin: 'top center' }}
+            >
+              <Box
                 sx={{
-                  mt: 4,
-                  mb: 4,
-                  width: '100%',
-                  fontWeight: 'bold',
-                  borderRadius: '32px',
-                }}
-                startIcon={
-                  generateResult ? (
-                    <Check />
-                  ) : isLoading ? (
-                    <CircularProgress />
-                  ) : (
-                    <AutoFixHighIcon />
-                  )
-                }
-                disabled={isLoading}
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleGenerateAccompaniment(username)
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  marginTop: 4,
                 }}
               >
-                {generateResult ? '' : '반주 생성'}
-              </Button>
-            </Box>
-          </Box>
-        </Grow>
-      </div>
+                <Typography variant="h6" fontWeight="bold">
+                  {uploadedAudioData.title}
+                </Typography>
+                {uploadedAudioData.type === 'audio' && (
+                  <audio
+                    src={uploadedAudioData.url}
+                    type="audio/mp3"
+                    controls
+                  />
+                )}
+                {uploadedAudioData.type === 'video' && (
+                  <video src={uploadedAudioData.url} width="100%" controls />
+                )}
+
+                <Box component="form" sx={{ mt: 4 }} autoComplete="off">
+                  <TextField
+                    width="100%"
+                    required
+                    label="제목"
+                    value={mediaTitle}
+                    onChange={(e) => setMediaTitle(e.target.value)}
+                    sx={{ mb: 2 }}
+                    size="small"
+                    fullWidth
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="태그"
+                    value={tags}
+                    onChange={(e) => {
+                      const newTags = e.target.value
+                        .replace(/\s+/g, '')
+                        .split(',')
+                      setTags(newTags)
+                      console.log(newTags)
+                    }}
+                    sx={{ mb: 2 }}
+                    size="small"
+                    fullWidth
+                  />
+                  <TextField
+                    variant="outlined"
+                    label="템포"
+                    type="number"
+                    value={tempo}
+                    onChange={(e) => {
+                      setTempo(e.target.value)
+                    }}
+                    size="small"
+                    fullWidth
+                  />
+                  <Typography
+                    sx={{ mt: 4 }}
+                    variant="subtitle1"
+                    fontWeight="bold"
+                  >
+                    입력 음악 악기
+                  </Typography>
+                  <RadioGroup
+                    aria-labelledby="radio-buttons-input-instruments"
+                    defaultValue="p"
+                    name="radio-buttons-group"
+                    onChange={handleInputInstrumentChange}
+                  >
+                    <Box sx={{ display: 'flex' }}>
+                      <FormControlLabel
+                        value="p"
+                        control={<Radio />}
+                        label="피아노"
+                      />
+                      <FormControlLabel
+                        value="g"
+                        control={<Radio />}
+                        label="기타"
+                      />
+                      <FormControlLabel
+                        value="b"
+                        control={<Radio />}
+                        label="베이스"
+                      />
+                    </Box>
+                  </RadioGroup>
+
+                  <Typography
+                    sx={{ mt: 4 }}
+                    variant="subtitle1"
+                    fontWeight="bold"
+                  >
+                    생성 음악 악기
+                  </Typography>
+                  <FormGroup>
+                    <FormControlLabel
+                      checked={outputInstrumentList.p}
+                      name="p"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
+                      label="피아노"
+                    />
+                    <FormControlLabel
+                      checked={outputInstrumentList.g}
+                      name="g"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
+                      label="기타"
+                    />
+                    <FormControlLabel
+                      checked={outputInstrumentList.b}
+                      name="b"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
+                      label="베이스"
+                    />
+                    <FormControlLabel
+                      checked={outputInstrumentList.d}
+                      name="d"
+                      control={
+                        <Switch onChange={handleOutputInstrumentChange} />
+                      }
+                      label="드럼"
+                    />
+                  </FormGroup>
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    tabIndex={-1}
+                    size="large"
+                    sx={{
+                      mt: 4,
+                      mb: 4,
+                      width: '100%',
+                      fontWeight: 'bold',
+                      borderRadius: '32px',
+                    }}
+                    startIcon={
+                      generateResult ? (
+                        <Check />
+                      ) : isLoading ? (
+                        <CircularProgress />
+                      ) : (
+                        <AutoFixHighIcon />
+                      )
+                    }
+                    disabled={isLoading}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleGenerateAccompaniment(username)
+                    }}
+                  >
+                    {generateResult ? '' : '반주 생성'}
+                  </Button>
+                </Box>
+              </Box>
+            </Grow>
+          </div>
+        </Box>
+      </Box>
     </Box>
   )
 }
