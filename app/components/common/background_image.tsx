@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Box } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import Image from 'next/image'
 import { useContext, useEffect, useState } from 'react'
 import { AudioContext } from '@/app/context/audio_context'
@@ -7,8 +7,14 @@ import { AudioContext } from '@/app/context/audio_context'
 export default function BackgroundImage() {
   const { audioData } = useContext(AudioContext)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageSrc, setImageSrc] = useState('/default_background.png')
+  const theme = useTheme()
 
-  useEffect(() => {}, [audioData])
+  useEffect(() => {
+    if (!audioData?.coverImageUrl) return
+    setImageLoaded(false)
+    setTimeout(() => setImageSrc(audioData?.coverImageUrl), 1000)
+  }, [audioData?.coverImageUrl])
 
   return (
     <Box
@@ -18,26 +24,25 @@ export default function BackgroundImage() {
         left: 0,
         width: '100%',
         height: '100%',
+        bgcolor:
+          theme.palette.mode == 'light'
+            ? 'rgba(255, 255, 255, 0.5)'
+            : 'rgba(0, 0, 0, 0.5)',
         zIndex: -2,
       }}
     >
       <Image
-        src={
-          audioData?.coverImageUrl
-            ? audioData?.coverImageUrl
-            : '/default_background.png'
-        }
+        src={imageSrc}
         alt="background image"
         fill
         objectFit="cover"
         priority
         style={{
-          // opacity: imageLoaded ? 1 : 0,
+          opacity: imageLoaded ? 1 : 0,
           transition: 'opacity 1s',
         }}
-        onLoadStart={() => setImageLoaded(false)}
-        onLoadingComplete={() => {
-          setTimeout(() => setImageLoaded(true), 1000)
+        onLoad={() => {
+          setImageLoaded(true)
         }}
       />
     </Box>

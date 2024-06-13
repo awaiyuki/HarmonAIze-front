@@ -49,11 +49,11 @@ function MenuItem({ link, text, icon }) {
 export default function SideBar() {
   const { data: session, status } = useSession()
 
+  const theme = useTheme()
+
   if (status != 'authenticated') {
     return <></>
   }
-
-  const theme = useTheme()
 
   return (
     <Box p={1} width="200px" height="100%">
@@ -106,7 +106,7 @@ export default function SideBar() {
                 text="커뮤니티"
                 icon={<PeopleIcon />}
               />
-              <MenuItem link="/options" text="옵션" icon={<Settings />} />
+              <MenuItem link="/options" text="설정" icon={<Settings />} />
             </List>
           </Box>
           <Box

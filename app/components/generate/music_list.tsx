@@ -1,6 +1,7 @@
 //@ts-nocheck
 'use client'
 
+import Link from 'next/link'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
@@ -43,6 +44,7 @@ import {
   InputLabel,
   ListItemButton,
   ListItemIcon,
+  Menu,
   MenuItem,
   Modal,
   Radio,
@@ -78,6 +80,14 @@ export default function MusicList() {
   const [playOption, setPlayOption] = useState('without-original')
   const username = session?.user.username
   const theme = useTheme()
+  const [downloadMenuAnchorEl, setDownloadMenuAnchorEl] = useState(null)
+  const open = Boolean(downloadMenuAnchorEl)
+  const handleDownloadMenuClick = (e) => {
+    setDownloadMenuAnchorEl(e.currentTarget)
+  }
+  const handleDownloadMenuClose = () => {
+    setDownloadMenuAnchorEl(null)
+  }
 
   const fetchMusicList = async () => {
     const res = await fetch(`/api/music/list?username=${username}`, {
@@ -120,7 +130,7 @@ export default function MusicList() {
             <TransitionGroup>
               {Array.isArray(musicListData) &&
                 musicListData.toReversed().map((music, i) => (
-                  <Collapse key={'music' + music.id}>
+                  <Collapse key={i}>
                     <Box
                       sx={{
                         padding: 2,
@@ -209,7 +219,7 @@ export default function MusicList() {
 
                           <Box display="flex" flexDirection="row" gap="2">
                             <IconButton
-                              color="primary"
+                              color="primary.text"
                               onClick={(e) => {
                                 e.stopPropagation()
                                 setMusicShareData({
@@ -230,12 +240,42 @@ export default function MusicList() {
                               musicShareData={musicShareData}
                             />
                             <IconButton
-                              color="primary"
-                              href={music.mediaUrl}
-                              download
+                              color="primary.text"
+                              onClick={handleDownloadMenuClick}
                             >
                               <DownloadIcon />
                             </IconButton>
+                            <Menu
+                              anchorEl={downloadMenuAnchorEl}
+                              open={open}
+                              onClose={handleDownloadMenuClose}
+                              anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                              }}
+                            >
+                              <MenuItem
+                                key={'download1-' + i}
+                                component="a"
+                                href={music.mediaUrl}
+                                download
+                              >
+                                반주만
+                              </MenuItem>
+                              {console.log(music.mediaUrl)}
+                              <MenuItem
+                                key={'download2-' + i}
+                                component="a"
+                                href={music.mediaUrl2}
+                                download
+                              >
+                                원음과 함께
+                              </MenuItem>
+                            </Menu>
                           </Box>
                         </Box>
                       </ListItem>
