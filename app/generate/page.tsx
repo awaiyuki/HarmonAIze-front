@@ -79,8 +79,13 @@ export default function Generate() {
           height: '100%',
         }}
       >
-        <GenerateMusicMenu />
-
+        <Box
+          sx={{
+            flex: '0.3',
+          }}
+        >
+          <GenerateMusicMenu />
+        </Box>
         <Box
           sx={{
             flex: '0.7',

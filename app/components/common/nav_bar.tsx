@@ -1,15 +1,18 @@
 //@ts-nocheck
 'use client'
 
-import { Box, Button, Typography, Stack, Hidden } from '@mui/material'
+import { Box, Button, Typography, Stack, Hidden, useTheme } from '@mui/material'
 import { ColorModeButton } from './toggle_color_mode'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+
 export default function NavBar() {
   const { data: session, status } = useSession()
+
+  const theme = useTheme()
 
   if (status != 'authenticated') {
     return <></>
@@ -22,7 +25,10 @@ export default function NavBar() {
         p: 1,
         zIndex: 1,
         width: '100vw',
-        bgColor: '#ffffffa0',
+        bgcolor:
+          theme.palette.mode == 'light'
+            ? 'rgba(255, 255, 255, 0.5)'
+            : 'rgba(0, 0, 0, 0.5)',
         backdropFilter: 'blur(10px)',
         boxShadow: 2,
       }}
@@ -51,7 +57,7 @@ export default function NavBar() {
               {/* <Typography variant="body1" marginLeft={1} marginRight={1}>
                   {session?.user.username} 님
                 </Typography> */}
-              <Button onClick={() => signOut()}>로그아웃</Button>
+              {/* <Button onClick={() => signOut()}>로그아웃</Button> */}
             </Box>
           )}
         </Stack>

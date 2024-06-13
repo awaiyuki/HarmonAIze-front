@@ -180,13 +180,12 @@ export default function GenerateMusicMenu() {
   }
 
   return (
-    <Box m={1}>
+    <Box p={1} height="100%">
       <Box
         sx={{
           display: { xs: 'none', sm: 'block' },
           height: '100%',
           minWidth: '320px',
-          flex: '0.3',
           // borderRight: 1,
           // borderColor: grey[400],
           padding: 1,

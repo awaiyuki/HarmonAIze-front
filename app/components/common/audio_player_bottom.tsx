@@ -7,6 +7,7 @@ import { useContext, useEffect, useRef } from 'react'
 import { AudioContext } from '../../context/audio_context'
 import { useSession } from 'next-auth/react'
 import { AccountCircle, FormatAlignJustify } from '@mui/icons-material'
+import { useTheme } from '@emotion/react'
 
 export default function AudioPlayerBottom() {
   const { audioPlayerRef, audioData, setAudioData } = useContext(AudioContext)
@@ -22,6 +23,7 @@ export default function AudioPlayerBottom() {
   if (status != 'authenticated') {
     return <></>
   }
+  const theme = useTheme()
 
   return (
     <Box
@@ -31,15 +33,18 @@ export default function AudioPlayerBottom() {
         display: 'flex',
         justifyContent: 'center',
         zIndex: 2,
+        p: 1,
       }}
     >
       <Box
         sx={{
           width: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          bgcolor:
+            theme.palette.mode == 'light'
+              ? 'rgba(255, 255, 255, 0.5)'
+              : 'rgba(0, 0, 0, 0.5)',
           backdropFilter: 'blur(14px)',
-          borderRadius: '32px',
-          margin: '8px',
+          borderRadius: '16px',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           flexDirection: 'column',

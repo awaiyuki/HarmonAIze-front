@@ -28,6 +28,7 @@ import {
 } from '@mui/material'
 import { TransitionGroup } from 'react-transition-group'
 import { NodeNextRequest } from 'next/dist/server/base-http/node'
+import { useTheme } from '@emotion/react'
 
 export default function Community() {
   const { data: session, status } = useSession({
@@ -141,6 +142,8 @@ export default function Community() {
       )
     : undefined
 
+  const theme = useTheme()
+
   return (
     <Fade in={true}>
       <Box
@@ -161,9 +164,12 @@ export default function Community() {
             // width: '100%',
             overflowY: 'auto',
 
-            bgcolor: 'rgba(255, 255, 255, 0.3)',
+            bgcolor:
+              theme.palette.mode == 'light'
+                ? 'rgba(255, 255, 255, 0.5)'
+                : 'rgba(0, 0, 0, 0.5)',
             boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-            borderRadius: '32px',
+            borderRadius: '16px',
             backdropFilter: 'blur(10px)',
             m: 1,
             pt: 1,
@@ -192,9 +198,7 @@ export default function Community() {
                   />
                 </Box>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="label-select-sort-option">
-                    재생 옵션
-                  </InputLabel>
+                  <InputLabel id="label-select-sort-option">정렬</InputLabel>
                   <Select
                     labelId="label-select-sort-option"
                     id="select-sort-option"

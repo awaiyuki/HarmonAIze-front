@@ -107,14 +107,14 @@ export default function MusicList() {
       ) : (
         <Box
           sx={{
-            margin: '0',
+            margin: 0,
             width: '100%',
-            overflow: 'auto',
+            overflowY: 'auto',
           }}
         >
           <List
             sx={{
-              margin: '0',
+              margin: 0,
             }}
           >
             <TransitionGroup>
@@ -135,7 +135,6 @@ export default function MusicList() {
                         borderRadius: '16px',
                         margin: '8px',
                         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-                        m: 1,
                         pl: 4,
                         pr: 4,
                       }}
@@ -182,8 +181,10 @@ export default function MusicList() {
                         )}
                         <Box
                           sx={{
+                            width: '100%',
                             display: 'flex',
                             flexDirection: { xs: 'column', sm: 'row' },
+                            justifyContent: 'space-between',
                           }}
                         >
                           <ListItemText
@@ -205,65 +206,37 @@ export default function MusicList() {
                               </>
                             }
                           />
-                        </Box>
-                        <IconButton
-                          color="primary"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setMusicShareData({
-                              username,
-                              title: music.title,
-                              mediaId: music.id,
-                              coverImageUrl: music.coverImageUrl,
-                              tags: music.tags,
-                            })
-                            setModalOpen(true)
-                          }}
-                        >
-                          <ShareIcon />
-                        </IconButton>
-                        <MusicShareModal
-                          open={modalOpen}
-                          setOpen={setModalOpen}
-                          musicShareData={musicShareData}
-                        />
-                        <Box
-                          marginLeft={1}
-                          display="flex"
-                          flexDirection="row"
-                          gap="2"
-                        >
-                          {/* <Box>
-                          {!music.progress ? (
-                            <></>
-                          ) : (
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                              <RotateLeftIcon
-                                sx={{
-                                  animation: 'spin 2s linear infinite',
-                                  '@keyframes spin': {
-                                    '0%': {
-                                      transform: 'rotate(360deg)',
-                                    },
-                                    '100%': {
-                                      transform: 'rotate(0deg)',
-                                    },
-                                  },
-                                }}
-                              />
-                              <Typography variant="body1">
-                                생성중...
-                              </Typography>
-                            </Box>
-                          )}
-                        </Box> */}
-                          <IconButton
-                            color="primary"
-                            href={music.mediaUrl}
-                            download
-                          >
-                            <DownloadIcon />
-                          </IconButton>
+
+                          <Box display="flex" flexDirection="row" gap="2">
+                            <IconButton
+                              color="primary"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setMusicShareData({
+                                  username,
+                                  title: music.title,
+                                  mediaId: music.id,
+                                  coverImageUrl: music.coverImageUrl,
+                                  tags: music.tags,
+                                })
+                                setModalOpen(true)
+                              }}
+                            >
+                              <ShareIcon />
+                            </IconButton>
+                            <MusicShareModal
+                              open={modalOpen}
+                              setOpen={setModalOpen}
+                              musicShareData={musicShareData}
+                            />
+                            <IconButton
+                              color="primary"
+                              href={music.mediaUrl}
+                              download
+                            >
+                              <DownloadIcon />
+                            </IconButton>
+                          </Box>
                         </Box>
                       </ListItem>
                     </Box>

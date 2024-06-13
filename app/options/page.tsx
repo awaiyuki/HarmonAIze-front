@@ -86,58 +86,67 @@ export default function Options({}) {
     colorMode?.setMode(themeOption)
   }
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        // borderRight: 1,
-        // borderColor: grey[400],
-        padding: 1,
-        overflowY: 'auto',
-        bgcolor: 'rgba(255, 255, 255, 0.3)',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        borderRadius: '32px',
-        backdropFilter: 'blur(12px)',
-        p: 4,
-        pt: 6,
-        m: 1,
-      }}
-    >
-      <Typography variant="h4" fontWeight="bold">
-        설정
-      </Typography>
-      <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
-        재생 옵션
-      </Typography>
-      <ToggleButtonGroup
-        value={audioData?.playOption}
-        exclusive
-        onChange={handlePlayOptionChange}
-        aria-label="play option"
-      >
-        <ToggleButton value="without-original" aria-label="without original">
-          반주만
-        </ToggleButton>
-        <ToggleButton value="with-original" aria-label="with original">
-          원음과 함께
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
-        테마
-      </Typography>
-      <ToggleButtonGroup
-        value={theme.palette.mode}
-        exclusive
-        onChange={handleThemeOptionChange}
-        aria-label="theme option"
-      >
-        <ToggleButton value="light" aria-label="light">
-          밝게
-        </ToggleButton>
-        <ToggleButton value="dark" aria-label="dark">
-          어둡게
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </Box>
+    <Fade in={true}>
+      <Box p={1} width="100%" height="100%">
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            // borderRight: 1,
+            // borderColor: grey[400],
+            padding: 1,
+            overflowY: 'auto',
+            bgcolor:
+              theme.palette.mode == 'light'
+                ? 'rgba(255, 255, 255, 0.5)'
+                : 'rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            borderRadius: '16px',
+            backdropFilter: 'blur(12px)',
+            p: 4,
+            pt: 6,
+          }}
+        >
+          <Typography variant="h4" fontWeight="bold">
+            설정
+          </Typography>
+          <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
+            재생 옵션
+          </Typography>
+          <ToggleButtonGroup
+            value={audioData?.playOption}
+            exclusive
+            onChange={handlePlayOptionChange}
+            aria-label="play option"
+          >
+            <ToggleButton
+              value="without-original"
+              aria-label="without original"
+            >
+              반주만
+            </ToggleButton>
+            <ToggleButton value="with-original" aria-label="with original">
+              원음과 함께
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <Typography mt={4} mb={1} variant="h5" fontWeight="bold">
+            테마
+          </Typography>
+          <ToggleButtonGroup
+            value={theme.palette.mode}
+            exclusive
+            onChange={handleThemeOptionChange}
+            aria-label="theme option"
+          >
+            <ToggleButton value="light" aria-label="light">
+              밝게
+            </ToggleButton>
+            <ToggleButton value="dark" aria-label="dark">
+              어둡게
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+      </Box>
+    </Fade>
   )
 }

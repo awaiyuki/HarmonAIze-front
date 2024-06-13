@@ -1,5 +1,14 @@
 //@ts-nocheck
-import { Modal, Box, Typography, TextField, Button, Grid } from '@mui/material'
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Backdrop,
+  useTheme,
+} from '@mui/material'
 import { useState } from 'react'
 import DoneIcon from '@mui/icons-material/Done'
 import { AccountCircle, Audiotrack } from '@mui/icons-material'
@@ -8,15 +17,17 @@ import MusicCover from '../common/music_cover'
 
 export default function MusicShareModal({ open, setOpen, musicShareData }) {
   const [success, setSuccess] = useState(false)
+  const theme = useTheme()
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    border: '2px solid #000',
-    backdropFilter: 'blur(10px)',
-    bgcolor: 'rgba(255, 255, 255, 1.0)',
+    borderRadius: '16px',
+    bgcolor: 'background.paper',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    filter: 'none',
     p: 4,
   }
 
@@ -51,6 +62,16 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
       onClose={() => setOpen(false)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      slots={{
+        backdrop: Backdrop,
+      }}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backgroundColor: 'rgba(0, 0, 0, 0.1);',
+          },
+        },
+      }}
     >
       <Box component="form" sx={style} onSubmit={handleSubmit}>
         <Grid container direction="column" gap={1}>

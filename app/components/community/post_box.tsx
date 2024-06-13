@@ -37,6 +37,7 @@ import {
 } from '@tanstack/react-query'
 import { TransitionGroup } from 'react-transition-group'
 import Loading from '../common/loading'
+import { useTheme } from '@emotion/react'
 
 export default function PostBox({
   postViewId,
@@ -150,125 +151,132 @@ export default function PostBox({
     },
   })
 
+  const theme = useTheme()
+
   return isLoading ? (
     <Loading />
   ) : (
     <Fade in={fadeIn}>
-      <Box
-        // borderLeft={1}
-        // borderColor={grey[400]}
-        height="98%"
-        overflow="hidden"
-        sx={{
-          bgcolor: 'rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-          borderRadius: '32px',
-          backdropFilter: 'blur(10px)',
-          m: 1,
-        }}
-      >
-        <Box padding={4} width="100%" maxHeight="100%" overflow="auto">
-          {!postViewData && (
-            <Typography variant="h6">게시글을 선택하세요.</Typography>
-          )}
-          {postViewData && (
-            <Grid container direction="column" gap={1}>
-              <Grid container direction="row" alignItems="center" gap={2}>
-                <Button
-                  color="primary"
-                  fontSize="large"
-                  onClick={() =>
-                    setAudioData({
-                      ...postViewData,
-                      playOption: audioData.playOption,
-                    })
-                  }
-                >
-                  <MusicCover src={postViewData.coverImageUrl} />
-                </Button>
+      <Box p={1} height="100%">
+        <Box
+          // borderLeft={1}
+          // borderColor={grey[400]}
+          width="100%"
+          height="100%"
+          overflow="hidden"
+          sx={{
+            bgcolor:
+              theme.palette.mode == 'light'
+                ? 'rgba(255, 255, 255, 0.5)'
+                : 'rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            borderRadius: '16px',
+            backdropFilter: 'blur(10px)',
+          }}
+        >
+          <Box padding={4} width="100%" maxHeight="100%" overflow="auto">
+            {!postViewData && (
+              <Typography variant="h6">게시글을 선택하세요.</Typography>
+            )}
+            {postViewData && (
+              <Grid container direction="column" gap={1}>
+                <Grid container direction="row" alignItems="center" gap={2}>
+                  <Button
+                    color="primary"
+                    fontSize="large"
+                    onClick={() =>
+                      setAudioData({
+                        ...postViewData,
+                        playOption: audioData.playOption,
+                      })
+                    }
+                  >
+                    <MusicCover src={postViewData.coverImageUrl} />
+                  </Button>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant="h6" fontWeight="bold">
-                    {postViewData.mediaTitle}
-                  </Typography>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h6" fontWeight="bold">
+                      {postViewData.mediaTitle}
+                    </Typography>
 
-                  <Grid container direction="row" gap={1} alignItems="center">
-                    <AccountCircle fontSize="medium" />
+                    <Grid container direction="row" gap={1} alignItems="center">
+                      <AccountCircle fontSize="medium" />
+                      <Typography variant="body1">
+                        {postViewData.username}
+                      </Typography>
+                    </Grid>
+                  </Box>
+                </Grid>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Chat />
+                  <Typography variant="h5">{postViewData.postTitle}</Typography>
+                </Box>
+                <Typography variant="body1">
+                  {postViewData.postContent}
+                </Typography>
+                <Box display="flex" width="100%" justifyContent="space-evenly">
+                  <Grid container justifyContent="center" alignItems="center">
+                    <IconButton onClick={() => handleLike.mutate()}>
+                      {postViewData.hasLiked ? (
+                        <Favorite sx={{ color: red[400] }} />
+                      ) : (
+                        <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
+                      )}
+                    </IconButton>
                     <Typography variant="body1">
-                      {postViewData.username}
+                      {postViewData.numLikes}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={1}
+                  >
+                    <ChatBubbleOutlineIcon />
+                    <Typography variant="body1">
+                      {postViewData.commentList &&
+                        postViewData.commentList.length}
                     </Typography>
                   </Grid>
                 </Box>
-              </Grid>
-
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Chat />
-                <Typography variant="h5">{postViewData.postTitle}</Typography>
-              </Box>
-              <Typography variant="body1">
-                {postViewData.postContent}
-              </Typography>
-              <Box display="flex" width="100%" justifyContent="space-evenly">
-                <Grid container justifyContent="center" alignItems="center">
-                  <IconButton onClick={() => handleLike.mutate()}>
-                    {postViewData.hasLiked ? (
-                      <Favorite sx={{ color: red[400] }} />
-                    ) : (
-                      <FavoriteBorderOutlinedIcon sx={{ color: red[400] }} />
-                    )}
-                  </IconButton>
-                  <Typography variant="body1">
-                    {postViewData.numLikes}
-                  </Typography>
-                </Grid>
-                <Grid
-                  container
-                  justifyContent="center"
-                  alignItems="center"
-                  gap={1}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    marginTop: 2,
+                    gap: 2,
+                  }}
                 >
-                  <ChatBubbleOutlineIcon />
-                  <Typography variant="body1">
-                    {postViewData.commentList &&
-                      postViewData.commentList.length}
-                  </Typography>
-                </Grid>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginTop: 2,
-                  gap: 2,
-                }}
-              >
-                <CommentInputBox
-                  postId={postViewId}
-                  currentUsername={currentUsername}
-                  numAllComments={numAllComments}
-                />
-                <Box>
-                  <TransitionGroup>
-                    {Array.isArray(postViewData.commentList) &&
-                      postViewData.commentList.toReversed().map((e) => (
-                        <Collapse key={e.id}>
-                          <CommentItem
-                            key={e.id}
-                            postId={postViewId}
-                            commentId={e.id}
-                            username={e.username}
-                            content={e.content}
-                            numLikes={e.numLikes}
-                            hasLiked={e.hasLiked}
-                            currentUsername={currentUsername}
-                          />
-                        </Collapse>
-                      ))}
-                  </TransitionGroup>
+                  <CommentInputBox
+                    postId={postViewId}
+                    currentUsername={currentUsername}
+                    numAllComments={numAllComments}
+                  />
+                  <Box>
+                    <TransitionGroup>
+                      {Array.isArray(postViewData.commentList) &&
+                        postViewData.commentList.toReversed().map((e) => (
+                          <Collapse key={e.id}>
+                            <CommentItem
+                              key={e.id}
+                              postId={postViewId}
+                              commentId={e.id}
+                              username={e.username}
+                              content={e.content}
+                              numLikes={e.numLikes}
+                              hasLiked={e.hasLiked}
+                              currentUsername={currentUsername}
+                            />
+                          </Collapse>
+                        ))}
+                    </TransitionGroup>
+                  </Box>
                 </Box>
-              </Box>
-            </Grid>
-          )}
+              </Grid>
+            )}
+          </Box>
         </Box>
       </Box>
     </Fade>
