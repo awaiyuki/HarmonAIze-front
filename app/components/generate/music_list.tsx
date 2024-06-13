@@ -94,6 +94,13 @@ export default function MusicList() {
     refetchInterval: 1000,
   })
 
+  const handleDownloadMusic = async (music) => {
+    const res = await fetch('api/')
+    const blob = res.blob()
+    const file = window.URL.createObjectURL(blob)
+    window.location.assign(file)
+  }
+
   return (
     <>
       {isLoading ? (
@@ -201,7 +208,8 @@ export default function MusicList() {
                           musicShareData={musicShareData}
                         />
                         <Box
-                          marginLeft={4}
+                          marginLeft={1}
+                          marginRight={6}
                           display="flex"
                           flexDirection="row"
                           gap="2"
@@ -230,9 +238,13 @@ export default function MusicList() {
                             </Box>
                           )}
                         </Box> */}
-                          <Box>
+                          <IconButton
+                            color="primary"
+                            href={music.mediaUrl}
+                            download
+                          >
                             <DownloadIcon />
-                          </Box>
+                          </IconButton>
                         </Box>
                       </ListItem>
                     </Box>

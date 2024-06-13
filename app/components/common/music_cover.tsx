@@ -8,6 +8,8 @@ export default function MusicCover({ isLoading, src }) {
   return (
     <Box
       position="relative"
+      minWidth="100px"
+      minHeight="100px"
       width="100px"
       height="100px"
       display="flex"
