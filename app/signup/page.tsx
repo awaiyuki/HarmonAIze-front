@@ -75,6 +75,12 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            backdropFilter: 'blur(14px)',
+            borderRadius: '32px',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+            p: 4,
           }}
         >
           <Logo />
