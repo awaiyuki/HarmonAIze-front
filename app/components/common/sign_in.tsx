@@ -79,6 +79,15 @@ export default function SignIn() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          bgcolor: 'rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          borderRadius: '32px',
+          backdropFilter: 'blur(10px)',
+          m: 1,
+          pt: 6,
+          pb: 6,
+          pl: 6,
+          pr: 6,
         }}
       >
         <Logo />

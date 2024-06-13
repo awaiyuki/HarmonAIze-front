@@ -14,9 +14,9 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
     border: '2px solid #000',
-    boxShadow: 24,
+    backdropFilter: 'blur(10px)',
+    bgcolor: 'rgba(255, 255, 255, 1.0)',
     p: 4,
   }
 
@@ -52,84 +52,71 @@ export default function MusicShareModal({ open, setOpen, musicShareData }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box
-        sx={{
-          backdropFilter: 'blur(10px)',
-          bgcolor: 'rgba(255, 255, 255, 0)',
-        }}
-      >
-        <Box component="form" sx={style} onSubmit={handleSubmit}>
-          <Grid container direction="column" gap={1}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              음악 공유
-            </Typography>
+      <Box component="form" sx={style} onSubmit={handleSubmit}>
+        <Grid container direction="column" gap={1}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            음악 공유
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <Grid container direction="row" gap={1}>
+              <AccountCircle fontSize="medium" />
+              <Typography variant="body1">{musicShareData.username}</Typography>
+            </Grid>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+              padding={2}
+            >
+              <MusicCover
+                isLoading={false}
+                src={musicShareData.coverImageUrl}
+              />
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="h6" fontWeight="500">
+                  {musicShareData.title}
+                </Typography>
+                <Typography variant="body1" fontWeight="500" color={blue[500]}>
+                  {Array.isArray(musicShareData.tags) &&
+                    musicShareData.tags.map((tag) => '#' + tag + ' ')}
+                </Typography>
+              </Box>
+            </Grid>
             <Box
               sx={{
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
                 gap: 1,
               }}
             >
-              <Grid container direction="row" gap={1}>
-                <AccountCircle fontSize="medium" />
-                <Typography variant="body1">
-                  {musicShareData.username}
-                </Typography>
-              </Grid>
-              <Grid
-                container
-                justifyContent="center"
-                alignItems="center"
-                gap={1}
-                padding={2}
-              >
-                <MusicCover
-                  isLoading={false}
-                  src={musicShareData.coverImageUrl}
-                />
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant="h6" fontWeight="500">
-                    {musicShareData.title}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    fontWeight="500"
-                    color={blue[500]}
-                  >
-                    {Array.isArray(musicShareData.tags) &&
-                      musicShareData.tags.map((tag) => '#' + tag + ' ')}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Box
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 1,
-                }}
-              >
-                <TextField name="post-title" label="제목" size="small" />
-                <TextField
-                  name="post-content"
-                  multiline
-                  minRows={3}
-                  label="내용"
-                  size="small"
-                />
-              </Box>
+              <TextField name="post-title" label="제목" size="small" />
+              <TextField
+                name="post-content"
+                multiline
+                minRows={3}
+                label="내용"
+                size="small"
+              />
             </Box>
-            <Button type="submit" variant="contained">
-              공유
-            </Button>
-            {success && (
-              <Box alignSelf="center">
-                <DoneIcon sx={{ color: blue[400] }} fontSize="large" />
-              </Box>
-            )}
-          </Grid>
-        </Box>
+          </Box>
+          <Button type="submit" variant="contained">
+            공유
+          </Button>
+          {success && (
+            <Box alignSelf="center">
+              <DoneIcon sx={{ color: blue[400] }} fontSize="large" />
+            </Box>
+          )}
+        </Grid>
       </Box>
     </Modal>
   )

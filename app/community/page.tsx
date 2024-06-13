@@ -19,7 +19,13 @@ import { useEffect } from 'react'
 import PostBox from '../components/community/post_box'
 import Loading from '../components/common/loading'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Collapse } from '@mui/material'
+import {
+  Collapse,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material'
 import { TransitionGroup } from 'react-transition-group'
 import { NodeNextRequest } from 'next/dist/server/base-http/node'
 
@@ -184,17 +190,22 @@ export default function Community() {
                     size="small"
                   />
                 </Box>
-                <Box sx={{ display: 'flex' }}>
-                  <Button onClick={() => setSortingMode('like')}>
-                    좋아요 순
-                  </Button>
-                  <Button onClick={() => setSortingMode('comment')}>
-                    댓글 순
-                  </Button>
-                  <Button onClick={() => setSortingMode('latest')}>
-                    최신 순
-                  </Button>
-                </Box>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="label-select-sort-option">
+                    재생 옵션
+                  </InputLabel>
+                  <Select
+                    labelId="label-select-sort-option"
+                    id="select-sort-option"
+                    value={sortingMode}
+                    label="재생 옵션"
+                    onChange={(e) => setSortingMode(e.target.value)}
+                  >
+                    <MenuItem value={'like'}>좋아요 순</MenuItem>
+                    <MenuItem value={'comment'}>댓글 순</MenuItem>
+                    <MenuItem value={'latest'}>최신 순</MenuItem>
+                  </Select>
+                </FormControl>
               </Box>
               <TransitionGroup>
                 {Array.isArray(filteredData) &&

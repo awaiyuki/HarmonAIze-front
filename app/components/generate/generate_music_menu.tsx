@@ -35,6 +35,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { AudioContext } from '@/app/context/audio_context'
 import { blue, grey, pink, purple } from '@mui/material/colors'
 import {
+  CircularProgress,
   Collapse,
   FormControl,
   Grow,
@@ -92,8 +93,11 @@ export default function GenerateMusicMenu() {
     d: false,
   })
 
-  const [mediaTitle, setMediaTitle] = useState('')
+  const [mediaTitle, setMediaTitle] = useState('환상적인 음악')
   const [tags, setTags] = useState([])
+  const [tempo, setTempo] = useState(120)
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleFileUpload = async (file) => {
     const url = URL.createObjectURL(file)
@@ -102,6 +106,7 @@ export default function GenerateMusicMenu() {
   }
 
   const handleGenerateAccompaniment = async (username) => {
+    setIsLoading(true)
     /* convert output instrument data */
     let content_name = ''
     const keys = Object.keys(outputInstrumentList)
@@ -124,6 +129,7 @@ export default function GenerateMusicMenu() {
             instrument: inputInstrument,
             content_name,
             tags: tags,
+            tempo,
           }),
         ],
         { type: 'application/json' }
@@ -154,6 +160,7 @@ export default function GenerateMusicMenu() {
         setGenerateResult(false)
       }, 2000)
     }
+    setIsLoading(false)
   }
 
   const handleInputInstrumentChange = (e) => {
@@ -173,7 +180,15 @@ export default function GenerateMusicMenu() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        bgcolor: 'rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        borderRadius: '32px',
+        backdropFilter: 'blur(10px)',
+        p: 2,
+      }}
+    >
       <Button
         component="label"
         role={undefined}
@@ -245,6 +260,18 @@ export default function GenerateMusicMenu() {
                   const newTags = e.target.value.replace(/\s+/g, '').split(',')
                   setTags(newTags)
                   console.log(newTags)
+                }}
+                sx={{ mb: 2 }}
+                size="small"
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                label="템포"
+                type="number"
+                value={tempo}
+                onChange={(e) => {
+                  setTempo(e.target.value)
                 }}
                 size="small"
                 fullWidth
@@ -318,8 +345,16 @@ export default function GenerateMusicMenu() {
                   width: '100%',
                   fontWeight: 'bold',
                 }}
-                startIcon={generateResult ? <Check /> : <AutoFixHighIcon />}
-                disabled={uploadedAudioData.title ? false : true}
+                startIcon={
+                  generateResult ? (
+                    <Check />
+                  ) : isLoading ? (
+                    <CircularProgress />
+                  ) : (
+                    <AutoFixHighIcon />
+                  )
+                }
+                disabled={isLoading}
                 onClick={(e) => {
                   e.preventDefault()
                   handleGenerateAccompaniment(username)
@@ -331,6 +366,6 @@ export default function GenerateMusicMenu() {
           </Box>
         </Grow>
       </div>
-    </>
+    </Box>
   )
 }

@@ -207,7 +207,7 @@ export default function MusicList() {
                               <Typography
                                 variant="body1"
                                 fontWeight="500"
-                                color={blue[500]}
+                                color={blue[600]}
                               >
                                 {Array.isArray(music.tags) &&
                                   music.tags.map((tag) => '#' + tag + ' ')}

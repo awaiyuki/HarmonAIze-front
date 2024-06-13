@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box } from '@mui/material'
 import Image from 'next/image'
 import { useContext, useEffect, useState } from 'react'

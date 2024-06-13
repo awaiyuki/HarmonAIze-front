@@ -62,8 +62,6 @@ import MusicList from '../components/generate/music_list'
 import GenerateMusicMenu from '../components/generate/generate_music_menu'
 
 export default function Generate() {
-  
-
   return (
     <Fade in={true}>
       <Box
@@ -81,9 +79,9 @@ export default function Generate() {
             height: '100%',
             minWidth: '320px',
             flex: '0.3',
-            borderRight: 1,
-            borderColor: grey[400],
-            padding: 2,
+            // borderRight: 1,
+            // borderColor: grey[400],
+            padding: 1,
             overflowY: 'auto',
           }}
         >
