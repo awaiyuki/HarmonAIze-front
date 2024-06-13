@@ -39,12 +39,17 @@ import {
   FormControl,
   Grow,
   Input,
+  InputLabel,
   ListItemButton,
   ListItemIcon,
+  MenuItem,
   Modal,
   Radio,
   RadioGroup,
+  Select,
   Switch,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import useSWR from 'swr'
@@ -61,57 +66,53 @@ import Loading from '@/app/components/common/loading'
 import MusicList from '../components/generate/music_list'
 import GenerateMusicMenu from '../components/generate/generate_music_menu'
 
-export default function Generate() {
+export default function Options({}) {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect('/')
     },
   })
-  return (
-    <Fade in={true}>
-      <Box
-        sx={{
-          display: 'flex',
-          flex: '1',
-          flexDirection: { xs: 'column', sm: 'row' },
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            height: '100%',
-            minWidth: '320px',
-            flex: '0.3',
-            // borderRight: 1,
-            // borderColor: grey[400],
-            padding: 1,
-            overflowY: 'auto',
-            bgcolor: 'rgba(255, 255, 255, 0.3)',
-            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-            borderRadius: '32px',
-            backdropFilter: 'blur(12px)',
-            p: 2,
-          }}
-        >
-          <GenerateMusicMenu />
-        </Box>
+  const { audioData, setAudioData } = useContext(AudioContext)
 
-        <Box
-          sx={{
-            flex: '0.7',
-            display: 'flex',
-            height: '100%',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            margin: '0',
-          }}
-        >
-          <MusicList />
-        </Box>
-      </Box>
-    </Fade>
+  const handlePlayOptionChange = (e, playOption) => {
+    setAudioData({ ...audioData, playOption })
+  }
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        // borderRight: 1,
+        // borderColor: grey[400],
+        padding: 1,
+        overflowY: 'auto',
+        bgcolor: 'rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        borderRadius: '32px',
+        backdropFilter: 'blur(12px)',
+        p: 4,
+        pt: 6,
+        m: 1,
+      }}
+    >
+      <Typography variant="h4" fontWeight="bold">
+        설정
+      </Typography>
+      <ToggleButtonGroup
+        value={audioData?.playOption}
+        exclusive
+        onChange={handlePlayOptionChange}
+        aria-label="play option"
+      >
+        <ToggleButton value="without-original" aria-label="without original">
+          반주만
+        </ToggleButton>
+        <ToggleButton value="with-original" aria-label="with original">
+          원음과 함께
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
   )
 }

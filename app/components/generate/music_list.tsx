@@ -65,18 +65,17 @@ import Loading from '@/app/components/common/loading'
 import styles from '@/app/styles/glassmorphism.module.css'
 
 export default function MusicList() {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [musicShareData, setMusicShareData] = useState({})
-
-  const { audioData, setAudioData } = useContext(AudioContext)
-  const [playOption, setPlayOption] = useState('without-original')
-
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect('/')
     },
   })
+  const [modalOpen, setModalOpen] = useState(false)
+  const [musicShareData, setMusicShareData] = useState({})
+
+  const { audioPlayerRef, audioData, setAudioData } = useContext(AudioContext)
+  const [playOption, setPlayOption] = useState('without-original')
   const username = session?.user.username
 
   const fetchMusicList = async () => {
@@ -85,7 +84,7 @@ export default function MusicList() {
       headers: {},
     })
     const responseData = await res.json()
-    console.log(responseData)
+    // console.log(responseData)
     return responseData
   }
 
@@ -158,10 +157,9 @@ export default function MusicList() {
                               onClick={() =>
                                 setAudioData({
                                   ...music,
-                                  audioSrc:
-                                    playOption == 'without-original'
-                                      ? music.mediaUrl
-                                      : music.mediaUrl2,
+                                  mediaTitle: music.title,
+                                  playOption: audioData.playOption,
+                                  username,
                                 })
                               }
                             >
@@ -170,28 +168,6 @@ export default function MusicList() {
                                 src={music.coverImageUrl}
                               />
                             </Button>
-                            <FormControl
-                              sx={{ m: 1, minWidth: 120 }}
-                              size="small"
-                            >
-                              <InputLabel id="label-select-play-option">
-                                재생 옵션
-                              </InputLabel>
-                              <Select
-                                labelId="label-select-play-option"
-                                id="select-play-option"
-                                value={playOption}
-                                label="재생 옵션"
-                                onChange={(e) => setPlayOption(e.target.value)}
-                              >
-                                <MenuItem value={'without-original'}>
-                                  반주만
-                                </MenuItem>
-                                <MenuItem value={'with-original'}>
-                                  원음과 함께
-                                </MenuItem>
-                              </Select>
-                            </FormControl>
                           </>
                         )}
 
@@ -200,25 +176,32 @@ export default function MusicList() {
                             <video src={music.url} controls width="100%" />
                           </Box>
                         )}
-                        <ListItemText
-                          disableTypography
-                          primary={
-                            <>
-                              <Typography variant="h6" fontWeight="bold">
-                                {music.title}
-                              </Typography>
-                              <Typography
-                                variant="body1"
-                                fontWeight="500"
-                                color={blue[600]}
-                              >
-                                {Array.isArray(music.tags) &&
-                                  music.tags.map((tag) => '#' + tag + ' ')}
-                                {/* {'#더미태그1 #더미태그2'} */}
-                              </Typography>
-                            </>
-                          }
-                        />
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: { xs: 'column', sm: 'row' },
+                          }}
+                        >
+                          <ListItemText
+                            disableTypography
+                            primary={
+                              <>
+                                <Typography variant="h6" fontWeight="bold">
+                                  {music.title}
+                                </Typography>
+                                <Typography
+                                  variant="body1"
+                                  fontWeight="500"
+                                  color={blue[600]}
+                                >
+                                  {Array.isArray(music.tags) &&
+                                    music.tags.map((tag) => '#' + tag + ' ')}
+                                  {/* {'#더미태그1 #더미태그2'} */}
+                                </Typography>
+                              </>
+                            }
+                          />
+                        </Box>
                         <IconButton
                           color="primary"
                           onClick={(e) => {

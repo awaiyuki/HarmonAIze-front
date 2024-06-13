@@ -36,6 +36,7 @@ function MenuItem({ link, text }) {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         {text == '홈' && <HomeIcon />}
         {text == '커뮤니티' && <PeopleIcon />}
+        {text == '옵션' && <PeopleIcon />}
         <ListItemText>
           <Typography sx={{ fontWeight: selected ? 'bold' : 500 }}>
             {text}
@@ -96,6 +97,7 @@ export default function SideBar() {
           <List>
             <MenuItem link="/generate" text="홈" />
             <MenuItem link="/community" text="커뮤니티" />
+            <MenuItem link="/options" text="옵션" />
           </List>
         </Box>
         <Box

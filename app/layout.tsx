@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Provider from './provider'
 import { ColorModeButton } from './components/common/toggle_color_mode'
 import NavBar from './components/common/nav_bar'
-import AudioPlayerBottom from './components/generate/audio_player_bottom'
+import AudioPlayerBottom from './components/common/audio_player_bottom'
 import SideBar from './components/common/side_bar'
 import { Box, Grid, useMediaQuery } from '@mui/material'
 import DrawerGenerateButton from './components/common/drawer_generate_button'
@@ -17,7 +17,10 @@ import Image from 'next/image'
 import BackgroundImage from './components/common/background_image'
 
 export default function RootLayout({ children }) {
-  const [audioData, setAudioData] = React.useState('')
+  const [audioData, setAudioData] = React.useState({
+    playOption: 'with-original',
+  })
+  const audioPlayerRef = React.useRef()
   const theme = useTheme()
   const [imageLoaded, setImageLoaded] = React.useState(false)
 
@@ -25,7 +28,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Provider>
-          <AudioContext.Provider value={{ audioData, setAudioData }}>
+          <AudioContext.Provider
+            value={{ audioPlayerRef, audioData, setAudioData }}
+          >
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
 

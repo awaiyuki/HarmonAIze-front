@@ -4,6 +4,6 @@ import { createContext } from 'react'
 
 export const AudioContext = createContext({
   audioPlayerRef: {},
-  audioData: '',
+  audioData: {},
   setAudioData: () => {},
 })

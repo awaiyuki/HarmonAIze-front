@@ -166,7 +166,7 @@ export default function Community() {
             borderRadius: '32px',
             backdropFilter: 'blur(10px)',
             m: 1,
-            p: 2,
+            pt: 1,
           }}
         >
           {isLoading ? (
@@ -177,9 +177,10 @@ export default function Community() {
                 sx={{
                   display: 'flex',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                   borderBottom: 'solid 1px',
                   borderColor: grey[400],
-                  p: 1,
+                  p: 2,
                 }}
               >
                 <Box>

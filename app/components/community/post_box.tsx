@@ -4,8 +4,12 @@ import {
   Button,
   Collapse,
   Fade,
+  FormControl,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -41,6 +45,7 @@ export default function PostBox({
 }) {
   const { audioData, setAudioData } = useContext(AudioContext)
   const [fadeIn, setFadeIn] = useState(false)
+  const [playOption, setPlayOption] = useState('without-original')
   // const [postViewData, setPostViewData] = useState(null)
   const queryClient = useQueryClient()
   const fetchPost = async (id, currentUsername) => {
@@ -150,8 +155,8 @@ export default function PostBox({
   ) : (
     <Fade in={fadeIn}>
       <Box
-        borderLeft={1}
-        borderColor={grey[400]}
+        // borderLeft={1}
+        // borderColor={grey[400]}
         height="98%"
         overflow="hidden"
         sx={{
@@ -175,24 +180,13 @@ export default function PostBox({
                   onClick={() =>
                     setAudioData({
                       ...postViewData,
-                      audioSrc: postViewData.mediaUrl,
+                      playOption: audioData.playOption,
                     })
                   }
                 >
                   <MusicCover src={postViewData.coverImageUrl} />
                 </Button>
-                <Button
-                  color="primary"
-                  fontSize="large"
-                  onClick={() =>
-                    setAudioData({
-                      ...postViewData,
-                      audioSrc: postViewData.mediaUrl2,
-                    })
-                  }
-                >
-                  <MusicCover src={postViewData.coverImageUrl} />
-                </Button>
+
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h6" fontWeight="bold">
                     {postViewData.mediaTitle}
