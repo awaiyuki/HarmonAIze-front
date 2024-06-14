@@ -1,5 +1,7 @@
 import OpenAI from 'openai'
 
+export const maxDuration = 5
+
 export async function POST(req: Request) {
   const reqData = await req.formData()
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
