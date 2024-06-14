@@ -60,15 +60,17 @@ export default function AudioPlayerBottom() {
             </Typography>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <AccountCircle />
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h6" fontWeight="500">
                 {audioData?.username}
               </Typography>
             </Box>
-            <Typography variant="h6">
-              {audioData?.playOption == 'without-original'
-                ? '(반주만)'
-                : '(원음과 함께)'}
-            </Typography>
+            <Box display={{ xs: 'none', sm: 'block' }}>
+              <Typography variant="h6">
+                {audioData?.playOption == 'without-original'
+                  ? '(반주만)'
+                  : '(원음과 함께)'}
+              </Typography>
+            </Box>
           </Box>
         ) : (
           <Typography variant="h6">--</Typography>
