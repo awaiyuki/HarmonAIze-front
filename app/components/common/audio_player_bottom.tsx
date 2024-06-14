@@ -14,6 +14,8 @@ export default function AudioPlayerBottom() {
 
   const { data: session, status } = useSession()
 
+  const theme = useTheme()
+
   useEffect(() => {
     if (!audioPlayerRef?.current?.audio?.current) return
     audioPlayerRef.current.audio.current.currentTime = 0
@@ -23,7 +25,6 @@ export default function AudioPlayerBottom() {
   if (status != 'authenticated') {
     return <></>
   }
-  const theme = useTheme()
 
   return (
     <Box
