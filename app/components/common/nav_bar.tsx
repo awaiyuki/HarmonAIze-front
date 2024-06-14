@@ -29,7 +29,6 @@ function NavMenuItem({ link, text }) {
       href={link}
       selected={selected}
       sx={{
-        width: '90px',
         display: 'flex',
         justifyContent: 'center',
       }}
