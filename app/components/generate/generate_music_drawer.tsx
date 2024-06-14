@@ -37,6 +37,7 @@ import { blue, grey, pink, purple } from '@mui/material/colors'
 import {
   CircularProgress,
   Collapse,
+  Drawer,
   FormControl,
   Grow,
   Input,
@@ -73,12 +74,10 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 })
 
-export default function GenerateMusicMenu() {
+export default function GenerateMusicDrawer({ open, toggleDrawer }) {
   const { data: session, status } = useSession({
     required: true,
-    onUnauthenticated() {
-      redirect('/')
-    },
+    onUnauthenticated() {},
   })
   const username = session?.user.username
   const theme = useTheme()
@@ -178,14 +177,13 @@ export default function GenerateMusicMenu() {
       [e.target.name]: e.target.checked,
     })
   }
-
   return (
-    <Box p={1} height="100%">
+    <Drawer anchor="bottom" open={open} onClose={toggleDrawer(false)}>
       <Box
+        role="presentation"
         sx={{
-          display: { xs: 'none', sm: 'block' },
-          height: '100%',
-          minWidth: '320px',
+          width: 'auto',
+          height: '60vh',
           // borderRight: 1,
           // borderColor: grey[400],
           padding: 1,
@@ -404,6 +402,6 @@ export default function GenerateMusicMenu() {
           </div>
         </Box>
       </Box>
-    </Box>
+    </Drawer>
   )
 }

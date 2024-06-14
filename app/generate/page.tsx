@@ -60,6 +60,7 @@ import { TransitionGroup } from 'react-transition-group'
 import Loading from '@/app/components/common/loading'
 import MusicList from '../components/generate/music_list'
 import GenerateMusicMenu from '../components/generate/generate_music_menu'
+import GenerateMusicDrawer from '../components/generate/generate_music_drawer'
 
 export default function Generate() {
   const { data: session, status } = useSession({
@@ -68,11 +69,19 @@ export default function Generate() {
       redirect('/')
     },
   })
+
+  const [open, setOpen] = useState(false)
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen)
+  }
+
   return (
     <Fade in={true}>
       <Box
         sx={{
           display: 'flex',
+          position: 'relative',
           flex: '1',
           flexDirection: { xs: 'column', sm: 'row' },
           width: '100%',
@@ -98,6 +107,26 @@ export default function Generate() {
         >
           <MusicList />
         </Box>
+        <Box
+          position="absolute"
+          bottom={0}
+          right={0}
+          margin={2}
+          padding={2}
+          borderRadius="64px"
+          bgcolor="background.paper"
+          display={{ xs: 'flex', sm: 'none' }}
+          justifyContent="center"
+          alignItems="center"
+          zIndex={3}
+          sx={{
+            cursor: 'pointer',
+          }}
+          onClick={toggleDrawer(true)}
+        >
+          <AutoFixHighIcon />
+        </Box>
+        <GenerateMusicDrawer open={open} toggleDrawer={toggleDrawer} />
       </Box>
     </Fade>
   )

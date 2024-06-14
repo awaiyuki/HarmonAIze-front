@@ -1,14 +1,47 @@
 //@ts-nocheck
 'use client'
 
-import { Box, Button, Typography, Stack, Hidden, useTheme } from '@mui/material'
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  Hidden,
+  useTheme,
+  ListItemButton,
+  ListItemText,
+  List,
+} from '@mui/material'
 import { ColorModeButton } from './toggle_color_mode'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
+function NavMenuItem({ link, text }) {
+  const pathname = usePathname()
+  const selected = link == pathname ? true : false
+  return (
+    <ListItemButton
+      component={Link}
+      variant="filled"
+      href={link}
+      selected={selected}
+      sx={{
+        width: '90px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Typography
+        sx={{ variant: 'body1', fontWeight: selected ? 'bold' : 500 }}
+      >
+        {text}
+      </Typography>
+    </ListItemButton>
+  )
+}
 export default function NavBar() {
   const { data: session, status } = useSession()
 
@@ -41,13 +74,14 @@ export default function NavBar() {
           flexGrow={1}
           pl={2}
         >
-          <Typography variant="h5">HarmonAIze</Typography>
-          <Link href="/generate">
-            <Button>홈</Button>
-          </Link>
-          <Link href="/community">
-            <Button>커뮤니티</Button>
-          </Link>
+          <Typography variant="h6" mr={2}>
+            HarmonAIze
+          </Typography>
+          <List sx={{ display: 'flex', padding: 0 }}>
+            <NavMenuItem link="/generate" text="홈" />
+            <NavMenuItem link="/community" text="커뮤니티" />
+            <NavMenuItem link="/options" text="설정" />
+          </List>
         </Box>
         <Stack direction="row" spacing={4}>
           {/* <ColorModeButton /> */}

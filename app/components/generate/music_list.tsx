@@ -95,7 +95,7 @@ export default function MusicList() {
       headers: {},
     })
     const responseData = await res.json()
-    // console.log(responseData)
+    console.log(responseData)
     return responseData
   }
 
@@ -163,32 +163,28 @@ export default function MusicList() {
                         </Box>
                       )}
                       <ListItem disablePadding>
-                        {music.mediaType === 'audio' && (
-                          <>
-                            <Button
-                              sx={{ marginRight: 2, cursor: 'pointer' }}
-                              onClick={() =>
-                                setAudioData({
-                                  ...music,
-                                  mediaTitle: music.title,
-                                  playOption: audioData.playOption,
-                                  username,
-                                })
-                              }
-                            >
-                              <MusicCover
-                                isLoading={music.progress}
-                                src={music.coverImageUrl}
-                              />
-                            </Button>
-                          </>
-                        )}
+                        <Button
+                          sx={{ marginRight: 2, cursor: 'pointer' }}
+                          onClick={() =>
+                            setAudioData({
+                              ...music,
+                              mediaTitle: music.title,
+                              playOption: audioData.playOption,
+                              username,
+                            })
+                          }
+                        >
+                          <MusicCover
+                            isLoading={music.progress}
+                            src={music.coverImageUrl}
+                          />
+                        </Button>
 
-                        {music.mediaType === 'video' && (
+                        {/* {music.mediaType === 'video' && (
                           <Box>
                             <video src={music.url} controls width="100%" />
                           </Box>
-                        )}
+                        )} */}
                         <Box
                           sx={{
                             width: '100%',
@@ -201,7 +197,19 @@ export default function MusicList() {
                             disableTypography
                             primary={
                               <>
-                                <Typography variant="h6" fontWeight="bold">
+                                <Typography
+                                  variant="h6"
+                                  fontWeight="bold"
+                                  onClick={() =>
+                                    setAudioData({
+                                      ...music,
+                                      mediaTitle: music.title,
+                                      playOption: audioData.playOption,
+                                      username,
+                                    })
+                                  }
+                                  sx={{ cursor: 'pointer' }}
+                                >
                                   {music.title}
                                 </Typography>
                                 <Typography
