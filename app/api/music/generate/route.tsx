@@ -1,6 +1,6 @@
 import OpenAI from 'openai'
 
-export const maxDuration = 5
+export const maxDuration = 60
 
 export async function POST(req: Request) {
   const reqData = await req.formData()
