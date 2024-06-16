@@ -24,5 +24,5 @@ Connect `http://localhost:3000`
 
 ## Features
 
-- SWR used
-- Context API used
+- Glassmorphism
+- Optimistic UI on Like Button, Comments
