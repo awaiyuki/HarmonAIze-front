@@ -10,10 +10,10 @@ Create the file `.env.local` in root directory of the project, and fill in as be
 
 ```
 NEXTAUTH_URL=http://localhost:3000
-BACK_HOST={BACKEND_URL}
+BACK_HOST={YOUR_BACKEND_URL}
+DB_HOST={YOUR_DB_URL}
+OPENAI_API_KEY={YOUR_OPENAI_API_KEY}
 ```
-
-Replace `{BACKEND_URL}` with your backend address.
 
 ## Running Development Server
 
