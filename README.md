@@ -28,3 +28,4 @@ Connect `http://localhost:3000`
 
 - Glassmorphism
 - Optimistic UI on Like Button, Comments
+- Music Cover Image generated using Dall-E
