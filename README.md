@@ -1,6 +1,6 @@
 # HarmonAIze-front
 
-The frontend part of the project for 2024-1 Capstone Design
+The frontend part of the project for 2024-1 Capstone Design 2
 
 ## Setup Environment Variables
 
