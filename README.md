@@ -2,6 +2,8 @@
 
 The frontend part of the project for 2024-1 Capstone Design 2
 
+HarmonAIze generates accompaniment that matches the user's uploaded music.
+
 ## Setup Environment Variables
 
 ### For Local
@@ -27,9 +29,9 @@ Connect `http://localhost:3000`
 ## Features
 
 - Glassmorphism
-- Optimistic UI on Like Button, Comments
-- Pseudo-realtime processing via Polling
-- Music Cover Image generated using Dall-E
+- Optimistic UI for Like Button and Comments
+- Pseudo-realtime Processing via Polling
+- Music Cover Image Generated Using Dall-E
 
 ## Preview(Screenshots)
 ![preview1](/images/preview1.png)
