@@ -28,4 +28,10 @@ Connect `http://localhost:3000`
 
 - Glassmorphism
 - Optimistic UI on Like Button, Comments
+- Pseudo-realtime processing via Polling
 - Music Cover Image generated using Dall-E
+
+## Preview(Screenshots)
+* ![preview1](/images/preview1.png)
+* ![preview2](/images/preview2.png)
+* ![preview3](/images/preview3.png)
