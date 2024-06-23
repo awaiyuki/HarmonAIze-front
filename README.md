@@ -2,7 +2,7 @@
 
 The frontend part of the project for 2024-1 Capstone Design 2
 
-HarmonAIze generates accompaniment that matches the user's uploaded music.
+HarmonAIze generates accompaniment that fits your uploaded music.
 
 ## Setup Environment Variables
 
