@@ -32,6 +32,6 @@ Connect `http://localhost:3000`
 - Music Cover Image generated using Dall-E
 
 ## Preview(Screenshots)
-* ![preview1](/images/preview1.png)
-* ![preview2](/images/preview2.png)
-* ![preview3](/images/preview3.png)
+![preview1](/images/preview1.png)
+![preview2](/images/preview2.png)
+![preview3](/images/preview3.png)
