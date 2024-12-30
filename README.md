@@ -28,6 +28,7 @@ Connect `http://localhost:3000`
 
 ## Features
 
+- Responsnive UI
 - Glassmorphism
 - Optimistic UI for Like Button and Comments
 - Pseudo-realtime Processing via Polling
