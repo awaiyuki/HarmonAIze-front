@@ -4,11 +4,13 @@ The frontend part of the project for 2024-1 Capstone Design 2
 
 HarmonAIze generates accompaniment that fits your uploaded music.
 
-## Setup Environment Variables
+## Tech Stack
+- **Framework**: Next.js
+- **UI Library**: MUI
 
-### For Local
+## Running Development Server
 
-Create the file `.env.local` in root directory of the project, and fill in as below.
+Create the file `.env.local` in the root directory of the project, and fill in as below.
 
 ```
 NEXTAUTH_URL=http://localhost:3000
@@ -17,8 +19,7 @@ DB_HOST={YOUR_DB_URL}
 OPENAI_API_KEY={YOUR_OPENAI_API_KEY}
 ```
 
-## Running Development Server
-
+Then, open a command line interface and run the following commands in the root directory of the project: 
 ```console
 $ npm i
 $ npm run dev
